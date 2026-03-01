@@ -63,10 +63,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalculatorTests.cs" />
+    <Compile Include="CollectionBehavior.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AutomobilSOTests.cs" />
+    <Compile Include="Repositories\AutomobilTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

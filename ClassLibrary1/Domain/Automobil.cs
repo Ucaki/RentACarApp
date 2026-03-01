@@ -22,7 +22,7 @@ namespace Common.Domain
         public string Model { get; set; }
         public int Godiste { get; set; }
         public KlasaAutomobila Klasa { get; set; }
-        public StatusAutomobila Status{ get; set; }
+        public StatusAutomobila Status { get; set; }
 
         /// <summary>
         //Implementacija interfejsa
@@ -33,22 +33,59 @@ namespace Common.Domain
 
         public string IdCondition => $"AutomobilID={AutomobilID}";
 
-        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Godiste}, {Klasa.KlasaID}, '{Status}'"; 
+        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Godiste}, {Klasa.KlasaID}, '{Status}'";
 
-        public string SelectValues => throw new NotImplementedException();
+        public string SelectValues => "*";
 
-        public string UpdateValues => throw new NotImplementedException();
+        public string UpdateValues => $"RegistarskiBroj = '{RegistarskiBroj}', Marka = '{Marka}', Model = '{Model}', Godiste = {Godiste}, KlasaID = {Klasa.KlasaID}, Status = '{Status}'";
 
         public string JoinCondition => "";
 
         public IEntity GetReaderResult(SqlDataReader reader)
         {
-            throw new NotImplementedException();
+
+            if (!reader.Read())
+                return null;
+
+            Automobil automobil = new Automobil();
+            automobil.AutomobilID = (int)reader["AutomobilID"];
+            automobil.RegistarskiBroj = Convert.ToString(reader["RegistarskiBroj"]);
+            automobil.Marka = Convert.ToString(reader["Marka"]);
+            automobil.Model = Convert.ToString(reader["Model"]);
+            automobil.Godiste = (int)reader["Godiste"];
+            automobil.Klasa = new KlasaAutomobila() { KlasaID = (int)reader["KlasaID"] };
+
+            return automobil;
         }
 
         public List<IEntity> GetReaderResults(SqlDataReader reader)
         {
-            throw new NotImplementedException();
+            List<IEntity> autoList = new List<IEntity>();
+            while (reader.Read())
+            {
+                autoList.Add(
+                    new Automobil()
+                    {
+                        AutomobilID = (int)reader["AutomobilID"],
+                        RegistarskiBroj = Convert.ToString(reader["RegistarskiBroj"]),
+                        Marka = Convert.ToString(reader["Marka"]),
+                        Model = Convert.ToString(reader["Model"]),
+                        Godiste = (int)reader["Godiste"],
+                        Klasa = new KlasaAutomobila() { KlasaID = (int)reader["KlasaID"] }
+                    });
+
+
+            }
+            return autoList;
+        }
+        public override bool Equals(object obj)
+        {
+            if (this == obj) return true;
+            if (!(obj is Automobil)) return false;
+            Automobil other = (Automobil)obj;
+            if (other.AutomobilID <= 0 || AutomobilID <= 0) return false;
+            return AutomobilID.Equals(other.AutomobilID);
+
         }
     }
 }

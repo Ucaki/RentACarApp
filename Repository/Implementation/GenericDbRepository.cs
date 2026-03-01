@@ -22,16 +22,9 @@ namespace Repository.Implementation
             using (SqlCommand cmd = CreateSqlCommand($"INSERT INTO {entity.TableName} OUTPUT inserted.{entity.IDName} VALUES(" +
                 $"{entity.InsertValues})"))
             {
-                if (!string.IsNullOrEmpty(entity.IDName))
-                {
-                    object primaryKeyValue = cmd.ExecuteScalar();
-                    entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
-                }
-                else
-                {
-                    int affectedRows = cmd.ExecuteNonQuery();
-                    Console.WriteLine("Affected rows insert:"+ affectedRows);
-                }
+                object primaryKeyValue = cmd.ExecuteScalar();
+                entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
+                Console.WriteLine($"Inserted row for table {entity.TableName}");
             }
         }
 
@@ -50,19 +43,32 @@ namespace Repository.Implementation
             DbConnectionFactory.Instance.GetDbConnection().Commit();
         }
 
-        public void Delete(IEntity entity)
+        public int Delete(IEntity entity)
         {
-            throw new NotImplementedException();
+            using (SqlCommand cmd=CreateSqlCommand($"DELETE FROM {entity.TableName} where {entity.IdCondition}") )
+            {
+                int affectedRows = cmd.ExecuteNonQuery();
+                if (affectedRows != 1) throw new InvalidOperationException("Greška pri brisanju iz baze");
+                return affectedRows;
+            }
         }
 
         public IEntity Find(IEntity entity, string condition)
         {
-            throw new NotImplementedException();
+            using (SqlCommand cmd= CreateSqlCommand($"select {entity.SelectValues} from {entity.TableName} {entity.JoinCondition} WHERE {condition}") )
+            using (SqlDataReader reader= cmd.ExecuteReader())
+            {
+                return entity.GetReaderResult(reader);
+            }
         }
 
-        public List<IEntity> GetAll(IEntity entity)
+        public List<IEntity> GetAll(IEntity entity, string condition="1=1")
         {
-            throw new NotImplementedException();
+            using (SqlCommand cmd = CreateSqlCommand($"select {entity.SelectValues} from {entity.TableName} {entity.JoinCondition} where {condition}"))
+            using (SqlDataReader reader = cmd.ExecuteReader())
+            {
+                return entity.GetReaderResults(reader);
+            }
         }
 
         public void RollBack()
@@ -70,9 +76,13 @@ namespace Repository.Implementation
             DbConnectionFactory.Instance.GetDbConnection().Rollback();
         }
 
-        public void Update(IEntity entity)
+        public int Update(IEntity entity, string condition)
         {
-            throw new NotImplementedException();
+            using (SqlCommand cmd = CreateSqlCommand($"update {entity.TableName} set {entity.UpdateValues} where {condition}") ) {
+                int affectedRows = cmd.ExecuteNonQuery();
+                if (affectedRows != 1) throw new InvalidOperationException("Greška pri ažuriranju baze");
+                return affectedRows;
+            }
         }
     }
 }
