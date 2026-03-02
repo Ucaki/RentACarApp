@@ -28,6 +28,7 @@ namespace RentACar.Tests.Services
                 Assert.Equal("Oldtajmer", inserted.Model);
                 Assert.Equal(3, inserted.Klasa.KlasaID);
                 Assert.Equal(StatusAutomobila.dostupan, inserted.Status);
+                
             }
             finally
             {

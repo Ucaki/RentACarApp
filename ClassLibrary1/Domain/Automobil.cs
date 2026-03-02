@@ -47,13 +47,15 @@ namespace Common.Domain
             if (!reader.Read())
                 return null;
 
-            Automobil automobil = new Automobil();
-            automobil.AutomobilID = (int)reader["AutomobilID"];
-            automobil.RegistarskiBroj = Convert.ToString(reader["RegistarskiBroj"]);
-            automobil.Marka = Convert.ToString(reader["Marka"]);
-            automobil.Model = Convert.ToString(reader["Model"]);
-            automobil.Godiste = (int)reader["Godiste"];
-            automobil.Klasa = new KlasaAutomobila() { KlasaID = (int)reader["KlasaID"] };
+            Automobil automobil = new Automobil() {
+                AutomobilID = (int)reader["AutomobilID"],
+                RegistarskiBroj = Convert.ToString(reader["RegistarskiBroj"]),
+                Marka = Convert.ToString(reader["Marka"]),
+                Model = Convert.ToString(reader["Model"]),
+                Godiste = (int)reader["Godiste"],
+                Klasa = new KlasaAutomobila() { KlasaID = (int)reader["KlasaID"] }
+            };
+            
 
             return automobil;
         }
@@ -80,11 +82,15 @@ namespace Common.Domain
         }
         public override bool Equals(object obj)
         {
-            if (this == obj) return true;
             if (!(obj is Automobil)) return false;
             Automobil other = (Automobil)obj;
-            if (other.AutomobilID <= 0 || AutomobilID <= 0) return false;
-            return AutomobilID.Equals(other.AutomobilID);
+            return AutomobilID == other.AutomobilID && RegistarskiBroj == other.RegistarskiBroj && Marka == other.Marka && Model == other.Model
+                && Godiste == other.Godiste && Klasa.KlasaID == other.Klasa.KlasaID && Status == other.Status;
+            //if (this == obj) return true;
+            //if (!(obj is Automobil)) return false;
+            //Automobil other = (Automobil)obj;
+            //if (other.AutomobilID <= 0 || AutomobilID <= 0) return false;
+            //return AutomobilID.Equals(other.AutomobilID);
 
         }
     }

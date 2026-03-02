@@ -48,7 +48,7 @@ namespace Repository.Implementation
             using (SqlCommand cmd=CreateSqlCommand($"DELETE FROM {entity.TableName} where {entity.IdCondition}") )
             {
                 int affectedRows = cmd.ExecuteNonQuery();
-                if (affectedRows != 1) throw new InvalidOperationException("Greška pri brisanju iz baze");
+                if (affectedRows != 1) throw new Exception("Greška pri brisanju iz baze");
                 return affectedRows;
             }
         }
@@ -80,7 +80,7 @@ namespace Repository.Implementation
         {
             using (SqlCommand cmd = CreateSqlCommand($"update {entity.TableName} set {entity.UpdateValues} where {condition}") ) {
                 int affectedRows = cmd.ExecuteNonQuery();
-                if (affectedRows != 1) throw new InvalidOperationException("Greška pri ažuriranju baze");
+                if (affectedRows != 1) throw new Exception("Greška pri ažuriranju baze");
                 return affectedRows;
             }
         }

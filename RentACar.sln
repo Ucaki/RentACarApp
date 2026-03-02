@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RentACar.Tests", "RentACar.Tests\RentACar.Tests.csproj", "{4C955F25-B424-4AED-9ECC-CE862C8AC18A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SystemOperations", "SystemOperations\SystemOperations.csproj", "{D70B2794-1B29-45FF-9D1B-D2C692716AE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4C955F25-B424-4AED-9ECC-CE862C8AC18A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C955F25-B424-4AED-9ECC-CE862C8AC18A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C955F25-B424-4AED-9ECC-CE862C8AC18A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D70B2794-1B29-45FF-9D1B-D2C692716AE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D70B2794-1B29-45FF-9D1B-D2C692716AE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D70B2794-1B29-45FF-9D1B-D2C692716AE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D70B2794-1B29-45FF-9D1B-D2C692716AE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
