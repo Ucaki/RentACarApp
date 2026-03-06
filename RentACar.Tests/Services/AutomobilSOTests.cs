@@ -4,6 +4,8 @@ using RentACar.Tests.ClassBuilder;
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +17,27 @@ namespace RentACar.Tests.Services
 {
     public class AutomobilSOTests
     {
-        private readonly Mock<IDbRepository<IEntity>> _repoMock;
-        private readonly ZapamtiVoziloSO _so;
+        private readonly Mock<IRepository<IEntity>> _repoMock;
+        private readonly Mock<IConnectionFactory> _factoryMock;
+        private readonly BaseSO _so;
         public AutomobilSOTests() {
-            _repoMock = new Mock<IDbRepository<IEntity>>();
-            _so = new ZapamtiVoziloSO(_repoMock.Object);
+            _repoMock = new Mock<IRepository<IEntity>>();      
+            _factoryMock = new Mock<IConnectionFactory>();
+
+            var _transactionMock = new Mock<IDbTransaction>();
+            _transactionMock.Setup(t => t.Commit());
+            _transactionMock.Setup(t => t.Rollback());
+
+            var _connectionMock = new Mock<IDbConnection>();
+            _connectionMock.Setup(c => c.Open());
+            _connectionMock.Setup(c => c.BeginTransaction())
+                .Returns(_transactionMock.Object);
+
+            _factoryMock
+                .Setup(f => f.CreateConnection())
+                .Returns(_connectionMock.Object);
+
+            _so = new ZapamtiVoziloSO(_repoMock.Object, _factoryMock.Object);
         }
 
 
@@ -41,7 +59,11 @@ namespace RentACar.Tests.Services
         public void Should_Throw_When_Registration_Is_Aready_Exists() 
         {
             var car = new CarBuilder().Build();
-            _repoMock.Setup(r => r.Find(It.IsAny<Automobil>(), $"RegistarskiBroj= '{car.RegistarskiBroj}'")).Returns(car);
+
+            _repoMock.Setup(r => r.Find(It.IsAny<Automobil>(), $"RegistarskiBroj= '{car.RegistarskiBroj}'",
+               It.IsAny<IDbConnection>(),
+               It.IsAny<IDbTransaction>())).Returns(car);
+
             Assert.Throws<Exception>(()=> _so.ExecuteTemplate(car));
         }
 
@@ -122,19 +144,21 @@ namespace RentACar.Tests.Services
         public void Should_Insert_Car_When_Data_Is_Valid() {
             var car = new CarBuilder().Build();
             _repoMock
-                .Setup(r => r.Find(It.IsAny<IEntity>(), $"{car.IdCondition}"))
+                .Setup(r => r.Find(It.IsAny<IEntity>(), $"{car.IdCondition}", It.IsAny<IDbConnection>(), It.IsAny<IDbTransaction>()))
                 .Returns((IEntity)null);
            
             _repoMock
-                .Setup(r=> r.Add(It.IsAny<IEntity>()))
-                .Callback<IEntity>(c => {
-                    car = (Automobil)c;
+                .Setup(r=> r.Add(It.IsAny<IEntity>(), It.IsAny<IDbConnection>(), It.IsAny<IDbTransaction>()))
+                .Callback<IEntity,IDbConnection, IDbTransaction>((entity,conn,trans) => {
+                    car = (Automobil)entity;
                     car.AutomobilID = 10;
                 });
 
             _so.ExecuteTemplate(car);
             _repoMock
-                .Verify(r => r.Add(car), Times.Once);
+                .Verify(r => r.Add(car, It.IsAny<IDbConnection>(), It.IsAny<IDbTransaction>()),
+                Times.Once);
+
             Assert.True(car.AutomobilID > 0);
         }
         

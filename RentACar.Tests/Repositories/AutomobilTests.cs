@@ -1,7 +1,13 @@
 ﻿using Common.Domain;
+using RentACar.Tests.ClassBuilder;
+using Repository.Connection;
 using Repository.Implementation;
+using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,149 +17,154 @@ namespace RentACar.Tests.Services
 {
     public class AutomobilTests
     {
+        //private GenericDbRepository createRepo() {
+
+        //    var sqlConn = new SqlConnection(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
+        //    var dbConn = new DbConnection(sqlConn);
+        //    return new GenericDbRepository(dbConn);
+        //}
+        //private GenericDbRepository createRepo()
+        //{
+        //    IConnectionFactory factory = new SqlConnectionFactory(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
+        //    return  new GenericDbRepository(factory);
+          
+        //}
+        private void ExecuteInTransaction(Action<GenericDbRepository,IDbConnection, IDbTransaction> action) {
+            var factory= new SqlConnectionFactory(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
+            var repo = new GenericDbRepository(factory);
+            using (var conn = factory.CreateConnection())
+            {
+                conn.Open();
+                using (var transaction = conn.BeginTransaction())
+                {
+                    try
+                    {
+                        action(repo, conn,transaction);
+                    }
+                    finally
+                    {
+                        transaction.Rollback();
+                    }
+                }
+            }
+            
+        }
         [Fact]
         public void AddAutomobil_ShouldReturnGeneratedID()
         {
-            var repo = new GenericDbRepository();
-            var auto = new Automobil { Godiste = 2009, RegistarskiBroj = "BG155RS", Marka = "moskvich", Model = "Oldtajmer", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            repo.BeginTransaction();
-            try
+            ExecuteInTransaction((repo,conn,transaction) =>
             {
-                repo.Add(auto);
-                Automobil inserted = (Automobil)repo.Find(auto, auto.IdCondition);
+                var auto = new CarBuilder().Build();
+
+                repo.Add(auto,conn,transaction);
+                var inserted = (Automobil)repo.Find(auto, auto.IdCondition, conn, transaction);
                 Assert.NotNull(inserted);
                 Assert.True(inserted.AutomobilID > 0);
-                Assert.Equal("BG155RS", inserted.RegistarskiBroj);
-                Assert.Equal("moskvich", inserted.Marka);
-                Assert.Equal("Oldtajmer", inserted.Model);
-                Assert.Equal(3, inserted.Klasa.KlasaID);
+                Assert.Equal("BG000ts", inserted.RegistarskiBroj);
+                Assert.Equal("bmw", inserted.Marka);
+                Assert.Equal("x13", inserted.Model);
+                Assert.Equal(2023, inserted.Godiste);
+                Assert.Equal(2, inserted.Klasa.KlasaID);
                 Assert.Equal(StatusAutomobila.dostupan, inserted.Status);
-                
-            }
-            finally
-            {
-                repo.RollBack();
-            }
+            });
         }
         [Fact]
         public void DeleteAutomobil_ShouldReturnAffectedRows()
         {
-            var repo = new GenericDbRepository();
-            var auto = new Automobil { Godiste = 2009, RegistarskiBroj = "BG156RS", Marka = "jeep", Model = "cross", Klasa = new KlasaAutomobila() { KlasaID = 1 }, Status = StatusAutomobila.dostupan };
-            repo.BeginTransaction();
-            try
+            ExecuteInTransaction((repo, conn, transaction) =>
             {
-                repo.Add(auto);
-                int affectedRows = repo.Delete(auto);
+                var auto = new CarBuilder().Build();
+                repo.Add(auto,conn, transaction);
+                int affectedRows = repo.Delete(auto,conn, transaction);
                 Assert.True(affectedRows == 1);
-            }
-            finally
-            {
-                repo.RollBack();
-            }
+            });
         }
         [Fact]
         public void DeleteAutomobil_ShouldThrowException()
         {
-            var repo = new GenericDbRepository();
-            var auto = new Automobil() { AutomobilID = 999999 };
-
-            repo.BeginTransaction();
-            try
+            ExecuteInTransaction((repo, conn, transaction) =>
             {
-                Assert.Throws<Exception>(() => repo.Delete(auto));
-            }
-            finally
-            { repo.RollBack(); }
+                var auto = new CarBuilder().Build();
+                Assert.Throws<Exception>(() => repo.Delete(auto,conn, transaction));
+            });
         }
         [Fact]
         public void FindAutomobil_ShouldReturnObjectIEntity()
         {
-            var repo = new GenericDbRepository();
-            var auto1 = new Automobil { Godiste = 2009, RegistarskiBroj = "BG155RS", Marka = "moskvich", Model = "Oldtajmer", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            //var auto2 = new Automobil { Godiste = 2009, RegistarskiBroj = "BG345RS", Marka = "lada", Model = "Niva", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            repo.BeginTransaction();
-            try
+            ExecuteInTransaction((repo, conn, transaction) =>
             {
-                repo.Add(auto1);
-                var autoFound = repo.Find(auto1, auto1.IdCondition);
-                Automobil returned = (Automobil)repo.Find(auto1, auto1.IdCondition);
+                var auto1 = new CarBuilder().Build();
+                repo.Add(auto1,conn, transaction);
+                var autoFound = repo.Find(auto1, auto1.IdCondition,conn, transaction);
+                Automobil returned = (Automobil)repo.Find(auto1, auto1.IdCondition,conn, transaction);
                 Assert.NotNull(returned);
                 Assert.True(returned.AutomobilID > 0);
-                Assert.Equal("BG155RS", returned.RegistarskiBroj);
-                Assert.Equal("moskvich", returned.Marka);
-                Assert.Equal("Oldtajmer", returned.Model);
-                Assert.Equal(3, returned.Klasa.KlasaID);
+                Assert.Equal("BG000ts", returned.RegistarskiBroj);
+                Assert.Equal("bmw", returned.Marka);
+                Assert.Equal("x13", returned.Model);
+                Assert.Equal(2023, returned.Godiste);
+                Assert.Equal(2, returned.Klasa.KlasaID);
                 Assert.Equal(StatusAutomobila.dostupan, returned.Status);
-                
-            }
-            finally
-            {
-                repo.RollBack();
-            }
+            });        
         }
 
         [Fact]
         public void GetAllAutomobil_ShouldReturnListOfIEntity()
         {
-            var repo = new GenericDbRepository();
-            var auto1 = new Automobil { Godiste = 2009, RegistarskiBroj = "BG155RS", Marka = "moskvich", Model = "Oldtajmer", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            var auto2 = new Automobil { Godiste = 2009, RegistarskiBroj = "BG345RS", Marka = "lada", Model = "Niva", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            repo.BeginTransaction();
-            try
+            ExecuteInTransaction((repo, conn, transaction) =>
             {
-                repo.Add(auto1);
-                repo.Add(auto2);
-               var autoLista =repo.GetAll(auto1);
+                var auto1 = new CarBuilder().Build();
+                var auto2 = new CarBuilder()
+                                    .WithBrand("toyot")
+                                    .WithCarClass(new KlasaAutomobila() { KlasaID = 1 })
+                                    .WithModel("yaris")
+                                    .WithRegistarski("bg000tx")
+                                    .WithState(StatusAutomobila.dostupan)
+                                    .WithYearProduction(2024).Build();
+                repo.Add(auto1,conn, transaction);
+                repo.Add(auto2,conn, transaction);
+                var autoLista = repo.GetAll(auto1,conn, transaction);
                 Assert.NotNull(autoLista);
-                Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID ==auto1.AutomobilID);
+                Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto1.AutomobilID);
                 Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto2.AutomobilID);
-            }
-            finally
-            {
-                repo.RollBack();
-            }
+
+            });
         }
         [Fact]
         public void GetAutomobils_ShouldReturnListOfIEntityFilteredByCondition()
         {
-            var repo = new GenericDbRepository();
-            var auto1 = new Automobil { Godiste = 2009, RegistarskiBroj = "BG155RS", Marka = "moskvich", Model = "Oldtajmer", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            var auto2 = new Automobil { Godiste = 2009, RegistarskiBroj = "BG345RS", Marka = "lada", Model = "Niva", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            repo.BeginTransaction();
-            try
+            ExecuteInTransaction((repo, conn, transaction) =>
             {
-                repo.Add(auto1);
-                repo.Add(auto2);
-                var autoLista = repo.GetAll(auto1, "KlasaID=3");
+                var auto1 = new CarBuilder().Build();
+                var auto2 = new CarBuilder()
+                                    .WithBrand("toyot")
+                                    .WithCarClass(new KlasaAutomobila() { KlasaID = 2 })
+                                    .WithModel("yaris")
+                                    .WithRegistarski("bg000tx")
+                                    .WithState(StatusAutomobila.dostupan)
+                                    .WithYearProduction(2024).Build();
+                repo.Add(auto1,conn, transaction);
+                repo.Add(auto2,conn, transaction);
+                var autoLista = repo.GetAll(auto1,conn, transaction, "KlasaID=2");
                 Assert.NotNull(autoLista);
                 Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto1.AutomobilID);
                 Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto2.AutomobilID);
-            }
-            finally
-            {
-                repo.RollBack();
-            }
+
+            });
         }
         [Fact]
         public void UpdateAutomobil_ShouldChangeValues() 
         {
-            var repo = new GenericDbRepository();
-            var auto1 = new Automobil { Godiste = 2009, RegistarskiBroj = "BG155RS", Marka = "moskvich", Model = "Oldtajmer", Klasa = new KlasaAutomobila() { KlasaID = 3 }, Status = StatusAutomobila.dostupan };
-            repo.BeginTransaction();
-
-            try
+            ExecuteInTransaction((repo, conn, transaction) =>
             {
-                repo.Add(auto1);
+                var auto1 = new CarBuilder().Build();
+                repo.Add(auto1,conn, transaction);
                 auto1.Marka = "suzuki";
-                repo.Update(auto1, auto1.IdCondition);
-                Automobil updated = (Automobil)repo.Find(auto1, auto1.IdCondition);
+                repo.Update(auto1, auto1.IdCondition,conn, transaction);
+                Automobil updated = (Automobil)repo.Find(auto1, auto1.IdCondition,conn, transaction);
                 Assert.Equal("suzuki", updated.Marka);
-            }
-            finally
-            {
-                repo.RollBack();
-            }
+
+            });
         }
     }
 }

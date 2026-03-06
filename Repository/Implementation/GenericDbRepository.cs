@@ -1,8 +1,10 @@
 ﻿using Common.Domain;
-using Repository.DbConnection;
+using Repository.Connection;
+
 using Repository.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -10,42 +12,40 @@ using System.Threading.Tasks;
 
 namespace Repository.Implementation
 {
-    public class GenericDbRepository : IDbRepository<IEntity>
+    public class GenericDbRepository : IRepository<IEntity>
     {
-        private SqlCommand CreateSqlCommand(string query)
+       // private readonly string _connectionString;
+        private readonly IConnectionFactory factory;
+        public GenericDbRepository(IConnectionFactory factory)
         {
-            SqlCommand command = DbConnectionFactory.Instance.GetDbConnection().CreateCommand(query);
+            //_connectionString = conn;
+            this.factory = factory;
+        }
+        //public string GetConnectionString => _connectionString;
+
+        
+        private IDbCommand CreateDbCommand(string query, IDbConnection createdConnection, IDbTransaction transaction)
+        {
+            IDbCommand command = createdConnection.CreateCommand();
+            command.CommandText = query;
+            command.Transaction = transaction;
             return command;
         }
-        public void Add(IEntity entity)
+        public void Add(IEntity entity, IDbConnection createdConnection, IDbTransaction transaction)
         {
-            using (SqlCommand cmd = CreateSqlCommand($"INSERT INTO {entity.TableName} OUTPUT inserted.{entity.IDName} VALUES(" +
-                $"{entity.InsertValues})"))
+            using (var cmd = CreateDbCommand($"INSERT INTO {entity.TableName} OUTPUT inserted.{entity.IDName} VALUES(" +
+                $"{entity.InsertValues})", createdConnection, transaction))
             {
                 object primaryKeyValue = cmd.ExecuteScalar();
                 entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
+                
                 Console.WriteLine($"Inserted row for table {entity.TableName}");
             }
         }
 
-        public void BeginTransaction()
+        public int Delete(IEntity entity, IDbConnection createdConnection, IDbTransaction transaction)
         {
-            DbConnectionFactory.Instance.GetDbConnection().BeginTransaction();
-        }
-
-        public void CloseConnection()
-        {
-            DbConnectionFactory.Instance.GetDbConnection().CloseConnection();
-        }
-
-        public void Commit()
-        {
-            DbConnectionFactory.Instance.GetDbConnection().Commit();
-        }
-
-        public int Delete(IEntity entity)
-        {
-            using (SqlCommand cmd=CreateSqlCommand($"DELETE FROM {entity.TableName} where {entity.IdCondition}") )
+            using (var cmd = CreateDbCommand($"DELETE FROM {entity.TableName} where {entity.IdCondition}", createdConnection, transaction))
             {
                 int affectedRows = cmd.ExecuteNonQuery();
                 if (affectedRows != 1) throw new Exception("Greška pri brisanju iz baze");
@@ -53,36 +53,56 @@ namespace Repository.Implementation
             }
         }
 
-        public IEntity Find(IEntity entity, string condition)
+        public IEntity Find(IEntity entity, string condition, IDbConnection createdConnection, IDbTransaction transaction)
         {
-            using (SqlCommand cmd= CreateSqlCommand($"select {entity.SelectValues} from {entity.TableName} {entity.JoinCondition} WHERE {condition}") )
-            using (SqlDataReader reader= cmd.ExecuteReader())
+            using (var cmd = CreateDbCommand($"select {entity.SelectValues} from {entity.TableName} {entity.JoinCondition} WHERE {condition}", createdConnection, transaction))
+            using (IDataReader reader = cmd.ExecuteReader())
             {
                 return entity.GetReaderResult(reader);
             }
         }
 
-        public List<IEntity> GetAll(IEntity entity, string condition="1=1")
+        public List<IEntity> GetAll(IEntity entity, IDbConnection createdConnection, IDbTransaction transaction, string condition = "1=1")
         {
-            using (SqlCommand cmd = CreateSqlCommand($"select {entity.SelectValues} from {entity.TableName} {entity.JoinCondition} where {condition}"))
-            using (SqlDataReader reader = cmd.ExecuteReader())
+            using (var cmd = CreateDbCommand($"select {entity.SelectValues} from {entity.TableName} {entity.JoinCondition} where {condition}", createdConnection, transaction))
+            using (IDataReader reader = cmd.ExecuteReader())
             {
                 return entity.GetReaderResults(reader);
             }
         }
 
-        public void RollBack()
+        public int Update(IEntity entity, string condition, IDbConnection createdConnection, IDbTransaction transaction)
         {
-            DbConnectionFactory.Instance.GetDbConnection().Rollback();
-        }
-
-        public int Update(IEntity entity, string condition)
-        {
-            using (SqlCommand cmd = CreateSqlCommand($"update {entity.TableName} set {entity.UpdateValues} where {condition}") ) {
+            using (var cmd = CreateDbCommand($"update {entity.TableName} set {entity.UpdateValues} where {condition}", createdConnection, transaction))
+            {
                 int affectedRows = cmd.ExecuteNonQuery();
                 if (affectedRows != 1) throw new Exception("Greška pri ažuriranju baze");
                 return affectedRows;
             }
         }
+
+        //public void OpenConnection()
+        //{
+        //    _connection.OpenConnection();
+        //}
+        //public void BeginTransaction()
+        //{
+        //    _connection.BeginTransaction();
+        //}
+
+        //public void CloseConnection()
+        //{
+        //    _connection.CloseConnection();
+        //}
+
+        //public void Commit()
+        //{
+        //    _connection.Commit();
+        //}
+
+        //public void RollBack()
+        //{
+        //    _connection.Rollback();
+        //}
     }
 }

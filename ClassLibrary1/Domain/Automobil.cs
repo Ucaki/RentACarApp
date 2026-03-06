@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -41,7 +42,7 @@ namespace Common.Domain
 
         public string JoinCondition => "";
 
-        public IEntity GetReaderResult(SqlDataReader reader)
+        public IEntity GetReaderResult(IDataReader reader)
         {
 
             if (!reader.Read())
@@ -60,7 +61,7 @@ namespace Common.Domain
             return automobil;
         }
 
-        public List<IEntity> GetReaderResults(SqlDataReader reader)
+        public List<IEntity> GetReaderResults(IDataReader reader)
         {
             List<IEntity> autoList = new List<IEntity>();
             while (reader.Read())

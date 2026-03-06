@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -30,12 +31,12 @@ namespace Common.Domain
 
         public string JoinCondition => throw new NotImplementedException();
 
-        public IEntity GetReaderResult(SqlDataReader reader)
+        public IEntity GetReaderResult(IDataReader reader)
         {
             throw new NotImplementedException();
         }
 
-        public List<IEntity> GetReaderResults(SqlDataReader reader)
+        public List<IEntity> GetReaderResults(IDataReader reader)
         {
             List<IEntity> entityList = new List<IEntity>();
             while (reader.Read())

@@ -42,10 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbConnection\DbConnection.cs" />
-    <Compile Include="DbConnection\DbConnectionFactory.cs" />
+    <Compile Include="Connection\SqlConnectionFactory.cs" />
     <Compile Include="Implementation\GenericDbRepository.cs" />
-    <Compile Include="Interfaces\IDbRepository.cs" />
+    <Compile Include="Interfaces\IConnectionFactory.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,6 +53,9 @@
       <Project>{E13CFB22-5621-40B0-969F-8E2C8F85ADC4}</Project>
       <Name>Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

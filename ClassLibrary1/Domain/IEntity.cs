@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Data;
 namespace Common.Domain
 {
     public interface IEntity
@@ -16,8 +16,11 @@ namespace Common.Domain
         string SelectValues { get; }
         string UpdateValues { get; }
         string JoinCondition { get; }
-        IEntity GetReaderResult(SqlDataReader reader);
-        List<IEntity> GetReaderResults(SqlDataReader reader);
-
+        IEntity GetReaderResult(IDataReader reader);
+        List<IEntity> GetReaderResults(IDataReader reader);
+        /*
+        Add protection from sql injection with
+        string 
+         */
     }
 }
