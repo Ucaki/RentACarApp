@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using SystemOperations;
 using SystemOperations.AutomobilSO;
+using SystemOperations.CarClassSO;
 
 namespace Server
 {
@@ -31,9 +32,11 @@ namespace Server
             return (Automobil)so.Result;
         }
 
-        internal List<KlasaAutomobila> GetAllCarClasses()
+        internal List<KlasaAutomobila> GetAllCarClass(KlasaAutomobila klasaAutomobila)
         {
-            throw new NotImplementedException();
+            BaseSO so = new GetAllCarClassesSO(_repository, _factory);
+            so.ExecuteTemplate(klasaAutomobila);
+            return (List<KlasaAutomobila>)so.Result;
         }
     }
 }

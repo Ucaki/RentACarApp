@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AutomobilSO\ZapamtiVoziloSO.cs" />
     <Compile Include="BaseSO.cs" />
+    <Compile Include="CarClassSO\GetAllCarClassesSO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -85,6 +85,10 @@ namespace Server
                             res.ErrorMessage = "Sistem cant create new car object";
                         }
                         break;
+                    case OperationType.GetCarClass:
+                        List<KlasaAutomobila> list = _controller.GetAllCarClass(new KlasaAutomobila());
+                            res.Result = list;
+                        break;
                     default:
                         break;
                 }
