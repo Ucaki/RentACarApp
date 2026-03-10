@@ -20,6 +20,7 @@ namespace Client.Controller
 
         public Automobil AddCar(Automobil auto)
         {
+            //Treba da uhvatim exception koji se baca u communication.SendRequest
             Request req = new Request
             {
                 Operation = OperationType.AddNewCar,

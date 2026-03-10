@@ -18,9 +18,8 @@ namespace Server
         {
             InitializeComponent();
             _server = server;
-            _server.Start();
-            btnStartServer.Enabled = false;
-            btnStopServer.Enabled = true;
+            btnStartServer.Enabled = true;
+            btnStopServer.Enabled = false;
             dgvListClients.DataSource = _server._clientsList;
             _server.LoggedInClientsServer += Server_LoggedInClient;
             _server.LoggedOutClientsServer += Server_LoggedOutClient;

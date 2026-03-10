@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,8 +37,16 @@ namespace Repository.Implementation
             using (var cmd = CreateDbCommand($"INSERT INTO {entity.TableName} OUTPUT inserted.{entity.IDName} VALUES(" +
                 $"{entity.InsertValues})", createdConnection, transaction))
             {
-                object primaryKeyValue = cmd.ExecuteScalar();
-                entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
+                try
+                {
+                    object primaryKeyValue = cmd.ExecuteScalar();
+                    entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(">>>>>>>>>"+ex.Message);
+                    throw;
+                }
                 
                 Console.WriteLine($"Inserted row for table {entity.TableName}");
             }

@@ -18,7 +18,7 @@ namespace SystemOperations.CarClassSO
         protected override void ExecuteConcreteOperation(IEntity entity, IDbConnection connection, IDbTransaction transaction)
         {
             KlasaAutomobila klasa = (KlasaAutomobila)entity;
-            genericRepo.GetAll(klasa, connection,transaction);
+            Result = genericRepo.GetAll(klasa, connection, transaction).Cast<KlasaAutomobila>().ToList();
         }
     }
 }

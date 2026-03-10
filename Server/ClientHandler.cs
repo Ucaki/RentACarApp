@@ -73,7 +73,7 @@ namespace Server
                     case OperationType.Login:
                         break;
                     case OperationType.AddNewCar:
-                        Automobil a=_controller.AddAutomobil((Automobil) req.Argument);
+                        Automobil a=_controller.AddAutomobil(_serializer.ReadType<Automobil>(req.Argument));
                         if (a != null)
                         {
                             res.Result = a;
@@ -88,6 +88,10 @@ namespace Server
                     case OperationType.GetCarClass:
                         List<KlasaAutomobila> list = _controller.GetAllCarClass(new KlasaAutomobila());
                             res.Result = list;
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true; 
+                        }
                         break;
                     default:
                         break;
