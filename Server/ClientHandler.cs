@@ -1,5 +1,6 @@
 ﻿using Common.Communication;
 using Common.Domain;
+using Common.Exceptions;
 using Repository.Implementation;
 using System;
 using System.Collections.Generic;
@@ -82,7 +83,7 @@ namespace Server
                         }
                         else {
                             res.IsSuccessful = false;
-                            res.ErrorMessage = "Sistem cant create new car object";
+                            res.ErrorMessage = "Vozilo nije sačuvano";
                         }
                         break;
                     case OperationType.GetCarClass:
@@ -97,10 +98,16 @@ namespace Server
                         break;
                 }
             }
+            catch (ValidationException ve)
+            {
+                res.IsSuccessful = false;
+                res.ErrorMessage = ve.Message;
+            }
             catch (Exception ex)
             {
                 res.IsSuccessful = false;
-                res.ErrorMessage = ex.Message;
+                res.ErrorMessage = ex.Message+" Server error occured";
+                Debug.WriteLine(">>>>>>>"+ex.Message);
             }
             return res;
         }

@@ -1,8 +1,10 @@
 ﻿using Client.Controller;
 using Client.UserControls;
 using Common.Domain;
+using Common.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -47,9 +49,10 @@ namespace Client.GUIController
         {
             try
             {
-                
+
                 string registration = _ucAddCar.TxtRegistration.Text;
-                if (string.IsNullOrEmpty(registration)) {
+                if (string.IsNullOrEmpty(registration))
+                {
                     MessageBox.Show("Niste uneli polje registracija");
                     return;
                 }
@@ -74,20 +77,29 @@ namespace Client.GUIController
                 KlasaAutomobila klasa = (KlasaAutomobila)_ucAddCar.CmbClassCar.SelectedItem;
                 StatusAutomobila stat = StatusAutomobila.dostupan;
                 Automobil newAutomobil = _clientController.AddCar(
-                    new Automobil() 
+                    new Automobil()
                     {
-                        RegistarskiBroj=registration,
-                        Marka= marka,
+                        RegistarskiBroj = registration,
+                        Marka = marka,
                         Model = model,
                         Godiste = year,
                         Klasa = klasa,
-                        Status=stat
+                        Status = stat
                     });
-
+                    MessageBox.Show("Uspešno ste sačuvali novo vozilo!");
+  
+            }
+            catch (ServerCommunicationException ex) {
+                MessageBox.Show(ex.Message);
+            }
+            catch (SystemOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Unexpected error");
+                Debug.WriteLine(">>>>" + ex.Message);
             }
         }
     }

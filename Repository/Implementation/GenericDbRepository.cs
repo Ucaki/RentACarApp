@@ -23,7 +23,7 @@ namespace Repository.Implementation
             this.factory = factory;
         }
         //public string GetConnectionString => _connectionString;
-
+         
         
         private IDbCommand CreateDbCommand(string query, IDbConnection createdConnection, IDbTransaction transaction)
         {
@@ -37,18 +37,10 @@ namespace Repository.Implementation
             using (var cmd = CreateDbCommand($"INSERT INTO {entity.TableName} OUTPUT inserted.{entity.IDName} VALUES(" +
                 $"{entity.InsertValues})", createdConnection, transaction))
             {
-                try
-                {
-                    object primaryKeyValue = cmd.ExecuteScalar();
-                    entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(">>>>>>>>>"+ex.Message);
-                    throw;
-                }
                 
-                Console.WriteLine($"Inserted row for table {entity.TableName}");
+                object primaryKeyValue = cmd.ExecuteScalar();
+                entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
+
             }
         }
 

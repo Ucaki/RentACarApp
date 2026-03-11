@@ -76,6 +76,9 @@
     <Compile Include="Domain\Automobil.cs" />
     <Compile Include="Domain\IEntity.cs" />
     <Compile Include="Domain\KlasaAutomobila.cs" />
+    <Compile Include="Exceptions\ServerCommunicationException.cs" />
+    <Compile Include="Exceptions\SystemOperationException.cs" />
+    <Compile Include="Exceptions\ValidationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
