@@ -20,9 +20,17 @@ namespace Server
             _server = server;
             btnStartServer.Enabled = true;
             btnStopServer.Enabled = false;
-            dgvListClients.DataSource = _server._clientsList;
+            RefreshDataGridView();
             _server.LoggedInClientsServer += Server_LoggedInClient;
             _server.LoggedOutClientsServer += Server_LoggedOutClient;
+
+            //dgvListClients.DataSource = Session.currentlyLoggedWorkers.Select(client => new
+            //{
+            //    IME = client.Ime,
+            //    PREZIME = client.Prezime,
+            //    Username = client.KorisnickoIme
+            //})
+            //   .ToList(); ;
         }
 
         private void Server_LoggedInClient(object sender, EventArgs e) {
@@ -36,19 +44,18 @@ namespace Server
         }
         private void RefreshDataGridView()
         {
-            //add administrator object on clientHandler, so that you can fill list into dgv with proper data when you create common.Admin
-            /*
-             var clientInfoList = server.clients
+
+            var clientInfoList = Session.currentlyLoggedWorkers
                 .Select(client => new
                 {
-                    IME = client._admin.Name,
-                    PREZIME = client._admin.LastName,
-                    User_NAME = client._admin.UserName                   
+                    IME = client.Ime,
+                    PREZIME = client.Prezime,
+                    Username = client.KorisnickoIme                   
                 })
                 .ToList();
-             */
+             
             dgvListClients.DataSource = null;
-            dgvListClients.DataSource = _server._clientsList;
+            dgvListClients.DataSource = clientInfoList;
         }
 
         private void btnStartServer_Click(object sender, EventArgs e)

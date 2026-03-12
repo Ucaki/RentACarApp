@@ -116,6 +116,7 @@ namespace Client
             this.btnLoggOut.Text = "Log out";
             this.btnLoggOut.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnLoggOut.UseVisualStyleBackColor = false;
+            this.btnLoggOut.Click += new System.EventHandler(this.btnLoggOut_Click);
             // 
             // label1
             // 

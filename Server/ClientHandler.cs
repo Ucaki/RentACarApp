@@ -25,6 +25,8 @@ namespace Server
         public event EventHandler LoggedOutClient;
         bool signal;
 
+        public Radnik radnik;
+
         //public Aministrator _logedAdmin
         public ClientHandler(Socket client, ServerController controller)
         {
@@ -72,6 +74,35 @@ namespace Server
                 switch (req.Operation)
                 {
                     case OperationType.Login:
+                        Radnik r = _controller.Login(_serializer.ReadType<Radnik>(req.Argument));
+                        if (r != null)
+                        {
+                            if (!Session.currentlyLoggedWorkers.Contains(r))
+                            {
+                                radnik = r;
+                                res.Result = r;
+                                res.Message = "Uspešna prijava na sistem!";
+                                res.IsSuccessful = true;
+                                Session.currentlyLoggedWorkers.Add(r);
+                                LoggedInClient?.Invoke(this, EventArgs.Empty);
+                                
+                            }
+                            else
+                            {
+                                res.IsSuccessful = false;
+                                res.ErrorMessage = "Radnik sa ovim korisničkim imenom je već ulogovan";
+                            }
+                        }
+                        else {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Neuspešna prijava, radnik ne postoji u sistemu!";
+                        }
+                        break;
+                    case OperationType.LogOut:
+                        Session.currentlyLoggedWorkers.Remove(radnik);
+                        LoggedOutClient.Invoke(this, EventArgs.Empty);
+                        res.IsSuccessful = true;
+                        res.Message = "uspesno ste se izlogovali (CH msg)";
                         break;
                     case OperationType.AddNewCar:
                         Automobil a=_controller.AddAutomobil(_serializer.ReadType<Automobil>(req.Argument));
@@ -94,6 +125,7 @@ namespace Server
                             res.IsSuccessful = true; 
                         }
                         break;
+                        
                     default:
                         break;
                 }
@@ -122,7 +154,8 @@ namespace Server
                     _clientSocket.Shutdown(SocketShutdown.Both);
                     _clientSocket.Close();
                     _clientSocket = null;
-                    LoggedOutClient.Invoke(this, EventArgs.Empty);
+                    Session.currentlyLoggedWorkers.Remove(radnik);
+                    LoggedOutClient?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

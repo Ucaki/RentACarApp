@@ -60,7 +60,7 @@ namespace Repository.Implementation
             using (IDataReader reader = cmd.ExecuteReader())
             {
                 return entity.GetReaderResult(reader);
-            }
+            } 
         }
 
         public List<IEntity> GetAll(IEntity entity, IDbConnection createdConnection, IDbTransaction transaction, string condition = "1=1")

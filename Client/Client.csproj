@@ -48,12 +48,19 @@
   </ItemGroup>
   <ItemGroup>
     <!-- Main Forms -->
+    <Compile Include="FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLogin.Designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUIController\LoginGUIController.cs" />
     <Compile Include="Program.cs" />
     <!-- Communication -->
     <Compile Include="Communication\ClientCommunication.cs" />
@@ -80,6 +87,9 @@
     <Compile Include="UserControls\UCCar.Designer.cs">
       <DependentUpon>UCCar.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

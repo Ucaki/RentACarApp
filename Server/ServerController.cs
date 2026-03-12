@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using SystemOperations;
+using SystemOperations.AdminSO;
 using SystemOperations.AutomobilSO;
 using SystemOperations.CarClassSO;
 
@@ -37,6 +38,13 @@ namespace Server
             BaseSO so = new GetAllCarClassesSO(_repository, _factory);
             so.ExecuteTemplate(klasaAutomobila);
             return (List<KlasaAutomobila>)so.Result;
+        }
+
+        internal Radnik Login(Radnik radnik)
+        {
+            BaseSO so = new LoginSO(_repository, _factory);
+            so.ExecuteTemplate(radnik);
+            return (Radnik)so.Result;
         }
     }
 }

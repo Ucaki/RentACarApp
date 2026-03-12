@@ -24,27 +24,42 @@ namespace Client.GUIController
         {
             _clientController = clientController;
         }
-    
+
 
         internal void ShowUCCar()
         {
             _uccar = new UCCar();
             _uccar.BtnAddNewCar.Click += BtnAddNewCar_Click;
-            
+
             OnPanelChangeRequested?.Invoke(_uccar);
         }
 
-        internal void ShowUCAddCar() {
+        internal void ShowUCAddCar()
+        {
+
             _ucAddCar = new UCAddCar();
-            _ucAddCar.CmbClassCar.DataSource = _clientController.GetClassCarForCmb();
-            //Ovde treba da napunis i kombo box za klasu automobila
+            _ucAddCar.CmbClassCar.DataSource = GetClassCarForCmb();
             _ucAddCar.BtnSaveCarInDb.Click += BtnSaveCarInDb_Click;
             OnPanelChangeRequested?.Invoke(_ucAddCar);
         }
         private void BtnAddNewCar_Click(object sender, EventArgs e) => ShowUCAddCar();
-        private void BtnSaveCarInDb_Click(object sender, EventArgs e)=> SaveCar();
-        
+        private void BtnSaveCarInDb_Click(object sender, EventArgs e) => SaveCar();
 
+        public List<KlasaAutomobila> GetClassCarForCmb()
+        {
+            try
+            {
+                return _clientController.GetClassCarForCmb();
+            }
+            catch (ServerCommunicationException ex)
+            {
+                MessageBox.Show(ex.Message);
+                _clientController.CloseConnection();
+                Form main = Application.OpenForms["FrmMain"];
+                main.DialogResult = DialogResult.Retry;
+                return null;
+            }
+        }
         private void SaveCar()
         {
             try
@@ -86,11 +101,16 @@ namespace Client.GUIController
                         Klasa = klasa,
                         Status = stat
                     });
-                    MessageBox.Show("Uspešno ste sačuvali novo vozilo!");
-  
+                MessageBox.Show("Uspešno ste sačuvali novo vozilo!");
+
             }
-            catch (ServerCommunicationException ex) {
+            catch (ServerCommunicationException ex)
+            {
                 MessageBox.Show(ex.Message);
+                _clientController.CloseConnection();
+                Form main = Application.OpenForms["FrmMain"];
+                main.DialogResult = DialogResult.Retry;
+
             }
             catch (SystemOperationException ex)
             {

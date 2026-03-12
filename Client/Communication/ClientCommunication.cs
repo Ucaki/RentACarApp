@@ -19,13 +19,19 @@ namespace Client.Communication
         private Socket _socket;
         private JsonNetworkSerializer _serializer;
 
+        public bool IsConnected => _socket != null && _socket.Connected;
         public void Connect()
         {
+
             try
             {
+                Close();
                 _socket = new Socket(AddressFamily.InterNetwork,
-                                         SocketType.Stream,
-                                         ProtocolType.Tcp);
+                                            SocketType.Stream,
+                                            ProtocolType.Tcp);
+
+                _socket.ReceiveTimeout = 5000;
+                _socket.SendTimeout = 5000;
 
                 _socket.Connect(
                     IPAddress.Parse(ConfigurationManager.AppSettings["ip"]),
@@ -34,18 +40,37 @@ namespace Client.Communication
                 _serializer = new JsonNetworkSerializer(
                     new NetworkStream(_socket));
             }
-            catch (Exception ex)
+            catch (SocketException)
             {
 
-                Debug.WriteLine(">>>Connect>>>"+ex.Message );
-                throw new ServerCommunicationException("Konekcija sa serverom nije uspela");                   
+                throw new ServerCommunicationException("Server not reachable");
             }
+
+        }
+        public void Close()
+        {
+            try
+            {
+                _socket?.Shutdown(SocketShutdown.Both);
+            }
+            catch { }
+
+            try
+            {
+                _socket?.Close();
+            }
+            catch { }
+
+            _socket = null;
+            _serializer = null;
         }
 
         public void SendRequest(Request request)
         {
             try
             {
+                if (_serializer == null)
+                    throw new ServerCommunicationException("Not connected to server");
                 _serializer.Send(request);
                 Response res = _serializer.Receive<Response>();
                 if (!res.IsSuccessful)
@@ -61,11 +86,18 @@ namespace Client.Communication
                 Debug.WriteLine(">>>IOExc>>>" + ex.Message);
                 throw new ServerCommunicationException("Connection lost.");
             }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(">>>IOExc>>>" + ex.Message);
+                throw new ServerCommunicationException("Connection lost.");
+            }
         }
         public T SendRequest<T>(Request request) where T : class
         {
             try
             {
+                if (_serializer == null)
+                    throw new ServerCommunicationException("Not connected to server");
                 _serializer.Send(request);
                 Response res = _serializer.Receive<Response>();
                 if (!res.IsSuccessful)
@@ -78,6 +110,11 @@ namespace Client.Communication
                 throw new ServerCommunicationException("Server not reachable.");
             }
             catch (IOException ex)
+            {
+                Debug.WriteLine(">>>IOExc>>>" + ex.Message);
+                throw new ServerCommunicationException("Connection lost.");
+            }
+            catch (Exception ex)
             {
                 Debug.WriteLine(">>>IOExc>>>" + ex.Message);
                 throw new ServerCommunicationException("Connection lost.");

@@ -87,12 +87,10 @@ namespace Common.Domain
             Automobil other = (Automobil)obj;
             return AutomobilID == other.AutomobilID && RegistarskiBroj == other.RegistarskiBroj && Marka == other.Marka && Model == other.Model
                 && Godiste == other.Godiste && Klasa.KlasaID == other.Klasa.KlasaID && Status == other.Status;
-            //if (this == obj) return true;
-            //if (!(obj is Automobil)) return false;
-            //Automobil other = (Automobil)obj;
-            //if (other.AutomobilID <= 0 || AutomobilID <= 0) return false;
-            //return AutomobilID.Equals(other.AutomobilID);
-
+        }
+        public override int GetHashCode()
+        {
+            return RegistarskiBroj?.GetHashCode() ?? 0;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Client.Communication;
 using Client.Controller;
 using Client.GUIController;
+using Common.Domain;
 using System;
 using System.Windows.Forms;
 
@@ -18,16 +19,41 @@ namespace Client
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             ClientCommunication communication = new ClientCommunication();
-            communication.Connect();                                //communication.Connect(); konekciju stavi kad se loguje.
             ClientController clientController = new ClientController(communication);
             CarGUIController carGUIController = new CarGUIController(clientController);
-            FrmMain formMain = new FrmMain();
-            MainGuiController mainGuiController = new MainGuiController(carGUIController, (uc)=>formMain.SetUCPanel(uc));
+            LoginGUIController loginGUIController = new LoginGUIController(clientController);
+       
+            Radnik r;
+            while (true)
+            {
+                
+                  using (FrmLogin login = new FrmLogin())
+                {
+                    MainGuiController mainGuiController = new MainGuiController(loginGUIController, carGUIController);
 
-            formMain.OnCarsRequested += mainGuiController.ShowCarSection;
-            formMain.OnCustomerRequested += mainGuiController.ShowCustomerSection;
-            formMain.OnRentRequested += mainGuiController.ShowRentSection;
-            Application.Run(formMain);
+                    login.onLoginClick += mainGuiController.Login;
+                    if (login.ShowDialog() != DialogResult.OK)
+                        break;
+                    r=login.radnik;
+                }
+
+                using (FrmMain main = new FrmMain(r))
+                {
+                    MainGuiController mainGuiController = new MainGuiController(loginGUIController, carGUIController, (uc) => main.SetUCPanel(uc));
+
+                    mainGuiController.ConnectionLost += () =>
+                    {
+                        main.Close();
+                    };
+
+                    main.OnCarsRequested += mainGuiController.ShowCarSection;
+                    main.OnCustomerRequested += mainGuiController.ShowCustomerSection;
+                    main.OnRentRequested += mainGuiController.ShowRentSection;
+                    main.OnLogOutRequested += mainGuiController.LogOut;
+                    if (main.ShowDialog() != DialogResult.Retry)
+                        break;
+                }
+            }
         }
     }
 }

@@ -9,6 +9,7 @@ namespace Common.Communication
     public enum OperationType { 
         Login,
         AddNewCar,
-        GetCarClass
+        GetCarClass,
+        LogOut
     }
 }

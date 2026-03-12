@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminSO\LoginSO.cs" />
     <Compile Include="AutomobilSO\ZapamtiVoziloSO.cs" />
     <Compile Include="BaseSO.cs" />
     <Compile Include="CarClassSO\GetAllCarClassesSO.cs" />
