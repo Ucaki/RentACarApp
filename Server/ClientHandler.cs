@@ -156,6 +156,56 @@ namespace Server
                             res.ErrorMessage = "Vozilo nije izmenjeno!";
                         }
                         break;
+
+                    //Users
+                    case OperationType.GetAllUsers:
+                        res.Result = _controller.GetAllUsers(new Korisnik());
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Ne postoje korisnici u bazi!";
+                        }
+                        break;
+
+                    case OperationType.GetFilteredUsers:
+                        res.Result = _controller.GetFilteredUsers(_serializer.ReadType<Korisnik>(req.Argument));
+                        List<Korisnik> korisnici = (List<Korisnik>)res.Result;
+
+                        if (korisnici.Count>0)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Korisnici koji odgovaraju zadatoj vrednosti nisu pronadjeni!";
+                        }
+                        break;
+                    case OperationType.GetAllPlaces:
+                        res.Result = _controller.GetAllPlaces(new Mesto());
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        break;
+                    case OperationType.AddUsers:
+                        Korisnik kor = _controller.AddUser(_serializer.ReadType<Korisnik>(req.Argument));
+                        if (kor != null)
+                        {
+                            res.Result = kor;
+                            res.IsSuccessful = true;
+                            res.Message = "Sistem je zapamtio novog korisnika!";
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Sistem ne može da sačuva novog korisnika!";
+                        }
+                        break;
+                        
                     default:
                         break;
                 }

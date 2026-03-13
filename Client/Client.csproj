@@ -60,6 +60,7 @@
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUIController\CustomerGUIController.cs" />
     <Compile Include="GUIController\LoginGUIController.cs" />
     <Compile Include="Program.cs" />
     <!-- Communication -->
@@ -81,17 +82,35 @@
     <Compile Include="UserControls\UCAddCar.Designer.cs">
       <DependentUpon>UCAddCar.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCAddCustomer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCAddCustomer.Designer.cs">
+      <DependentUpon>UCAddCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCCar.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControls\UCCar.Designer.cs">
       <DependentUpon>UCCar.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCCustomer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCCustomer.Designer.cs">
+      <DependentUpon>UCCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCShowCar.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="UserControls\UCShowCar.Designer.cs">
       <DependentUpon>UCShowCar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCShowCustomer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCShowCustomer.Designer.cs">
+      <DependentUpon>UCShowCustomer.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
@@ -109,11 +128,20 @@
     <EmbeddedResource Include="UserControls\UCAddCar.resx">
       <DependentUpon>UCAddCar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCAddCustomer.resx">
+      <DependentUpon>UCAddCustomer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCCar.resx">
       <DependentUpon>UCCar.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCCustomer.resx">
+      <DependentUpon>UCCustomer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCShowCar.resx">
       <DependentUpon>UCShowCar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCShowCustomer.resx">
+      <DependentUpon>UCShowCustomer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

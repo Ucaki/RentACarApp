@@ -10,8 +10,8 @@ namespace Common.Domain
     [Serializable]
     public class Mesto : IEntity
     {
-        int MestoID { get; set; }
-        string Naziv { get; set; }
+        public int MestoID { get; set; }
+        public string Naziv { get; set; }
 
 
         public string TableName =>"Mesto";

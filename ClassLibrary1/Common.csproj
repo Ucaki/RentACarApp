@@ -75,6 +75,7 @@
     <Compile Include="Communication\Response.cs" />
     <Compile Include="Domain\Automobil.cs" />
     <Compile Include="Domain\IEntity.cs" />
+    <Compile Include="Domain\Iznajmljivanje.cs" />
     <Compile Include="Domain\KlasaAutomobila.cs" />
     <Compile Include="Domain\Korisnik.cs" />
     <Compile Include="Domain\Mesto.cs" />

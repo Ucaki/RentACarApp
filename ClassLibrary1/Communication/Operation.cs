@@ -13,6 +13,10 @@ namespace Common.Communication
         LogOut,
         FilterCars,
         DeleteCar,
-        UpdateCar
+        UpdateCar,
+        GetAllUsers,
+        GetFilteredUsers,
+        GetAllPlaces,
+        AddUsers
     }
 }

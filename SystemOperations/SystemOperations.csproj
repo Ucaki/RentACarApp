@@ -48,6 +48,10 @@
     <Compile Include="AutomobilSO\ZapamtiVoziloSO.cs" />
     <Compile Include="BaseSO.cs" />
     <Compile Include="CarClassSO\GetAllCarClassesSO.cs" />
+    <Compile Include="KorisnikSO\AddUserSO.cs" />
+    <Compile Include="KorisnikSO\GetAllUsersSO.cs" />
+    <Compile Include="KorisnikSO\GetFilteredUsersSO.cs" />
+    <Compile Include="MestoSO\GetPlacesSO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

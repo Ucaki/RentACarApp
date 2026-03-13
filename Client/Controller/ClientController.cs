@@ -30,6 +30,30 @@ namespace Client.Controller
             ;
             return _communication.SendRequest<Automobil>(req);
         }
+
+        internal List<Korisnik> GetAllUsers()
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.GetAllUsers,
+                
+            };
+
+            ;
+            return _communication.SendRequest<List<Korisnik>>(req);
+
+        }
+        internal List<Korisnik> GetFilteredUsers(Korisnik k) {
+            Request req = new Request
+            {
+                Operation = OperationType.GetFilteredUsers,
+                Argument=k
+            };
+
+            ;
+            return _communication.SendRequest<List<Korisnik>>(req);
+        }
+
         public List<KlasaAutomobila> GetClassCarForCmb() {
             
             return _communication.SendRequest<List<KlasaAutomobila>>(new Request() { 
@@ -51,6 +75,16 @@ namespace Client.Controller
 
             return _communication.SendRequest<Radnik>(req);
 
+        }
+
+        internal List<Mesto> GetAllPlaces()
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.GetAllPlaces
+                
+            };
+            return _communication.SendRequest<List<Mesto>>(req);
         }
 
         internal void LogOut()
@@ -98,6 +132,16 @@ namespace Client.Controller
                 Argument = a
             };
             _communication.SendRequest(req);
+        }
+
+        internal Korisnik AddCustomer(Korisnik korisnik)
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.AddUsers,
+                Argument = korisnik
+            };
+            return _communication.SendRequest<Korisnik>(req);
         }
     }
 }

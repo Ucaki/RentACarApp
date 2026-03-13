@@ -87,8 +87,7 @@ namespace Common.Domain
                         Godiste = (int)reader["Godiste"],
                         Klasa = new KlasaAutomobila() { 
                             KlasaID = (int)reader["KlasaID"] ,
-                            Naziv = (string)reader["Naziv"],
-                            OsnovnaCenaPoDanu = (int)reader["OsnovnaCenaPoDanu"]
+                            Naziv = (string)reader["Naziv"]
                         }
                     });
 

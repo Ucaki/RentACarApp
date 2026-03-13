@@ -12,19 +12,20 @@ namespace Client.GUIController
     public class MainGuiController
     {
         private CarGUIController _carGUIController;
-        //private CustomerGUIController _customerGuiController;
+        private CustomerGUIController _customerGuiController;
         //private RentGUIController _rentGuiController;
         private LoginGUIController _loginGUIController;
         private Action<UserControl> _changePanel;
         public event Action ConnectionLost;
-        public MainGuiController(LoginGUIController loginGUIController, CarGUIController CarGUIController, Action<UserControl> changePanel = null)
+        public MainGuiController(LoginGUIController loginGUIController, CarGUIController CarGUIController, CustomerGUIController customerGuiController, Action<UserControl> changePanel = null)
         {
             _carGUIController = CarGUIController;
             _loginGUIController = loginGUIController;
+            _customerGuiController = customerGuiController;
             _changePanel = changePanel;
 
             _carGUIController.OnPanelChangeRequested += _changePanel;
-            //_customerGuiController.OnPanelChangeRequested += _changePanel;
+            _customerGuiController.OnPanelChangeRequested += _changePanel;
             //_rentGuiController.OnPanelChangeRequested += _changePanel
         }
 
@@ -52,8 +53,8 @@ namespace Client.GUIController
  
         internal void ShowCustomerSection()
         {
-            //_customerGuiController.ShowUCCustomer();
-            throw new NotImplementedException();
+            _customerGuiController.ShowUCCustomer();
+            
         }
 
         

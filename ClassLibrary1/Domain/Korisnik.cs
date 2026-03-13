@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -10,37 +11,76 @@ namespace Common.Domain
     [Serializable]
     public class Korisnik : IEntity
     {
+        [Browsable(false)]
         public int KorisnikID { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
-        public int Adresa { get; set; }
-        public int Email { get; set; }
-        public Mesto mesto { get; set; }
+        public string Adresa { get; set; }
+        public string Email { get; set; }
+        public Mesto Mesto { get; set; }
 
 
-
+        [Browsable(false)]
+        public string filter { get; set; }
+        [Browsable(false)]
         public string TableName => "Korisnik";
-
+        [Browsable(false)]
         public string IDName => "KorisnikID";
-
-        public string IdCondition => throw new NotImplementedException();
-
-        public string InsertValues => throw new NotImplementedException();
-
-        public string SelectValues => throw new NotImplementedException();
-
-        public string UpdateValues => throw new NotImplementedException();
-
-        public string JoinCondition => throw new NotImplementedException();
+        [Browsable(false)]
+        public string IdCondition => $"KorisnikID={KorisnikID}";
+        [Browsable(false)]
+        public string InsertValues => $"'{Ime}', '{Prezime}', '{Adresa}', '{Email}', {Mesto.MestoID}";
+        [Browsable(false)]
+        public string SelectValues => "*";
+        [Browsable(false)]
+        public string UpdateValues => "";
+        [Browsable(false)]
+        public string JoinCondition => "join Mesto on (Korisnik.MestoID=Mesto.mestoID)";
 
         public IEntity GetReaderResult(IDataReader reader)
         {
-            throw new NotImplementedException();
+            if (!reader.Read())
+                return null;
+
+            Korisnik kor = new Korisnik()
+            {
+                KorisnikID = (int)reader["KorisnikID"],
+                Ime = Convert.ToString(reader["Ime"]),
+                Prezime = Convert.ToString(reader["Prezime"]),
+                Adresa = Convert.ToString(reader["adresa"]),
+                Email = Convert.ToString(reader["Email"]),
+                Mesto = new Mesto()
+                {
+                    MestoID = (int)reader["MestoID"],
+                    Naziv = (string)reader["Naziv"]
+                }
+            };
+            return kor;
         }
 
         public List<IEntity> GetReaderResults(IDataReader reader)
         {
-            throw new NotImplementedException();
+            List<IEntity> korisnikList = new List<IEntity>();
+            while (reader.Read())
+            {
+                korisnikList.Add(
+                    new Korisnik()
+                    {
+                        KorisnikID = (int)reader["KorisnikID"],
+                        Ime = Convert.ToString(reader["Ime"]),
+                        Prezime = Convert.ToString(reader["Prezime"]),
+                        Adresa = Convert.ToString(reader["adresa"]),
+                        Email = Convert.ToString(reader["Email"]),
+                        Mesto = new Mesto()
+                        {
+                            MestoID = (int)reader["MestoID"],
+                            Naziv = (string)reader["Naziv"]
+                        }
+                    });
+
+
+            }
+            return korisnikList;
         }
     }
 }
