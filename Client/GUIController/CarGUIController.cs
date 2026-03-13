@@ -29,18 +29,50 @@ namespace Client.GUIController
         internal void ShowUCCar()
         {
             _uccar = new UCCar();
+            List<KlasaAutomobila> classes = GetClassCarForCmb();
+            classes.Insert(0, new KlasaAutomobila { KlasaID = -1, Naziv = "All" });
+            _uccar.CmbClassCar.DataSource = classes;
+
+            _uccar.DgvCars.DataSource= _clientController.FilterCars(new Automobil {FilterQuerry="1=1", Klasa=new KlasaAutomobila()   });
+           // _uccar.DgvCars.DataSource = _clientController.FilterCars("1=1");
             _uccar.BtnAddNewCar.Click += BtnAddNewCar_Click;
-
+            _uccar.CmbClassCar.SelectedIndexChanged+= CmbClassCar_SelectedIndexChanged;
             OnPanelChangeRequested?.Invoke(_uccar);
+            
         }
-
         internal void ShowUCAddCar()
         {
-
+            //_ucAddCar.CmbClassCar.DataSource = new BindingList<KlasaAutomobila>(GetClassCarForCmb());
+            //_ucAddCar.CmbClassCar.DisplayMember = "Naziv";
+            //_ucAddCar.CmbClassCar.ValueMember = "KlasaID";
             _ucAddCar = new UCAddCar();
             _ucAddCar.CmbClassCar.DataSource = GetClassCarForCmb();
             _ucAddCar.BtnSaveCarInDb.Click += BtnSaveCarInDb_Click;
             OnPanelChangeRequested?.Invoke(_ucAddCar);
+        }
+        private void CmbClassCar_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                var selectedClass = (KlasaAutomobila)_uccar.CmbClassCar.SelectedItem;
+                var auto = new Automobil();
+                if (selectedClass.KlasaID == -1)
+                {
+                    _uccar.DgvCars.DataSource = _clientController.FilterCars(new Automobil { FilterQuerry = "1=1", Klasa = new KlasaAutomobila() });
+                }
+                else
+                {
+                    _uccar.DgvCars.DataSource = _clientController.FilterCars(new Automobil { FilterQuerry = "KlasaVozila.KlasaID="+selectedClass.KlasaID, Klasa = new KlasaAutomobila() });
+                }
+            }
+            catch (ServerCommunicationException ex)
+            {
+                MessageBox.Show(ex.Message);
+                _clientController.CloseConnection();
+                Form main = Application.OpenForms["FrmMain"];
+                main.DialogResult = DialogResult.Retry;
+
+            }
         }
         private void BtnAddNewCar_Click(object sender, EventArgs e) => ShowUCAddCar();
         private void BtnSaveCarInDb_Click(object sender, EventArgs e) => SaveCar();

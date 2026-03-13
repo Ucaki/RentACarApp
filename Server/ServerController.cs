@@ -46,5 +46,13 @@ namespace Server
             so.ExecuteTemplate(radnik);
             return (Radnik)so.Result;
         }
+
+        internal List<Automobil> GetAllOrFillteredListCars(Automobil automobil)
+        {
+            BaseSO so = new GetAllOrFilteredCarsList(_repository, _factory);
+            so.ExecuteTemplate(automobil);
+            return (List<Automobil>)so.Result;
+        }
+
     }
 }

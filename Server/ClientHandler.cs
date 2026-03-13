@@ -85,7 +85,7 @@ namespace Server
                                 res.IsSuccessful = true;
                                 Session.currentlyLoggedWorkers.Add(r);
                                 LoggedInClient?.Invoke(this, EventArgs.Empty);
-                                
+
                             }
                             else
                             {
@@ -93,7 +93,8 @@ namespace Server
                                 res.ErrorMessage = "Radnik sa ovim korisničkim imenom je već ulogovan";
                             }
                         }
-                        else {
+                        else
+                        {
                             res.IsSuccessful = false;
                             res.ErrorMessage = "Neuspešna prijava, radnik ne postoji u sistemu!";
                         }
@@ -104,28 +105,37 @@ namespace Server
                         res.IsSuccessful = true;
                         res.Message = "uspesno ste se izlogovali (CH msg)";
                         break;
+
+                    ////Cars part
                     case OperationType.AddNewCar:
-                        Automobil a=_controller.AddAutomobil(_serializer.ReadType<Automobil>(req.Argument));
+                        Automobil a = _controller.AddAutomobil(_serializer.ReadType<Automobil>(req.Argument));
                         if (a != null)
                         {
                             res.Result = a;
                             res.IsSuccessful = true;
                             res.Message = "Sistem created new car object.";
                         }
-                        else {
+                        else
+                        {
                             res.IsSuccessful = false;
                             res.ErrorMessage = "Vozilo nije sačuvano";
                         }
                         break;
                     case OperationType.GetCarClass:
                         List<KlasaAutomobila> list = _controller.GetAllCarClass(new KlasaAutomobila());
-                            res.Result = list;
+                        res.Result = list;
                         if (res.Result != null)
                         {
-                            res.IsSuccessful = true; 
+                            res.IsSuccessful = true;
                         }
                         break;
-                        
+                    case OperationType.FilterCars:
+                        List<Automobil> listCars = _controller.GetAllOrFillteredListCars(_serializer.ReadType<Automobil>(req.Argument));
+                        res.Result = listCars;
+                        if (res.Result != null) {
+                            res.IsSuccessful = true;
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -138,8 +148,8 @@ namespace Server
             catch (Exception ex)
             {
                 res.IsSuccessful = false;
-                res.ErrorMessage = ex.Message+" Server error occured";
-                Debug.WriteLine(">>>>>>>"+ex.Message);
+                res.ErrorMessage = ex.Message + " Server error occured";
+                Debug.WriteLine(">>>>>>>" + ex.Message);
             }
             return res;
         }

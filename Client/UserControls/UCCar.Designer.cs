@@ -33,56 +33,66 @@ namespace Client.UserControls
         {
             this.btnAddNewCar = new System.Windows.Forms.Button();
             this.dgvCars = new System.Windows.Forms.DataGridView();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cmbClassCar = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.btnDeleteCar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCars)).BeginInit();
             this.SuspendLayout();
             // 
             // btnAddNewCar
             // 
-            this.btnAddNewCar.Location = new System.Drawing.Point(231, 343);
+            this.btnAddNewCar.Location = new System.Drawing.Point(43, 338);
             this.btnAddNewCar.Name = "btnAddNewCar";
             this.btnAddNewCar.Size = new System.Drawing.Size(139, 47);
             this.btnAddNewCar.TabIndex = 0;
             this.btnAddNewCar.Text = "Dodaj Automobil";
             this.btnAddNewCar.UseVisualStyleBackColor = true;
-            
             // 
             // dgvCars
             // 
             this.dgvCars.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCars.Location = new System.Drawing.Point(13, 15);
             this.dgvCars.Name = "dgvCars";
-            this.dgvCars.Size = new System.Drawing.Size(581, 194);
+            this.dgvCars.Size = new System.Drawing.Size(666, 234);
             this.dgvCars.TabIndex = 1;
             // 
-            // comboBox1
+            // cmbClassCar
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(157, 232);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 2;
+            this.cmbClassCar.FormattingEnabled = true;
+            this.cmbClassCar.Location = new System.Drawing.Point(154, 267);
+            this.cmbClassCar.Name = "cmbClassCar";
+            this.cmbClassCar.Size = new System.Drawing.Size(121, 21);
+            this.cmbClassCar.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 235);
+            this.label1.Location = new System.Drawing.Point(10, 270);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(138, 13);
             this.label1.TabIndex = 3;
             this.label1.Text = "Pretrazi po klasi automobila:";
             // 
+            // btnDeleteCar
+            // 
+            this.btnDeleteCar.Location = new System.Drawing.Point(419, 338);
+            this.btnDeleteCar.Name = "btnDeleteCar";
+            this.btnDeleteCar.Size = new System.Drawing.Size(139, 47);
+            this.btnDeleteCar.TabIndex = 4;
+            this.btnDeleteCar.Text = "Obrisi Automobil";
+            this.btnDeleteCar.UseVisualStyleBackColor = true;
+            // 
             // UCCar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnDeleteCar);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cmbClassCar);
             this.Controls.Add(this.dgvCars);
             this.Controls.Add(this.btnAddNewCar);
             this.Name = "UCCar";
-            this.Size = new System.Drawing.Size(610, 422);
+            this.Size = new System.Drawing.Size(693, 422);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCars)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -93,8 +103,12 @@ namespace Client.UserControls
 
         private System.Windows.Forms.Button btnAddNewCar;
         private System.Windows.Forms.DataGridView dgvCars;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cmbClassCar;
         private System.Windows.Forms.Label label1;
+        private Button btnDeleteCar;
+
         public Button BtnAddNewCar { get => btnAddNewCar; set => btnAddNewCar = value; }
+        public ComboBox CmbClassCar { get => cmbClassCar; set => cmbClassCar = value; }
+        public DataGridView DgvCars { get => dgvCars; set => dgvCars = value; }
     }
 }

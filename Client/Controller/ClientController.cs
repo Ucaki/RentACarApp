@@ -69,5 +69,17 @@ namespace Client.Controller
         {
             _communication.Close();
         }
+
+        internal List<Automobil> FilterCars(Automobil auto)
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.FilterCars,
+                Argument = auto
+            };
+            return  _communication.SendRequest<List<Automobil>>(req);
+        }
+
+        
     }
 }

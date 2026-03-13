@@ -30,8 +30,8 @@ namespace Client.Communication
                                             SocketType.Stream,
                                             ProtocolType.Tcp);
 
-                _socket.ReceiveTimeout = 5000;
-                _socket.SendTimeout = 5000;
+                //_socket.ReceiveTimeout = 5000;
+                //_socket.SendTimeout = 5000;
 
                 _socket.Connect(
                     IPAddress.Parse(ConfigurationManager.AppSettings["ip"]),
@@ -86,11 +86,7 @@ namespace Client.Communication
                 Debug.WriteLine(">>>IOExc>>>" + ex.Message);
                 throw new ServerCommunicationException("Connection lost.");
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(">>>IOExc>>>" + ex.Message);
-                throw new ServerCommunicationException("Connection lost.");
-            }
+            
         }
         public T SendRequest<T>(Request request) where T : class
         {
@@ -114,11 +110,7 @@ namespace Client.Communication
                 Debug.WriteLine(">>>IOExc>>>" + ex.Message);
                 throw new ServerCommunicationException("Connection lost.");
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(">>>IOExc>>>" + ex.Message);
-                throw new ServerCommunicationException("Connection lost.");
-            }
+            
         }
     }
 }
