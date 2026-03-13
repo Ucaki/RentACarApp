@@ -12,7 +12,7 @@ namespace Repository.Interfaces
     {
       //  string GetConnectionString { get; }
         void Add(T entity, IDbConnection createdConnection, IDbTransaction transaction);
-        int Update(T entity, string condition, IDbConnection createdConnection, IDbTransaction transaction);
+        int Update(T entity, IDbConnection createdConnection, IDbTransaction transaction);
         int Delete(T entity, IDbConnection createdConnection, IDbTransaction transaction);
         T Find(T entity, string condition, IDbConnection createdConnection, IDbTransaction transaction);
         List<T> GetAll(T entity, IDbConnection createdConnection, IDbTransaction transaction, string condition = "1=1");

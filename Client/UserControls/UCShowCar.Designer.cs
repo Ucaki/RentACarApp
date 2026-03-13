@@ -231,7 +231,7 @@ namespace Client.UserControls
         public ComboBox CmbStatus { get => cmbStatus; set => cmbStatus = value; }
         public Button BtnUpdate { get => btnUpdate; set => btnUpdate = value; }
         public Button BtnDeleteCar { get => btnDeleteCar; set => btnDeleteCar = value; }
-        public Automobil
+       
 
     }
 }

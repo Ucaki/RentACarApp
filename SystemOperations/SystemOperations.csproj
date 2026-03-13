@@ -44,6 +44,7 @@
     <Compile Include="AdminSO\LoginSO.cs" />
     <Compile Include="AutomobilSO\DeleteCarSO.cs" />
     <Compile Include="AutomobilSO\getAllOrFilteredCarsList.cs" />
+    <Compile Include="AutomobilSO\UpdateCarSO.cs" />
     <Compile Include="AutomobilSO\ZapamtiVoziloSO.cs" />
     <Compile Include="BaseSO.cs" />
     <Compile Include="CarClassSO\GetAllCarClassesSO.cs" />

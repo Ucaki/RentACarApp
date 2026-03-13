@@ -89,5 +89,15 @@ namespace Client.Controller
             };
             _communication.SendRequest(req);
         }
+
+        internal void UpdateCar(Automobil a)
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.UpdateCar,
+                Argument = a
+            };
+            _communication.SendRequest(req);
+        }
     }
 }

@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace SystemOperations.AutomobilSO
 {
-    public class DeleteCarSO : BaseSO
+    public class UpdateCarSO : BaseSO
     {
-        public DeleteCarSO(IRepository<IEntity> repo, IConnectionFactory factory) : base(repo,factory) { }
+        public UpdateCarSO(IRepository<IEntity> repo, IConnectionFactory factory):base(repo,factory) { }
         protected override void ExecuteConcreteOperation(IEntity entity, IDbConnection connection, IDbTransaction transaction)
         {
-            Automobil auto = (Automobil)entity;
-            Result = genericRepo.Delete(auto, connection, transaction);
+            Automobil a = (Automobil)entity;
+            Result = genericRepo.Update(a, connection, transaction);
         }
     }
 }

@@ -132,13 +132,29 @@ namespace Server
                     case OperationType.FilterCars:
                         List<Automobil> listCars = _controller.GetAllOrFillteredListCars(_serializer.ReadType<Automobil>(req.Argument));
                         res.Result = listCars;
-                        if (res.Result != null) {
+                        if (res.Result != null)
+                        {
                             res.IsSuccessful = true;
+                        }
+                       
+                        break;
+                    case OperationType.UpdateCar:
+                        res.Result = _controller.UpdateCar(_serializer.ReadType<Automobil>(req.Argument));
+                        if ((int)res.Result == 1)
+                            res.IsSuccessful = true;
+                        else { 
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Vozilo nije obrisano!";
                         }
                         break;
                     case OperationType.DeleteCar:
-                        _controller.DeleteCar(_serializer.ReadType<Automobil>(req.Argument));
-                        res.IsSuccessful = true;
+                        res.Result=_controller.DeleteCar(_serializer.ReadType<Automobil>(req.Argument));
+                        if ((int)res.Result == 1)
+                            res.IsSuccessful = true;
+                        else { 
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Vozilo nije izmenjeno!";
+                        }
                         break;
                     default:
                         break;

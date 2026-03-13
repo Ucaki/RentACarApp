@@ -26,7 +26,7 @@ namespace Client.GUIController
 
         public CarGUIController(ClientController clientController)
         {
-            _clientController = clientController; 
+            _clientController = clientController;
         }
 
 
@@ -39,13 +39,13 @@ namespace Client.GUIController
 
             listCars = new BindingList<Automobil>(_clientController.FilterCars(new Automobil { FilterQuerry = "1=1", Klasa = new KlasaAutomobila() }));
             _uccar.DgvCars.DataSource = listCars;
-            
+
             _uccar.BtnAddNewCar.Click += BtnAddNewCar_Click;
-            
-            _uccar.CmbClassCar.SelectedIndexChanged+= CmbClassCar_SelectedIndexChanged;
+
+            _uccar.CmbClassCar.SelectedIndexChanged += CmbClassCar_SelectedIndexChanged;
             _uccar.BtnShowCar.Click += BtnShowCar_Click;
             OnPanelChangeRequested?.Invoke(_uccar);
-            
+
         }
 
         private void BtnShowCar_Click(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace Client.GUIController
             _ucShowCar.TxtModel.Text = auto.Model;
             _ucShowCar.NumUpDownYearProduction.Value = auto.Godiste;
 
-            _ucShowCar.CmbClassCar.DataSource= GetClassCarForCmb();
+            _ucShowCar.CmbClassCar.DataSource = GetClassCarForCmb();
             _ucShowCar.CmbClassCar.DisplayMember = "Naziv";
             _ucShowCar.CmbClassCar.ValueMember = "KlasaID";
             _ucShowCar.CmbClassCar.SelectedValue = auto.Klasa.KlasaID;
@@ -74,41 +74,55 @@ namespace Client.GUIController
 
         private void UpdateSelectedCar(object sender, EventArgs e)
         {
-            //try
-            //{
-            //    Automobil a = new Automobil();
-            //    a.AutomobilID = auto.AutomobilID;
-            //    a.RegistarskiBroj = _ucShowCar.TxtRegistration.Text;
-            //    a.Marka = _ucShowCar.TxtBrand.Text;
-            //    a.Model = _ucShowCar.TxtModel.Text;
-            //    a.Godiste = (int)_ucShowCar.NumUpDownYearProduction.Value;
-            //    a.Klasa = (KlasaAutomobila)_ucShowCar.CmbClassCar.SelectedItem;
-            //    a.Status = (StatusAutomobila)_ucShowCar.CmbStatus.SelectedItem;
-            //    if (!a.Equals(auto))
-            //    {
-            //        _clientController.UpdateCar(a);
-            //        MessageBox.Show("Vozilo obrisano!");
-            //    }
-            //    else
-            //        MessageBox.Show("Ne mozete da brišete izmenjen automobil. Update ili obrišite neizmenjen objekat!");
-            //}
-            //catch (ServerCommunicationException ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //    _clientController.CloseConnection();
-            //    Form main = Application.OpenForms["FrmMain"];
-            //    main.DialogResult = DialogResult.Retry;
+            try
+            {
+                Automobil a = new Automobil();
+                a.AutomobilID = auto.AutomobilID;
+                a.RegistarskiBroj = _ucShowCar.TxtRegistration.Text;
+                a.Marka = _ucShowCar.TxtBrand.Text;
+                a.Model = _ucShowCar.TxtModel.Text;
+                a.Godiste = (int)_ucShowCar.NumUpDownYearProduction.Value;
+                a.Klasa = (KlasaAutomobila)_ucShowCar.CmbClassCar.SelectedItem;
+                a.Status = (StatusAutomobila)_ucShowCar.CmbStatus.SelectedItem;
+                if (!a.Equals(auto))
+                {
+                    _clientController.UpdateCar(a);
+                    MessageBox.Show("Sistem je uspešno izmenio podatke o vozilu!");
+                }
+                else
+                {
+                    MessageBox.Show("Vozilo nije izmenjeno!");
+                }
 
-            //}
-            //catch (SystemOperationException ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Unexpected error");
-            //    Debug.WriteLine(">>>>" + ex.Message);
-            //}
+
+                List<Automobil> updatedList =
+                             _clientController.FilterCars(new Automobil { FilterQuerry = "1=1", Klasa = new KlasaAutomobila() });
+
+                listCars.Clear();
+                foreach (var car in updatedList)
+                {
+                    listCars.Add(car);
+                }
+
+                OnPanelChangeRequested?.Invoke(_uccar);
+            }
+            catch (ServerCommunicationException ex)
+            {
+                MessageBox.Show(ex.Message);
+                _clientController.CloseConnection();
+                Form main = Application.OpenForms["FrmMain"];
+                main.DialogResult = DialogResult.Retry;
+
+            }
+            catch (SystemOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unexpected error");
+                Debug.WriteLine(">>>>" + ex.Message);
+            }
         }
 
         private void DeleteSelectedCar(object sender, EventArgs e)
@@ -129,7 +143,20 @@ namespace Client.GUIController
                     MessageBox.Show("Vozilo obrisano!");
                 }
                 else
-                    MessageBox.Show("Ne mozete da brišete izmenjen automobil. Update ili obrišite neizmenjen objekat!");
+                {
+                    MessageBox.Show("Vozilo nije obrisano!");
+                }
+
+                List<Automobil> updatedList =
+                             _clientController.FilterCars(new Automobil { FilterQuerry = "1=1", Klasa = new KlasaAutomobila() });
+
+                listCars.Clear();
+                foreach (var car in updatedList)
+                {
+                    listCars.Add(car);
+                }
+
+                OnPanelChangeRequested?.Invoke(_uccar);
             }
             catch (ServerCommunicationException ex)
             {
@@ -149,7 +176,7 @@ namespace Client.GUIController
                 Debug.WriteLine(">>>>" + ex.Message);
             }
         }
-        
+
         internal void ShowUCAddCar()
         {
             //_ucAddCar.CmbClassCar.DataSource = new BindingList<KlasaAutomobila>(GetClassCarForCmb());
@@ -172,15 +199,17 @@ namespace Client.GUIController
                 }
                 else
                 {
-                    updatedList = _clientController.FilterCars(new Automobil { FilterQuerry = "KlasaVozila.KlasaID=" + selectedClass.KlasaID, Klasa = new KlasaAutomobila()});
+                    updatedList = _clientController.FilterCars(new Automobil { FilterQuerry = "KlasaVozila.KlasaID=" + selectedClass.KlasaID, Klasa = new KlasaAutomobila() });
                 }
                 listCars.Clear();
-                foreach (var car in updatedList) {
+                foreach (var car in updatedList)
+                {
                     listCars.Add(car);
                 }
-                
+
             }
-            catch (SystemOperationException ex) {
+            catch (SystemOperationException ex)
+            {
                 MessageBox.Show(ex.Message);
             }
             catch (ServerCommunicationException ex)

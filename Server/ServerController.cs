@@ -54,9 +54,18 @@ namespace Server
             return (List<Automobil>)so.Result;
         }
 
-        internal void DeleteCar(Automobil automobil)
+        internal int DeleteCar(Automobil automobil)
         {
             BaseSO so = new DeleteCarSO(_repository, _factory);
+            so.ExecuteTemplate(automobil);
+            return (int)so.Result;
+        }
+
+        internal object UpdateCar(Automobil automobil)
+        {
+            BaseSO so = new UpdateCarSO(_repository,_factory);
+            so.ExecuteTemplate(automobil);
+            return (int)so.Result;
         }
     }
 }

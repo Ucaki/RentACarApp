@@ -160,7 +160,7 @@ namespace RentACar.Tests.Services
                 var auto1 = new CarBuilder().Build();
                 repo.Add(auto1,conn, transaction);
                 auto1.Marka = "suzuki";
-                repo.Update(auto1, auto1.IdCondition,conn, transaction);
+                repo.Update(auto1,conn, transaction);
                 Automobil updated = (Automobil)repo.Find(auto1, auto1.IdCondition,conn, transaction);
                 Assert.Equal("suzuki", updated.Marka);
 
