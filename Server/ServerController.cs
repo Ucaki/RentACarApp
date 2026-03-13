@@ -54,5 +54,9 @@ namespace Server
             return (List<Automobil>)so.Result;
         }
 
+        internal void DeleteCar(Automobil automobil)
+        {
+            BaseSO so = new DeleteCarSO(_repository, _factory);
+        }
     }
 }

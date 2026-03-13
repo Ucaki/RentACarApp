@@ -11,6 +11,7 @@ namespace Common.Communication
         AddNewCar,
         GetCarClass,
         LogOut,
-        FilterCars
+        FilterCars,
+        DeleteCar
     }
 }

@@ -136,6 +136,10 @@ namespace Server
                             res.IsSuccessful = true;
                         }
                         break;
+                    case OperationType.DeleteCar:
+                        _controller.DeleteCar(_serializer.ReadType<Automobil>(req.Argument));
+                        res.IsSuccessful = true;
+                        break;
                     default:
                         break;
                 }

@@ -87,6 +87,12 @@
     <Compile Include="UserControls\UCCar.Designer.cs">
       <DependentUpon>UCCar.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCShowCar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCShowCar.Designer.cs">
+      <DependentUpon>UCShowCar.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -105,6 +111,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCCar.resx">
       <DependentUpon>UCCar.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCShowCar.resx">
+      <DependentUpon>UCShowCar.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

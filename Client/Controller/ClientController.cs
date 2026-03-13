@@ -80,6 +80,14 @@ namespace Client.Controller
             return  _communication.SendRequest<List<Automobil>>(req);
         }
 
-        
+        internal void DeleteCar(Automobil a)
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.DeleteCar,
+                Argument = a
+            };
+            _communication.SendRequest(req);
+        }
     }
 }

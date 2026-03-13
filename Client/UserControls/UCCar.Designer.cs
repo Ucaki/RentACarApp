@@ -36,6 +36,7 @@ namespace Client.UserControls
             this.cmbClassCar = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnDeleteCar = new System.Windows.Forms.Button();
+            this.btnShowCar = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCars)).BeginInit();
             this.SuspendLayout();
             // 
@@ -50,9 +51,12 @@ namespace Client.UserControls
             // 
             // dgvCars
             // 
+            this.dgvCars.AllowUserToAddRows = false;
+            this.dgvCars.AllowUserToDeleteRows = false;
             this.dgvCars.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCars.Location = new System.Drawing.Point(13, 15);
             this.dgvCars.Name = "dgvCars";
+            this.dgvCars.ReadOnly = true;
             this.dgvCars.Size = new System.Drawing.Size(666, 234);
             this.dgvCars.TabIndex = 1;
             // 
@@ -82,10 +86,20 @@ namespace Client.UserControls
             this.btnDeleteCar.Text = "Obrisi Automobil";
             this.btnDeleteCar.UseVisualStyleBackColor = true;
             // 
+            // btnShowCar
+            // 
+            this.btnShowCar.Location = new System.Drawing.Point(242, 338);
+            this.btnShowCar.Name = "btnShowCar";
+            this.btnShowCar.Size = new System.Drawing.Size(139, 47);
+            this.btnShowCar.TabIndex = 5;
+            this.btnShowCar.Text = "Prikazi Automobil";
+            this.btnShowCar.UseVisualStyleBackColor = true;
+            // 
             // UCCar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnShowCar);
             this.Controls.Add(this.btnDeleteCar);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cmbClassCar);
@@ -106,8 +120,10 @@ namespace Client.UserControls
         private System.Windows.Forms.ComboBox cmbClassCar;
         private System.Windows.Forms.Label label1;
         private Button btnDeleteCar;
+        private Button btnShowCar;
 
         public Button BtnAddNewCar { get => btnAddNewCar; set => btnAddNewCar = value; }
+        public Button BtnShowCar { get => btnShowCar; set => btnShowCar = value; }
         public ComboBox CmbClassCar { get => cmbClassCar; set => cmbClassCar = value; }
         public DataGridView DgvCars { get => dgvCars; set => dgvCars = value; }
     }

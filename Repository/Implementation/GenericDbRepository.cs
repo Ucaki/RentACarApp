@@ -82,28 +82,5 @@ namespace Repository.Implementation
             }
         }
 
-        //public void OpenConnection()
-        //{
-        //    _connection.OpenConnection();
-        //}
-        //public void BeginTransaction()
-        //{
-        //    _connection.BeginTransaction();
-        //}
-
-        //public void CloseConnection()
-        //{
-        //    _connection.CloseConnection();
-        //}
-
-        //public void Commit()
-        //{
-        //    _connection.Commit();
-        //}
-
-        //public void RollBack()
-        //{
-        //    _connection.Rollback();
-        //}
     }
 }

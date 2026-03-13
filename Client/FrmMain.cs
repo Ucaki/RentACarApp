@@ -25,6 +25,7 @@ namespace Client
             InitializeComponent();
             radnik = r;
             this.StatusLabelLoggedINAdmin.Text += radnik.ToString();
+            
             this.FormClosing += FrmMain_FormClosing;
         }
         public void SetUCPanel(UserControl uc)
