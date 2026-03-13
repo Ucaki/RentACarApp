@@ -1,39 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Text.Json.Serialization;
+
 namespace Common.Domain
 {
     [Serializable]
-    public class KlasaAutomobila : IEntity
+    public class Mesto : IEntity
     {
-        public int KlasaID { get; set; }
-        public string Naziv { get; set; }
-        public int OsnovnaCenaPoDanu { get; set; }
+        int MestoID { get; set; }
+        string Naziv { get; set; }
 
-        /// <summary>
-        //Implementacija interfejsa
-        /// </summary>
-        public string TableName => "KlasaVozila";
 
-        public string IDName => "KlasaID";
-        public string IdCondition => $"KlasaID = {KlasaID}";
+        public string TableName =>"Mesto";
 
-        [JsonIgnore]
+        public string IDName => "MestoID";
+
+        public string IdCondition => $"MestoID={MestoID}";
+
         public string InsertValues => "";
 
         public string SelectValues => "*";
 
-        [JsonIgnore]
         public string UpdateValues => "";
-        
+
         public string JoinCondition => "";
 
-        
         public IEntity GetReaderResult(IDataReader reader)
         {
             throw new NotImplementedException();
@@ -44,15 +38,15 @@ namespace Common.Domain
             List<IEntity> entityList = new List<IEntity>();
             while (reader.Read())
             {
-                entityList.Add(new KlasaAutomobila()
+                entityList.Add(new Mesto()
                 {
-                    KlasaID= (int)reader["KlasaID"],
-                    Naziv= (string)reader["Naziv"],
-                    OsnovnaCenaPoDanu= (int)reader["OsnovnaCenaPoDanu"]
+                    MestoID = (int)reader["MestoID"],
+                    Naziv = (string)reader["Naziv"]
                 });
             }
             return entityList;
         }
+
         public override string ToString()
         {
             return this.Naziv;

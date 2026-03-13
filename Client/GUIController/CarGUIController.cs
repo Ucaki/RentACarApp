@@ -29,9 +29,10 @@ namespace Client.GUIController
             _clientController = clientController;
         }
 
-
+        
         internal void ShowUCCar()
         {
+            
             _uccar = new UCCar();
             List<KlasaAutomobila> classes = GetClassCarForCmb();
             classes.Insert(0, new KlasaAutomobila { KlasaID = -1, Naziv = "All" });
