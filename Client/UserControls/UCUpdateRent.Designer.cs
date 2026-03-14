@@ -1,4 +1,6 @@
 ﻿
+using System.Windows.Forms;
+
 namespace Client.UserControls
 {
     partial class UCUpdateRent
@@ -29,47 +31,74 @@ namespace Client.UserControls
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dgvRentsForUser = new System.Windows.Forms.DataGridView();
             this.btnUpdateRent = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.txtKm = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRentsForUser)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // dgvRentsForUser
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(14, 21);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(600, 252);
-            this.dataGridView1.TabIndex = 0;
+            this.dgvRentsForUser.AllowUserToAddRows = false;
+            this.dgvRentsForUser.AllowUserToDeleteRows = false;
+            this.dgvRentsForUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvRentsForUser.Location = new System.Drawing.Point(14, 21);
+            this.dgvRentsForUser.Name = "dgvRentsForUser";
+            this.dgvRentsForUser.ReadOnly = true;
+            this.dgvRentsForUser.Size = new System.Drawing.Size(600, 252);
+            this.dgvRentsForUser.TabIndex = 0;
             // 
             // btnUpdateRent
             // 
-            this.btnUpdateRent.Location = new System.Drawing.Point(244, 312);
+            this.btnUpdateRent.Location = new System.Drawing.Point(389, 313);
             this.btnUpdateRent.Name = "btnUpdateRent";
             this.btnUpdateRent.Size = new System.Drawing.Size(137, 49);
             this.btnUpdateRent.TabIndex = 1;
             this.btnUpdateRent.Text = "Razduži";
             this.btnUpdateRent.UseVisualStyleBackColor = true;
             // 
+            // txtKm
+            // 
+            this.txtKm.Location = new System.Drawing.Point(141, 325);
+            this.txtKm.Name = "txtKm";
+            this.txtKm.Size = new System.Drawing.Size(100, 20);
+            this.txtKm.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(11, 328);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(102, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Zavrsna kilometraza";
+            // 
             // UCUpdateRent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtKm);
             this.Controls.Add(this.btnUpdateRent);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.dgvRentsForUser);
             this.Name = "UCUpdateRent";
             this.Size = new System.Drawing.Size(634, 412);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvRentsForUser)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dgvRentsForUser;
         private System.Windows.Forms.Button btnUpdateRent;
+        private TextBox txtKm;
+        private Label label1;
+
+        public DataGridView DgvRentsForUser { get => dgvRentsForUser; set => dgvRentsForUser = value; }
+        public Button BtnUpdateRent { get => btnUpdateRent; set => btnUpdateRent = value; }
+        public TextBox TxtKm { get => txtKm; set => txtKm = value; }
     }
 }

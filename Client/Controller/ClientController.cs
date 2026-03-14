@@ -3,6 +3,7 @@ using Common.Communication;
 using Common.Domain;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -154,14 +155,24 @@ namespace Client.Controller
             return _communication.SendRequest<Iznajmljivanje>(req);
         }
 
-        internal Korisnik AddCustomer(Korisnik korisnik)
+        internal List<Iznajmljivanje> getListRents(Iznajmljivanje i)
         {
             Request req = new Request
             {
-                Operation = OperationType.AddUsers,
-                Argument = korisnik
+                Operation = OperationType.GetListRents,
+                Argument = i
             };
-            return _communication.SendRequest<Korisnik>(req);
+            return _communication.SendRequest<List<Iznajmljivanje>>(req);
+        }
+
+        internal void ReleaseRent(Iznajmljivanje iznajmljivanjeZaRazduzivanje)
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.ReleaseRent,
+                Argument = iznajmljivanjeZaRazduzivanje
+            };
+            _communication.SendRequest(req);
         }
     }
 }

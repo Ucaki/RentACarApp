@@ -63,7 +63,8 @@ namespace Common.Domain
                 Model = Convert.ToString(reader["Model"]),
                 Godiste = (int)reader["Godiste"],
                 Kilometraza=(int)reader["Kilometraza"],
-                Klasa = new KlasaAutomobila() {
+                Status = (StatusAutomobila)Enum.Parse(typeof(StatusAutomobila), reader["Status"].ToString()),
+            Klasa = new KlasaAutomobila() {
                     KlasaID = (int)reader["KlasaID"],
                     Naziv = (string)reader["Naziv"],
                     OsnovnaCenaPoDanu = (int)reader["OsnovnaCenaPoDanu"]
@@ -88,9 +89,11 @@ namespace Common.Domain
                         Model = Convert.ToString(reader["Model"]),
                         Godiste = (int)reader["Godiste"],
                         Kilometraza = (int)reader["Kilometraza"],
+                        Status = (StatusAutomobila)Enum.Parse(typeof(StatusAutomobila), reader["Status"].ToString()),
                         Klasa = new KlasaAutomobila() { 
                             KlasaID = (int)reader["KlasaID"] ,
-                            Naziv = (string)reader["Naziv"]
+                            Naziv = (string)reader["Naziv"],
+                            OsnovnaCenaPoDanu = (int)reader["OsnovnaCenaPoDanu"]
                         }
                     });
 
@@ -108,6 +111,10 @@ namespace Common.Domain
         public override int GetHashCode()
         {
             return RegistarskiBroj?.GetHashCode() ?? 0;
+        }
+        public override string ToString()
+        {
+            return Marka + " " + Model;
         }
     }
 }

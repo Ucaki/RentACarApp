@@ -18,6 +18,8 @@ namespace Common.Communication
         GetFilteredUsers,
         GetAllPlaces,
         AddUsers,
-        AddRent
+        AddRent,
+        GetListRents,
+        ReleaseRent
     }
 }

@@ -222,6 +222,28 @@ namespace Server
                             res.ErrorMessage = "Sistem ne moze da zapamti novo iznajmljivanje";
                         }
                         break;
+                    case OperationType.GetListRents:
+                        res.Result = _controller.GetListRents(_serializer.ReadType<Iznajmljivanje>(req.Argument));
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Ne postoje iznajmljivanja za korisnika!";
+                        }
+                        break;
+                    case OperationType.ReleaseRent:
+                        res.Result = _controller.ReleaseRent(_serializer.ReadType<Iznajmljivanje>(req.Argument));
+                        if ((int)res.Result == 1)
+                            res.IsSuccessful = true;
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Sistem ne moze da razduzi iznajmljivanje!";
+                        }
+                        break;
                     default:
                         break;
                 }

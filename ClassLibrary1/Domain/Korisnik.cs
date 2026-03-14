@@ -82,5 +82,9 @@ namespace Common.Domain
             }
             return korisnikList;
         }
+        public override string ToString()
+        {
+            return Ime +" "+Prezime;
+        }
     }
 }

@@ -105,5 +105,19 @@ namespace Server
             so.ExecuteTemplate(iznajmljivanje);
             return (Iznajmljivanje)so.Result;
         }
+
+        internal List<Iznajmljivanje> GetListRents(Iznajmljivanje i)
+        {
+            BaseSO so = new GetListUserRentsSO(_repository, _factory);
+            so.ExecuteTemplate(i);
+            return (List<Iznajmljivanje>)so.Result;
+        }
+
+        internal int ReleaseRent(Iznajmljivanje iznajmljivanje)
+        {
+            BaseSO so = new ReleaseRentSO(_repository, _factory);
+            so.ExecuteTemplate(iznajmljivanje);
+            return (int)so.Result;
+        }
     }
 }
