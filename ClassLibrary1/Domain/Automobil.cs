@@ -24,6 +24,7 @@ namespace Common.Domain
         public string Marka { get; set; }
         public string Model { get; set; }
         public int Godiste { get; set; }
+        public int Kilometraza { get; set; }
        // [Browsable(false)]
         public KlasaAutomobila Klasa { get; set; }
        // public string KlasaNaziv => Klasa?.Naziv;
@@ -39,11 +40,11 @@ namespace Common.Domain
         [Browsable(false)]
         public string IdCondition => $"AutomobilID={AutomobilID}";
         [Browsable(false)]
-        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Godiste}, {Klasa.KlasaID}, '{Status}'";
+        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Kilometraza}, {Godiste}, {Klasa.KlasaID}, '{Status}'";
         [Browsable(false)]
         public string SelectValues => "*";
         [Browsable(false)]
-        public string UpdateValues => $"RegistarskiBroj = '{RegistarskiBroj}', Marka = '{Marka}', Model = '{Model}', Godiste = {Godiste}, KlasaID = {Klasa.KlasaID}, Status = '{Status}'";
+        public string UpdateValues => $"RegistarskiBroj = '{RegistarskiBroj}', Marka = '{Marka}', Model = '{Model}', Godiste = {Godiste}, Kilometraza={Kilometraza}, KlasaID = {Klasa.KlasaID}, Status = '{Status}'";
         [Browsable(false)]
         public string FilterQuerry { get; set; }
         [Browsable(false)]
@@ -61,6 +62,7 @@ namespace Common.Domain
                 Marka = Convert.ToString(reader["Marka"]),
                 Model = Convert.ToString(reader["Model"]),
                 Godiste = (int)reader["Godiste"],
+                Kilometraza=(int)reader["Kilometraza"],
                 Klasa = new KlasaAutomobila() {
                     KlasaID = (int)reader["KlasaID"],
                     Naziv = (string)reader["Naziv"],
@@ -85,6 +87,7 @@ namespace Common.Domain
                         Marka = Convert.ToString(reader["Marka"]),
                         Model = Convert.ToString(reader["Model"]),
                         Godiste = (int)reader["Godiste"],
+                        Kilometraza = (int)reader["Kilometraza"],
                         Klasa = new KlasaAutomobila() { 
                             KlasaID = (int)reader["KlasaID"] ,
                             Naziv = (string)reader["Naziv"]
@@ -100,7 +103,7 @@ namespace Common.Domain
             if (!(obj is Automobil)) return false;
             Automobil other = (Automobil)obj;
             return AutomobilID == other.AutomobilID && RegistarskiBroj == other.RegistarskiBroj && Marka == other.Marka && Model == other.Model
-                && Godiste == other.Godiste && (Klasa?.KlasaID?? 0) == (other.Klasa?.KlasaID?? 0) && Status == other.Status;
+                && Godiste == other.Godiste && Kilometraza==other.Kilometraza && (Klasa?.KlasaID?? 0) == (other.Klasa?.KlasaID?? 0) && Status == other.Status;
         }
         public override int GetHashCode()
         {

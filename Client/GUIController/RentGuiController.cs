@@ -146,7 +146,103 @@ namespace Client.GUIController
                 MessageBox.Show("Niste odabrali");
                 return;
             }
+            _ucAddRent.TxtUser.Text = korisnik.Ime + ", " + korisnik.Prezime + ", " + korisnik.Email;
+            _ucAddRent.TxtCar.Text = automobil.Marka + ", " + automobil.Model + ", " + automobil.RegistarskiBroj;
+            _ucAddRent.TxtKm.Text = automobil.Kilometraza.ToString();
+
+            //   decimal dis = 0;
+            //if (!decimal.TryParse(_ucAddRent.TxtDiscount.Text, out dis))
+            //{
+            //    MessageBox.Show("Popust mora biti broj!");
+            //    return ;
+            //}
+
+            //if (dis < 0 || dis > 100)
+            //{
+            //    MessageBox.Show("Popust mora biti između 0 i 100%");
+            //    return ;
+            //}
+            _ucAddRent.TxtDiscount.TextChanged += txtPopust_TextChanged;
+            _ucAddRent.DateTimePicker.ValueChanged += dateTimePickerDo_ValueChanged;
+            _ucAddRent.BtnSaveRent.Click += buttonSaveRent_click ;
             OnPanelChangeRequested?.Invoke(_ucAddRent);
+        }
+
+
+        private void buttonSaveRent_click(object sender, EventArgs e) {
+            try
+            {
+                calculator();
+                Iznajmljivanje rent = new Iznajmljivanje();
+                rent.Status = StatusIznajmljivanja.aktivno;
+                rent.DatumOd = DateTime.Now;
+                if (_ucAddRent.DateTimePicker.Value < DateTime.Now)
+                {
+                    MessageBox.Show("Neispravcan datum");
+                    return;
+                }
+                rent.DatumDo = _ucAddRent.DateTimePicker.Value;
+                rent.PocetnaKM = automobil.Kilometraza;
+                decimal dis = 0;
+                if (!decimal.TryParse(_ucAddRent.TxtDiscount.Text, out dis))
+                {
+                    MessageBox.Show("Popust mora biti broj!");
+                    return;
+                }
+
+                if (dis < 0 || dis > 100)
+                {
+                    MessageBox.Show("Popust mora biti između 0 i 100%");
+                    return;
+                }
+                rent.Popust = (int)dis;
+                decimal brojDecimal;
+                if (decimal.TryParse(_ucAddRent.TxtUgovorenaCena.Text, out brojDecimal))
+                {
+                    rent.UgovorenaCena = brojDecimal;
+                }
+                rent.Korisnik = korisnik;
+                rent.Automobil = automobil;
+                rent.Radnik = radnik;
+                rent = _clientController.AddRent(rent);
+                MessageBox.Show("Sistem zapamtio novo iznajmljivanje");
+            }
+            catch (ServerCommunicationException ex)
+            {
+                MessageBox.Show(ex.Message);
+                _clientController.CloseConnection();
+                Form main = Application.OpenForms["FrmMain"];
+                main.DialogResult = DialogResult.Retry;
+
+            }
+            catch (SystemOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Unexpected error");
+                Debug.WriteLine(">>>>" + ex.Message);
+            }
+
+        }
+
+        private void dateTimePickerDo_ValueChanged(object sender, EventArgs e)
+        {
+            calculator();
+        }
+        private void txtPopust_TextChanged(object sender, EventArgs e)
+        {
+            calculator();
+        }
+        private void calculator()
+        {
+            int days = (_ucAddRent.DateTimePicker.Value - DateTime.Now).Days;
+            decimal popust = 0;
+            decimal.TryParse(_ucAddRent.TxtDiscount.Text, out popust);
+            decimal cena = automobil.Klasa.OsnovnaCenaPoDanu * days*1m;
+            cena -= (popust/100) * cena;
+            _ucAddRent.TxtUgovorenaCena.Text = cena.ToString();
         }
     }
 }

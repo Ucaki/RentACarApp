@@ -53,6 +53,7 @@
     <Compile Include="KorisnikSO\GetFilteredUsersSO.cs" />
     <Compile Include="MestoSO\GetPlacesSO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RentSO\AddRentSO.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ClassLibrary1\Common.csproj">

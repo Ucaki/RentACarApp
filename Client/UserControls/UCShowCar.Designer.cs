@@ -45,13 +45,15 @@ namespace Client.UserControls
             this.cmbStatus = new System.Windows.Forms.ComboBox();
             this.btnUpdate = new System.Windows.Forms.Button();
             this.btnDeleteCar = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtKm = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownYearProduction)).BeginInit();
             this.SuspendLayout();
             // 
             // cmbClassCar
             // 
             this.cmbClassCar.FormattingEnabled = true;
-            this.cmbClassCar.Location = new System.Drawing.Point(173, 211);
+            this.cmbClassCar.Location = new System.Drawing.Point(173, 248);
             this.cmbClassCar.Name = "cmbClassCar";
             this.cmbClassCar.Size = new System.Drawing.Size(125, 21);
             this.cmbClassCar.TabIndex = 19;
@@ -103,7 +105,7 @@ namespace Client.UserControls
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(70, 211);
+            this.label5.Location = new System.Drawing.Point(70, 251);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(35, 13);
             this.label5.TabIndex = 14;
@@ -148,7 +150,7 @@ namespace Client.UserControls
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(70, 252);
+            this.label6.Location = new System.Drawing.Point(70, 291);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(40, 13);
             this.label6.TabIndex = 20;
@@ -157,7 +159,7 @@ namespace Client.UserControls
             // cmbStatus
             // 
             this.cmbStatus.FormattingEnabled = true;
-            this.cmbStatus.Location = new System.Drawing.Point(173, 249);
+            this.cmbStatus.Location = new System.Drawing.Point(173, 288);
             this.cmbStatus.Name = "cmbStatus";
             this.cmbStatus.Size = new System.Drawing.Size(125, 21);
             this.cmbStatus.TabIndex = 21;
@@ -180,10 +182,28 @@ namespace Client.UserControls
             this.btnDeleteCar.Text = "Izbriši automobil";
             this.btnDeleteCar.UseVisualStyleBackColor = true;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(70, 211);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(64, 13);
+            this.label7.TabIndex = 24;
+            this.label7.Text = "Kilometraza:";
+            // 
+            // txtKm
+            // 
+            this.txtKm.Location = new System.Drawing.Point(173, 208);
+            this.txtKm.Name = "txtKm";
+            this.txtKm.Size = new System.Drawing.Size(125, 20);
+            this.txtKm.TabIndex = 25;
+            // 
             // UCShowCar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtKm);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.btnDeleteCar);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.cmbStatus);
@@ -222,6 +242,8 @@ namespace Client.UserControls
         private System.Windows.Forms.ComboBox cmbStatus;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Button btnDeleteCar;
+        private Label label7;
+        private TextBox txtKm;
 
         public TextBox TxtModel { get => txtModel; set => txtModel = value; }
         public TextBox TxtBrand { get => txtBrand; set => txtBrand = value; }
@@ -231,7 +253,7 @@ namespace Client.UserControls
         public ComboBox CmbStatus { get => cmbStatus; set => cmbStatus = value; }
         public Button BtnUpdate { get => btnUpdate; set => btnUpdate = value; }
         public Button BtnDeleteCar { get => btnDeleteCar; set => btnDeleteCar = value; }
-       
+        public TextBox TxtKm { get => txtKm; set => txtKm = value; }
 
     }
 }

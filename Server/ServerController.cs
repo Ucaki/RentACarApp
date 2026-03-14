@@ -9,8 +9,7 @@ using SystemOperations;
 using SystemOperations.AdminSO;
 using SystemOperations.AutomobilSO;
 using SystemOperations.CarClassSO;
-using SystemOperations.KorisnikSO;
-using SystemOperations.MestoSO;
+using SystemOperations.RentSO;
 
 namespace Server
 {
@@ -70,32 +69,11 @@ namespace Server
             return (int)so.Result;
         }
 
-        internal List<Korisnik> GetAllUsers(Korisnik korisnik)
+        internal Iznajmljivanje AddRent(Iznajmljivanje iznajmljivanje)
         {
-            BaseSO so = new GetAllUsersSO(_repository, _factory);
-            so.ExecuteTemplate(korisnik);
-            return (List<Korisnik>)so.Result;
-        }
-
-        internal List<Korisnik> GetFilteredUsers(Korisnik korisnik)
-        {
-            BaseSO so = new GetFilteredUsersSO(_repository, _factory);
-            so.ExecuteTemplate(korisnik);
-            return (List<Korisnik>)so.Result;
-        }
-
-        internal List<Mesto> GetAllPlaces(Mesto mesto)
-        {
-            BaseSO so = new GetPlacesSO(_repository, _factory);
-            so.ExecuteTemplate(mesto);
-            return (List<Mesto>)so.Result;
-        }
-
-        internal Korisnik AddUser(Korisnik korisnik)
-        {
-            BaseSO so = new AddUserSO(_repository, _factory);
-            so.ExecuteTemplate(korisnik);
-            return (Korisnik)so.Result;
+            BaseSO so = new AddRentSO(_repository, _factory);
+            so.ExecuteTemplate(iznajmljivanje);
+            return (Iznajmljivanje)so.Result;
         }
     }
 }

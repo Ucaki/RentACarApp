@@ -17,6 +17,7 @@ namespace Common.Communication
         GetAllUsers,
         GetFilteredUsers,
         GetAllPlaces,
-        AddUsers
+        AddUsers,
+        AddRent
     }
 }

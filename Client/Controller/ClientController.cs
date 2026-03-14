@@ -143,5 +143,15 @@ namespace Client.Controller
             };
             return _communication.SendRequest<Korisnik>(req);
         }
+
+        internal Iznajmljivanje AddRent(Iznajmljivanje rent)
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.AddRent,
+                Argument = rent
+            };
+            return _communication.SendRequest<Iznajmljivanje>(req);
+        }
     }
 }

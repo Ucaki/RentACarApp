@@ -49,11 +49,11 @@ namespace Client
             this.btnLoggOut = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panelMenu = new System.Windows.Forms.Panel();
-            this.panelContent = new System.Windows.Forms.Panel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnRentals = new System.Windows.Forms.Button();
             this.btnCustomers = new System.Windows.Forms.Button();
             this.btnCars = new System.Windows.Forms.Button();
+            this.panelContent = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelMenu.SuspendLayout();
@@ -81,7 +81,7 @@ namespace Client
             // StatusLabelErrorMsg
             // 
             this.StatusLabelErrorMsg.Name = "StatusLabelErrorMsg";
-            this.StatusLabelErrorMsg.Size = new System.Drawing.Size(965, 17);
+            this.StatusLabelErrorMsg.Size = new System.Drawing.Size(1071, 17);
             this.StatusLabelErrorMsg.Spring = true;
             this.StatusLabelErrorMsg.Text = "Error message: Add throw exceptions here";
             // 
@@ -144,20 +144,6 @@ namespace Client
             this.panelMenu.Size = new System.Drawing.Size(200, 689);
             this.panelMenu.TabIndex = 3;
             // 
-            // panelContent
-            // 
-            this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(230)))), ((int)(((byte)(231)))));
-            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelContent.Location = new System.Drawing.Point(200, 50);
-            this.panelContent.Name = "panelContent";
-            this.panelContent.Size = new System.Drawing.Size(952, 689);
-            this.panelContent.TabIndex = 4;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // btnRentals
             // 
             this.btnRentals.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(86)))), ((int)(((byte)(110)))));
@@ -216,6 +202,20 @@ namespace Client
             this.btnCars.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnCars.UseVisualStyleBackColor = false;
             this.btnCars.Click += new System.EventHandler(this.btnCars_Click);
+            // 
+            // panelContent
+            // 
+            this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(230)))), ((int)(((byte)(231)))));
+            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContent.Location = new System.Drawing.Point(200, 50);
+            this.panelContent.Name = "panelContent";
+            this.panelContent.Size = new System.Drawing.Size(952, 689);
+            this.panelContent.TabIndex = 4;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // FrmMain
             // 

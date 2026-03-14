@@ -59,7 +59,7 @@ namespace Client.GUIController
             _ucShowCar.TxtBrand.Text = auto.Marka;
             _ucShowCar.TxtModel.Text = auto.Model;
             _ucShowCar.NumUpDownYearProduction.Value = auto.Godiste;
-
+            _ucShowCar.TxtKm.Text = auto.Kilometraza.ToString();
             _ucShowCar.CmbClassCar.DataSource = GetClassCarForCmb();
             _ucShowCar.CmbClassCar.DisplayMember = "Naziv";
             _ucShowCar.CmbClassCar.ValueMember = "KlasaID";
@@ -84,6 +84,15 @@ namespace Client.GUIController
                 a.Marka = _ucShowCar.TxtBrand.Text;
                 a.Model = _ucShowCar.TxtModel.Text;
                 a.Godiste = (int)_ucShowCar.NumUpDownYearProduction.Value;
+                int num;
+                if (int.TryParse(_ucShowCar.TxtKm.Text, out num))
+                {
+                    a.Kilometraza = num;
+                }
+                else {
+                    MessageBox.Show("Kilometraza nije unesena validno");
+                    return;
+                }
                 a.Klasa = (KlasaAutomobila)_ucShowCar.CmbClassCar.SelectedItem;
                 a.Status = (StatusAutomobila)_ucShowCar.CmbStatus.SelectedItem;
                 if (!a.Equals(auto))
@@ -137,6 +146,16 @@ namespace Client.GUIController
                 a.Marka = _ucShowCar.TxtBrand.Text;
                 a.Model = _ucShowCar.TxtModel.Text;
                 a.Godiste = (int)_ucShowCar.NumUpDownYearProduction.Value;
+                int num;
+                if (int.TryParse(_ucShowCar.TxtKm.Text, out num))
+                {
+                    a.Kilometraza = num;
+                }
+                else
+                {
+                    MessageBox.Show("Kilometraza nije unesena validno");
+                    return;
+                }
                 a.Klasa = (KlasaAutomobila)_ucShowCar.CmbClassCar.SelectedItem;
                 a.Status = (StatusAutomobila)_ucShowCar.CmbStatus.SelectedItem;
                 if (a.Equals(auto))
@@ -270,6 +289,15 @@ namespace Client.GUIController
                     return;
                 }
                 int year = (int)_ucAddCar.NumUpDownYearProduction.Value;
+                int kilometraza;
+                if (string.IsNullOrEmpty(_ucAddCar.TxtKilometraza.Text)) {
+                    MessageBox.Show("Niste uneli polje kilometraza");
+                    return;
+                }
+                if (!int.TryParse(_ucAddCar.TxtKilometraza.Text, out kilometraza)) {
+                    MessageBox.Show("Niste uneli ispravan format u polje kilometraza");
+                    return;
+                }
                 KlasaAutomobila klasa = (KlasaAutomobila)_ucAddCar.CmbClassCar.SelectedItem;
                 StatusAutomobila stat = StatusAutomobila.dostupan;
                 Automobil newAutomobil = _clientController.AddCar(
@@ -279,6 +307,7 @@ namespace Client.GUIController
                         Marka = marka,
                         Model = model,
                         Godiste = year,
+                        Kilometraza=kilometraza,
                         Klasa = klasa,
                         Status = stat
                     });

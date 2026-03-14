@@ -42,6 +42,8 @@ namespace Client.UserControls
             this.numUpDownYearProduction = new System.Windows.Forms.NumericUpDown();
             this.cmbClassCar = new System.Windows.Forms.ComboBox();
             this.btnSaveCarInDb = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtKilometraza = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownYearProduction)).BeginInit();
             this.SuspendLayout();
             // 
@@ -144,17 +146,35 @@ namespace Client.UserControls
             // 
             // btnSaveCarInDb
             // 
-            this.btnSaveCarInDb.Location = new System.Drawing.Point(54, 269);
+            this.btnSaveCarInDb.Location = new System.Drawing.Point(54, 299);
             this.btnSaveCarInDb.Name = "btnSaveCarInDb";
             this.btnSaveCarInDb.Size = new System.Drawing.Size(225, 40);
             this.btnSaveCarInDb.TabIndex = 10;
             this.btnSaveCarInDb.Text = "Save new car";
             this.btnSaveCarInDb.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(51, 245);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(64, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Kilometraza:";
+            // 
+            // txtKilometraza
+            // 
+            this.txtKilometraza.Location = new System.Drawing.Point(154, 242);
+            this.txtKilometraza.Name = "txtKilometraza";
+            this.txtKilometraza.Size = new System.Drawing.Size(125, 20);
+            this.txtKilometraza.TabIndex = 12;
+            // 
             // UCAddCar
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.txtKilometraza);
+            this.Controls.Add(this.label6);
             this.Controls.Add(this.btnSaveCarInDb);
             this.Controls.Add(this.cmbClassCar);
             this.Controls.Add(this.numUpDownYearProduction);
@@ -167,7 +187,7 @@ namespace Client.UserControls
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "UCAddCar";
-            this.Size = new System.Drawing.Size(370, 357);
+            this.Size = new System.Drawing.Size(411, 414);
             ((System.ComponentModel.ISupportInitialize)(this.numUpDownYearProduction)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -187,6 +207,8 @@ namespace Client.UserControls
         private System.Windows.Forms.NumericUpDown numUpDownYearProduction;
         private System.Windows.Forms.ComboBox cmbClassCar;
         private System.Windows.Forms.Button btnSaveCarInDb;
+        private Label label6;
+        private TextBox txtKilometraza;
 
         public Button BtnSaveCarInDb { get => btnSaveCarInDb; set => btnSaveCarInDb = value; }
         public TextBox TxtRegistration { get => txtRegistration; set => txtRegistration = value;  }
@@ -194,6 +216,6 @@ namespace Client.UserControls
         public TextBox TxtModel { get => txtModel; set => txtModel = value; }
         public NumericUpDown NumUpDownYearProduction { get => numUpDownYearProduction; set => numUpDownYearProduction = value; }
         public ComboBox CmbClassCar { get => cmbClassCar; set => cmbClassCar = value; }
-
+        public TextBox TxtKilometraza { get => txtKilometraza; set => txtKilometraza = value; }
     }
 }
