@@ -62,6 +62,7 @@
     </Compile>
     <Compile Include="GUIController\CustomerGUIController.cs" />
     <Compile Include="GUIController\LoginGUIController.cs" />
+    <Compile Include="GUIController\RentGuiController.cs" />
     <Compile Include="Program.cs" />
     <!-- Communication -->
     <Compile Include="Communication\ClientCommunication.cs" />
@@ -100,6 +101,12 @@
     <Compile Include="UserControls\UCCustomer.Designer.cs">
       <DependentUpon>UCCustomer.cs</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\UCRent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCRent.Designer.cs">
+      <DependentUpon>UCRent.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UCShowCar.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,6 +118,18 @@
     </Compile>
     <Compile Include="UserControls\UCShowCustomer.Designer.cs">
       <DependentUpon>UCShowCustomer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCAddRent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCAddRent.Designer.cs">
+      <DependentUpon>UCAddRent.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UCUpdateRent.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UCUpdateRent.Designer.cs">
+      <DependentUpon>UCUpdateRent.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
@@ -137,11 +156,20 @@
     <EmbeddedResource Include="UserControls\UCCustomer.resx">
       <DependentUpon>UCCustomer.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCRent.resx">
+      <DependentUpon>UCRent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCShowCar.resx">
       <DependentUpon>UCShowCar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCShowCustomer.resx">
       <DependentUpon>UCShowCustomer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCAddRent.resx">
+      <DependentUpon>UCAddRent.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UCUpdateRent.resx">
+      <DependentUpon>UCUpdateRent.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

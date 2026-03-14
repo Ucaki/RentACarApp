@@ -49,11 +49,11 @@ namespace Client
             this.btnLoggOut = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.panelContent = new System.Windows.Forms.Panel();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.btnRentals = new System.Windows.Forms.Button();
             this.btnCustomers = new System.Windows.Forms.Button();
             this.btnCars = new System.Windows.Forms.Button();
-            this.panelContent = new System.Windows.Forms.Panel();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.statusStrip1.SuspendLayout();
             this.panelTop.SuspendLayout();
             this.panelMenu.SuspendLayout();
@@ -66,9 +66,9 @@ namespace Client
             this.StatusLabelLoggedINAdmin,
             this.StatusLabelErrorMsg,
             this.StatusLabelDateTime});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 539);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 739);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(984, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1152, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -81,7 +81,7 @@ namespace Client
             // StatusLabelErrorMsg
             // 
             this.StatusLabelErrorMsg.Name = "StatusLabelErrorMsg";
-            this.StatusLabelErrorMsg.Size = new System.Drawing.Size(903, 17);
+            this.StatusLabelErrorMsg.Size = new System.Drawing.Size(965, 17);
             this.StatusLabelErrorMsg.Spring = true;
             this.StatusLabelErrorMsg.Text = "Error message: Add throw exceptions here";
             // 
@@ -98,7 +98,7 @@ namespace Client
             this.panelTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelTop.Location = new System.Drawing.Point(0, 0);
             this.panelTop.Name = "panelTop";
-            this.panelTop.Size = new System.Drawing.Size(984, 50);
+            this.panelTop.Size = new System.Drawing.Size(1152, 50);
             this.panelTop.TabIndex = 2;
             // 
             // btnLoggOut
@@ -109,7 +109,7 @@ namespace Client
             this.btnLoggOut.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoggOut.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLoggOut.ForeColor = System.Drawing.Color.White;
-            this.btnLoggOut.Location = new System.Drawing.Point(876, 0);
+            this.btnLoggOut.Location = new System.Drawing.Point(1044, 0);
             this.btnLoggOut.Name = "btnLoggOut";
             this.btnLoggOut.Size = new System.Drawing.Size(108, 50);
             this.btnLoggOut.TabIndex = 1;
@@ -141,8 +141,22 @@ namespace Client
             this.panelMenu.ForeColor = System.Drawing.Color.White;
             this.panelMenu.Location = new System.Drawing.Point(0, 50);
             this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Size = new System.Drawing.Size(200, 489);
+            this.panelMenu.Size = new System.Drawing.Size(200, 689);
             this.panelMenu.TabIndex = 3;
+            // 
+            // panelContent
+            // 
+            this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(230)))), ((int)(((byte)(231)))));
+            this.panelContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelContent.Location = new System.Drawing.Point(200, 50);
+            this.panelContent.Name = "panelContent";
+            this.panelContent.Size = new System.Drawing.Size(952, 689);
+            this.panelContent.TabIndex = 4;
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // btnRentals
             // 
@@ -203,31 +217,19 @@ namespace Client
             this.btnCars.UseVisualStyleBackColor = false;
             this.btnCars.Click += new System.EventHandler(this.btnCars_Click);
             // 
-            // panelContent
-            // 
-            this.panelContent.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(226)))), ((int)(((byte)(230)))), ((int)(((byte)(231)))));
-            this.panelContent.Location = new System.Drawing.Point(200, 50);
-            this.panelContent.Name = "panelContent";
-            this.panelContent.Size = new System.Drawing.Size(784, 489);
-            this.panelContent.TabIndex = 4;
-            // 
-            // timer1
-            // 
-            this.timer1.Interval = 1000;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(61)))), ((int)(((byte)(86)))), ((int)(((byte)(110)))));
-            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.ClientSize = new System.Drawing.Size(1152, 761);
             this.Controls.Add(this.panelContent);
             this.Controls.Add(this.panelMenu);
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.statusStrip1);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(1000, 600);
+            this.MinimumSize = new System.Drawing.Size(100, 100);
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Rent a car";

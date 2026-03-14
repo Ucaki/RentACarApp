@@ -21,7 +21,7 @@ namespace Client.GUIController
         private UCCustomer _ucCustomer;
         private UCShowCustomer _ucShowCustomer;
         private UCAddCustomer _ucAddCustomer;
-        private BindingList<Korisnik> listUser;
+        private BindingList<Korisnik> listUsers;
        
 
         public CustomerGUIController(ClientController clientController)
@@ -35,8 +35,8 @@ namespace Client.GUIController
         internal void ShowUCCustomer()
         {
             _ucCustomer = new UCCustomer();
-            listUser = new BindingList<Korisnik>(_clientController.GetAllUsers());
-            _ucCustomer.DataGridView.DataSource = listUser;
+            listUsers = new BindingList<Korisnik>(_clientController.GetAllUsers());
+            _ucCustomer.DataGridView.DataSource = listUsers;
 
             _ucCustomer.TxtName.TextChanged += TxtName_TextChanged;
             _ucCustomer.BtnShowUser.Click += BtnShowUser_click;
@@ -102,7 +102,7 @@ namespace Client.GUIController
                 MessageBox.Show("Sistem je zapamtio novog korisnika!");
 
 
-                listUser.Add(korisnik);
+                listUsers.Add(korisnik);
                 OnPanelChangeRequested?.Invoke(_ucCustomer);
 
             }
@@ -156,9 +156,9 @@ namespace Client.GUIController
                 else {
                     l = _clientController.GetAllUsers();
                 }
-                listUser.Clear();
+                listUsers.Clear();
                 foreach (var k in l) {
-                    listUser.Add(k);
+                    listUsers.Add(k);
                 }
             }
             catch (ServerCommunicationException ex)

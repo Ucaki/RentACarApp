@@ -15,7 +15,7 @@ namespace Client
     {
         public event Action OnCarsRequested;
         public event Action OnCustomerRequested;
-        public event Action OnRentRequested;
+        public event Action<Radnik> OnRentRequested;
         Radnik radnik;
 
         public Action OnLogOutRequested;
@@ -41,7 +41,7 @@ namespace Client
 
         private void btnCars_Click(object sender, EventArgs e) => OnCarsRequested?.Invoke();
         private void btnCustomers_Click(object sender, EventArgs e) => OnCustomerRequested?.Invoke();
-        private void btnRentals_Click(object sender, EventArgs e) => OnRentRequested?.Invoke();
+        private void btnRentals_Click(object sender, EventArgs e) => OnRentRequested?.Invoke(radnik);
 
         private void btnLoggOut_Click(object sender, EventArgs e)
         {

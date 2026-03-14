@@ -92,6 +92,7 @@ namespace Client
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtUsername);
             this.Name = "FrmLogin";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LOGIN";
             this.ResumeLayout(false);
             this.PerformLayout();

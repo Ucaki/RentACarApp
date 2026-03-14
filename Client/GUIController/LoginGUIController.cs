@@ -56,6 +56,7 @@ namespace Client.GUIController
         internal void LogOutAdmin() {
             try
             {
+                
                 _clientController.LogOut();
                 MessageBox.Show("Izlogovali ste se");
             }

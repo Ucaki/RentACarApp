@@ -13,20 +13,21 @@ namespace Client.GUIController
     {
         private CarGUIController _carGUIController;
         private CustomerGUIController _customerGuiController;
-        //private RentGUIController _rentGuiController;
+        private RentGuiController _rentGuiController;
         private LoginGUIController _loginGUIController;
         private Action<UserControl> _changePanel;
         public event Action ConnectionLost;
-        public MainGuiController(LoginGUIController loginGUIController, CarGUIController CarGUIController, CustomerGUIController customerGuiController, Action<UserControl> changePanel = null)
+        public MainGuiController(LoginGUIController loginGUIController, CarGUIController CarGUIController, CustomerGUIController customerGuiController, RentGuiController rentGuiController, Action<UserControl> changePanel = null)
         {
             _carGUIController = CarGUIController;
             _loginGUIController = loginGUIController;
             _customerGuiController = customerGuiController;
+            _rentGuiController = rentGuiController;
             _changePanel = changePanel;
 
             _carGUIController.OnPanelChangeRequested += _changePanel;
             _customerGuiController.OnPanelChangeRequested += _changePanel;
-            //_rentGuiController.OnPanelChangeRequested += _changePanel
+            _rentGuiController.OnPanelChangeRequested += _changePanel;
         }
 
 
@@ -59,10 +60,10 @@ namespace Client.GUIController
 
         
 
-        internal void ShowRentSection()
+        internal void ShowRentSection(Radnik r)
         {
-            //_rentGuiController.ShowUCRent();
-            throw new NotImplementedException();
+            _rentGuiController.ShowUCRent(r);
+           
         }
     }
 }

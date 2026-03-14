@@ -27,12 +27,13 @@ namespace Client.GUIController
         public CarGUIController(ClientController clientController)
         {
             _clientController = clientController;
+            
         }
 
-        
+
         internal void ShowUCCar()
         {
-            
+
             _uccar = new UCCar();
             List<KlasaAutomobila> classes = GetClassCarForCmb();
             classes.Insert(0, new KlasaAutomobila { KlasaID = -1, Naziv = "All" });

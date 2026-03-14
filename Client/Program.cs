@@ -23,13 +23,14 @@ namespace Client
             CarGUIController carGUIController = new CarGUIController(clientController);
             LoginGUIController loginGUIController = new LoginGUIController(clientController);
             CustomerGUIController customerGUIController = new CustomerGUIController(clientController);
+            RentGuiController rentGuiController = new RentGuiController(clientController);
             Radnik r;
             while (true)
             {
                 
                   using (FrmLogin login = new FrmLogin())
                 {
-                    MainGuiController mainGuiController = new MainGuiController(loginGUIController, carGUIController, customerGUIController);
+                    MainGuiController mainGuiController = new MainGuiController(loginGUIController, carGUIController, customerGUIController, rentGuiController);
 
                     login.onLoginClick += mainGuiController.Login;
                     if (login.ShowDialog() != DialogResult.OK)
@@ -39,7 +40,7 @@ namespace Client
 
                 using (FrmMain main = new FrmMain(r))
                 {
-                    MainGuiController mainGuiController = new MainGuiController(loginGUIController, carGUIController, customerGUIController,(uc) => main.SetUCPanel(uc));
+                    MainGuiController mainGuiController = new MainGuiController(loginGUIController, carGUIController, customerGUIController,rentGuiController,(uc) => main.SetUCPanel(uc));
 
                     mainGuiController.ConnectionLost += () =>
                     {
