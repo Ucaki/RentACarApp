@@ -80,6 +80,7 @@
     <Compile Include="Domain\Korisnik.cs" />
     <Compile Include="Domain\Mesto.cs" />
     <Compile Include="Domain\Radnik.cs" />
+    <Compile Include="Domain\StavkaIznajmljivanja.cs" />
     <Compile Include="Exceptions\ServerCommunicationException.cs" />
     <Compile Include="Exceptions\SystemOperationException.cs" />
     <Compile Include="Exceptions\ValidationException.cs" />

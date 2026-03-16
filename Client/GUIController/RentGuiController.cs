@@ -33,6 +33,7 @@ namespace Client.GUIController
             _clientController = clientController;
         }
 
+
         internal void ShowUCRent(Radnik r)
         {
             radnik = r;
