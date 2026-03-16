@@ -27,7 +27,7 @@ namespace Client.GUIController
         public CarGUIController(ClientController clientController)
         {
             _clientController = clientController;
-            
+
         }
 
 
@@ -40,10 +40,16 @@ namespace Client.GUIController
             _uccar.CmbClassCar.DataSource = classes;
 
             listCars = new BindingList<Automobil>(_clientController.FilterCars(new Automobil { FilterQuerry = "1=1", Klasa = new KlasaAutomobila() }));
-            _uccar.DgvCars.DataSource = listCars;
-
+            if (listCars.Count > 0)
+            {
+                _uccar.DgvCars.DataSource = listCars;
+            }
+            else
+            {
+                MessageBox.Show("Vozila koja odgovaraju zadatoj vrednosti nisu pronadjena!");
+                return;
+            }
             _uccar.BtnAddNewCar.Click += BtnAddNewCar_Click;
-
             _uccar.CmbClassCar.SelectedIndexChanged += CmbClassCar_SelectedIndexChanged;
             _uccar.BtnShowCar.Click += BtnShowCar_Click;
             OnPanelChangeRequested?.Invoke(_uccar);
@@ -52,7 +58,18 @@ namespace Client.GUIController
 
         private void BtnShowCar_Click(object sender, EventArgs e)
         {
-            auto = (Automobil)_uccar.DgvCars.CurrentRow.DataBoundItem;
+
+
+            
+                auto = _uccar.DgvCars.CurrentRow?.DataBoundItem as Automobil;
+                if (auto == null)
+                {
+                    MessageBox.Show("Sistem ne moze da prikaze automobil!");
+                    return;
+                }
+                
+            
+            
 
             _ucShowCar = new UCShowCar();
             _ucShowCar.TxtRegistration.Text = auto.RegistarskiBroj;
@@ -89,7 +106,8 @@ namespace Client.GUIController
                 {
                     a.Kilometraza = num;
                 }
-                else {
+                else
+                {
                     MessageBox.Show("Kilometraza nije unesena validno");
                     return;
                 }
@@ -222,6 +240,12 @@ namespace Client.GUIController
                 {
                     updatedList = _clientController.FilterCars(new Automobil { FilterQuerry = "KlasaVozila.KlasaID=" + selectedClass.KlasaID, Klasa = new KlasaAutomobila() });
                 }
+                if (updatedList.Count == 0)
+                {
+                    MessageBox.Show("Vozila koja odgovaraju zadatoj vrednosti nisu pronadjena!");
+                    return;
+                }
+
                 listCars.Clear();
                 foreach (var car in updatedList)
                 {
@@ -290,11 +314,13 @@ namespace Client.GUIController
                 }
                 int year = (int)_ucAddCar.NumUpDownYearProduction.Value;
                 int kilometraza;
-                if (string.IsNullOrEmpty(_ucAddCar.TxtKilometraza.Text)) {
+                if (string.IsNullOrEmpty(_ucAddCar.TxtKilometraza.Text))
+                {
                     MessageBox.Show("Niste uneli polje kilometraza");
                     return;
                 }
-                if (!int.TryParse(_ucAddCar.TxtKilometraza.Text, out kilometraza)) {
+                if (!int.TryParse(_ucAddCar.TxtKilometraza.Text, out kilometraza))
+                {
                     MessageBox.Show("Niste uneli ispravan format u polje kilometraza");
                     return;
                 }
@@ -307,7 +333,7 @@ namespace Client.GUIController
                         Marka = marka,
                         Model = model,
                         Godiste = year,
-                        Kilometraza=kilometraza,
+                        Kilometraza = kilometraza,
                         Klasa = klasa,
                         Status = stat
                     });
@@ -328,7 +354,7 @@ namespace Client.GUIController
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Unexpected error");
+                //MessageBox.Show("Unexpected error");
                 Debug.WriteLine(">>>>" + ex.Message);
             }
         }

@@ -28,7 +28,12 @@ namespace Server
             _repository = repo;
             _factory = factory;
         }
-
+        internal Radnik Login(Radnik radnik)
+        {
+            BaseSO so = new LoginSO(_repository, _factory);
+            so.ExecuteTemplate(radnik);
+            return (Radnik)so.Result;
+        }
         internal Automobil AddAutomobil(Automobil auto) 
         {
             BaseSO so = new ZapamtiVoziloSO(_repository, _factory);
@@ -41,13 +46,6 @@ namespace Server
             BaseSO so = new GetAllCarClassesSO(_repository, _factory);
             so.ExecuteTemplate(klasaAutomobila);
             return (List<KlasaAutomobila>)so.Result;
-        }
-
-        internal Radnik Login(Radnik radnik)
-        {
-            BaseSO so = new LoginSO(_repository, _factory);
-            so.ExecuteTemplate(radnik);
-            return (Radnik)so.Result;
         }
 
         internal List<Automobil> GetAllOrFillteredListCars(Automobil automobil)
@@ -117,6 +115,13 @@ namespace Server
         {
             BaseSO so = new ReleaseRentSO(_repository, _factory);
             so.ExecuteTemplate(iznajmljivanje);
+            return (int)so.Result;
+        }
+
+        internal int AddListRents(List<Iznajmljivanje> iznajmljivanjes)
+        {
+            BaseSO so = new AddRentsList(_repository, _factory);
+            so.ExecuteTemplate(iznajmljivanjes);
             return (int)so.Result;
         }
     }

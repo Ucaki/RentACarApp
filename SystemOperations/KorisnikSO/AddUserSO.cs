@@ -17,7 +17,7 @@ namespace SystemOperations.KorisnikSO
             try
             {
                 Korisnik kor = (Korisnik)entity;
-                //validate here
+                
                 genericRepo.Add(kor, createdConnection, transaction);
                 Result = kor;
             }

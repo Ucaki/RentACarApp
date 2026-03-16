@@ -27,7 +27,7 @@ namespace SystemOperations.RentSO
                 Result = genericRepo.Update(auto, createdConnection, transaction);
                 //Result = rent;
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw new Exception("Sistem ne moze da razduzi");
             }

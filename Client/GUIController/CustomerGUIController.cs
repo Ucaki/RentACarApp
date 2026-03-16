@@ -97,12 +97,19 @@ namespace Client.GUIController
                     MessageBox.Show("Niste uneli polje Adresu");
                     return;
                 }
-
+                foreach (var k in listUsers)
+                {
+                    if (k.Email == korisnik.Email)
+                    {
+                        MessageBox.Show("Sistem ne moze da zapamti novog korisnika");
+                        return;
+                    }
+                }
                 korisnik = _clientController.AddCustomer(korisnik);
                 MessageBox.Show("Sistem je zapamtio novog korisnika!");
 
-
-                listUsers.Add(korisnik);
+                listUsers = new BindingList<Korisnik>(_clientController.GetAllUsers());
+                //listUsers.Add(korisnik);
                 OnPanelChangeRequested?.Invoke(_ucCustomer);
 
             }
@@ -128,7 +135,14 @@ namespace Client.GUIController
         private void ShowUCShowCustomer()
         {
             korisnik = new Korisnik();
-            korisnik = (Korisnik)_ucCustomer.DataGridView.CurrentRow.DataBoundItem;
+
+            korisnik = _ucCustomer.DataGridView.CurrentRow?.DataBoundItem as Korisnik;
+
+            if (korisnik == null)
+            {
+                MessageBox.Show("Sistem ne moze da prikaze korisnika!");
+                return;
+            }
             _ucShowCustomer = new UCShowCustomer();
             _ucShowCustomer.TxtIme.Text = korisnik.Ime;
             _ucShowCustomer.TxtPrezime.Text = korisnik.Prezime;

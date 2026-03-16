@@ -28,7 +28,7 @@ namespace Client.GUIController
                 r.Sifra = pass;
                 r = _clientController.Login(r);
                 if (r != null) {
-                    MessageBox.Show("Uspesno logovanje");
+                    MessageBox.Show("Uspesno ste se prijavili!");
                     return r;
                 }
                 return null;
@@ -60,7 +60,7 @@ namespace Client.GUIController
                 _clientController.LogOut();
                 MessageBox.Show("Izlogovali ste se");
             }
-            catch (ServerCommunicationException ex)
+            catch (ServerCommunicationException)
             {
                 //server je vec diskonektovan i korisnik je automatski odjavljen
             }

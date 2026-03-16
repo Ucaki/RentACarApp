@@ -19,12 +19,12 @@ namespace SystemOperations.RentSO
                 Iznajmljivanje rent = (Iznajmljivanje)entity;
                 Automobil auto = rent.Automobil;
                 auto.Status = StatusAutomobila.nedostupan;
-                //validate here
+                
                 genericRepo.Add(rent, createdConnection, transaction);
                 genericRepo.Update(auto, createdConnection, transaction);
                 Result = rent;
             }
-            catch (Exception ex) 
+            catch (Exception ) 
             {
                 throw new Exception("Sistem ne moze da zapamti novo iznajmljivanje!");
             }

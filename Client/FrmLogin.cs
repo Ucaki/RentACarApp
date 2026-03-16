@@ -15,7 +15,7 @@ namespace Client
     {
         public Func<string,string,Radnik> onLoginClick;
         public Radnik radnik;
-        public event EventHandler ProslediRadnika;
+       
         public FrmLogin()
         {
             InitializeComponent();

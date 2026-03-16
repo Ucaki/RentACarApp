@@ -83,7 +83,6 @@ namespace Client
             this.StatusLabelErrorMsg.Name = "StatusLabelErrorMsg";
             this.StatusLabelErrorMsg.Size = new System.Drawing.Size(1071, 17);
             this.StatusLabelErrorMsg.Spring = true;
-            this.StatusLabelErrorMsg.Text = "Error message: Add throw exceptions here";
             // 
             // StatusLabelDateTime
             // 

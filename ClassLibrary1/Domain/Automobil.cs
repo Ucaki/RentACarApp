@@ -20,7 +20,7 @@ namespace Common.Domain
     {
         [Browsable(false)]
         public int AutomobilID { get; set; }
-        public string RegistarskiBroj { get; set; }
+        public string RegistarskiBroj  { get; set; }
         public string Marka { get; set; }
         public string Model { get; set; }
         public int Godiste { get; set; }

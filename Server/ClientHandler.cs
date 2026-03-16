@@ -27,7 +27,6 @@ namespace Server
 
         public Radnik radnik;
 
-        //public Aministrator _logedAdmin
         public ClientHandler(Socket client, ServerController controller)
         {
             _clientSocket = client;
@@ -35,7 +34,6 @@ namespace Server
             _serializer = new JsonNetworkSerializer(new NetworkStream(client));
             signal = true;
         }
-        //internal?
         internal void HandleRequest()
         {
             try
@@ -256,7 +254,7 @@ namespace Server
             catch (Exception ex)
             {
                 res.IsSuccessful = false;
-                res.ErrorMessage = ex.Message + " Server error occured";
+                res.ErrorMessage = ex.Message;
                 Debug.WriteLine(">>>>>>>" + ex.Message);
             }
             return res;

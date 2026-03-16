@@ -45,6 +45,9 @@ namespace Client.UserControls
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.btnSaveRent = new System.Windows.Forms.Button();
+            this.dgvListRents = new System.Windows.Forms.DataGridView();
+            this.btnDodajIznajmljivanjeUListu = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListRents)).BeginInit();
             this.SuspendLayout();
             // 
             // label5
@@ -161,17 +164,39 @@ namespace Client.UserControls
             // 
             // btnSaveRent
             // 
-            this.btnSaveRent.Location = new System.Drawing.Point(166, 324);
+            this.btnSaveRent.Location = new System.Drawing.Point(69, 327);
             this.btnSaveRent.Name = "btnSaveRent";
             this.btnSaveRent.Size = new System.Drawing.Size(142, 52);
             this.btnSaveRent.TabIndex = 22;
             this.btnSaveRent.Text = "Sačuvaj iznajmljivanje";
             this.btnSaveRent.UseVisualStyleBackColor = true;
             // 
+            // dgvListRents
+            // 
+            this.dgvListRents.AllowUserToAddRows = false;
+            this.dgvListRents.AllowUserToDeleteRows = false;
+            this.dgvListRents.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvListRents.Location = new System.Drawing.Point(525, 25);
+            this.dgvListRents.Name = "dgvListRents";
+            this.dgvListRents.ReadOnly = true;
+            this.dgvListRents.Size = new System.Drawing.Size(533, 366);
+            this.dgvListRents.TabIndex = 23;
+            // 
+            // btnDodajIznajmljivanjeUListu
+            // 
+            this.btnDodajIznajmljivanjeUListu.Location = new System.Drawing.Point(287, 327);
+            this.btnDodajIznajmljivanjeUListu.Name = "btnDodajIznajmljivanjeUListu";
+            this.btnDodajIznajmljivanjeUListu.Size = new System.Drawing.Size(149, 52);
+            this.btnDodajIznajmljivanjeUListu.TabIndex = 24;
+            this.btnDodajIznajmljivanjeUListu.Text = "Dodaj u listu";
+            this.btnDodajIznajmljivanjeUListu.UseVisualStyleBackColor = true;
+            // 
             // UCAddRent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnDodajIznajmljivanjeUListu);
+            this.Controls.Add(this.dgvListRents);
             this.Controls.Add(this.btnSaveRent);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label6);
@@ -187,7 +212,8 @@ namespace Client.UserControls
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "UCAddRent";
-            this.Size = new System.Drawing.Size(804, 585);
+            this.Size = new System.Drawing.Size(1111, 440);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvListRents)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,13 +234,18 @@ namespace Client.UserControls
         private System.Windows.Forms.Label label6;
         private Label label7;
         private Button btnSaveRent;
+        private DataGridView dgvListRents;
+        private Button btnDodajIznajmljivanjeUListu;
 
-        public TextBox TxtUser { get => txtUser; set => txtUser=value; }
+        public TextBox TxtUser { get => txtUser; set => txtUser = value; }
         public TextBox TxtCar { get => txtCar; set => txtCar = value; }
         public TextBox TxtUgovorenaCena { get => txtUgovorenaCena; set => txtUgovorenaCena = value; }
         public TextBox TxtDiscount { get => txtDiscount; set => txtDiscount = value; }
         public TextBox TxtKm { get => txtKm; set => txtKm = value; }
         public DateTimePicker DateTimePicker { get => dateTimePicker; set => dateTimePicker = value; }
         public Button BtnSaveRent { get => btnSaveRent; set => btnSaveRent = value; }
+        public Button BtnDodajIznajmljivanjeUListu { get => btnDodajIznajmljivanjeUListu; set => btnDodajIznajmljivanjeUListu = value; }
+        public DataGridView DgvListRents { get => dgvListRents; set => dgvListRents = value; }
+
     }
 }

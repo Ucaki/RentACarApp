@@ -42,7 +42,7 @@ namespace Client.UserControls
             // 
             // btnAddNewCar
             // 
-            this.btnAddNewCar.Location = new System.Drawing.Point(43, 338);
+            this.btnAddNewCar.Location = new System.Drawing.Point(40, 338);
             this.btnAddNewCar.Name = "btnAddNewCar";
             this.btnAddNewCar.Size = new System.Drawing.Size(139, 47);
             this.btnAddNewCar.TabIndex = 0;
@@ -57,13 +57,13 @@ namespace Client.UserControls
             this.dgvCars.Location = new System.Drawing.Point(13, 15);
             this.dgvCars.Name = "dgvCars";
             this.dgvCars.ReadOnly = true;
-            this.dgvCars.Size = new System.Drawing.Size(666, 234);
+            this.dgvCars.Size = new System.Drawing.Size(763, 262);
             this.dgvCars.TabIndex = 1;
             // 
             // cmbClassCar
             // 
             this.cmbClassCar.FormattingEnabled = true;
-            this.cmbClassCar.Location = new System.Drawing.Point(154, 267);
+            this.cmbClassCar.Location = new System.Drawing.Point(154, 294);
             this.cmbClassCar.Name = "cmbClassCar";
             this.cmbClassCar.Size = new System.Drawing.Size(121, 21);
             this.cmbClassCar.TabIndex = 2;
@@ -71,7 +71,7 @@ namespace Client.UserControls
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 270);
+            this.label1.Location = new System.Drawing.Point(10, 297);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(138, 13);
             this.label1.TabIndex = 3;
@@ -79,7 +79,7 @@ namespace Client.UserControls
             // 
             // btnDeleteCar
             // 
-            this.btnDeleteCar.Location = new System.Drawing.Point(419, 338);
+            this.btnDeleteCar.Location = new System.Drawing.Point(581, 338);
             this.btnDeleteCar.Name = "btnDeleteCar";
             this.btnDeleteCar.Size = new System.Drawing.Size(139, 47);
             this.btnDeleteCar.TabIndex = 4;
@@ -88,7 +88,7 @@ namespace Client.UserControls
             // 
             // btnShowCar
             // 
-            this.btnShowCar.Location = new System.Drawing.Point(242, 338);
+            this.btnShowCar.Location = new System.Drawing.Point(311, 338);
             this.btnShowCar.Name = "btnShowCar";
             this.btnShowCar.Size = new System.Drawing.Size(139, 47);
             this.btnShowCar.TabIndex = 5;
@@ -106,7 +106,7 @@ namespace Client.UserControls
             this.Controls.Add(this.dgvCars);
             this.Controls.Add(this.btnAddNewCar);
             this.Name = "UCCar";
-            this.Size = new System.Drawing.Size(693, 422);
+            this.Size = new System.Drawing.Size(791, 422);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCars)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

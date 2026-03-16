@@ -21,7 +21,7 @@ namespace Client.Controller
         
         public Automobil AddCar(Automobil auto)
         {
-            //Treba da uhvatim exception koji se baca u communication.SendRequest
+            
             Request req = new Request
             {
                 Operation = OperationType.AddNewCar,
@@ -173,6 +173,16 @@ namespace Client.Controller
                 Argument = iznajmljivanjeZaRazduzivanje
             };
             _communication.SendRequest(req);
+        }
+
+        internal int addRentsSSS(BindingList<Iznajmljivanje> listRents)
+        {
+            Request req = new Request
+            {
+                Operation = OperationType.SlozeniKey1DodajListuIznajmljivanja,
+                Argument = listRents
+            };
+            return _communication.SendRequest(req);
         }
     }
 }
