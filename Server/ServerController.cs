@@ -118,11 +118,6 @@ namespace Server
             return (int)so.Result;
         }
 
-        internal int AddListRents(List<Iznajmljivanje> iznajmljivanjes)
-        {
-            BaseSO so = new AddRentsList(_repository, _factory);
-            so.ExecuteTemplate(iznajmljivanjes);
-            return (int)so.Result;
-        }
+      
     }
 }

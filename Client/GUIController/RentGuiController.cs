@@ -179,12 +179,12 @@ namespace Client.GUIController
             _ucAddRent.TxtDiscount.TextChanged += txtPopust_TextChanged;
             _ucAddRent.DateTimePicker.ValueChanged += dateTimePickerDo_ValueChanged;
             _ucAddRent.BtnSaveRent.Click += buttonSaveRent_click;
-            _ucAddRent.BtnDodajIznajmljivanjeUListu.Click += buttonDodajULustu_click;
+           // _ucAddRent.BtnDodajIznajmljivanjeUListu.Click += buttonDodajULustu_click;
             OnPanelChangeRequested?.Invoke(_ucAddRent);
         }
 
 
-
+/*
         private void buttonDodajULustu_click(object sender, EventArgs e) {
 
             try
@@ -263,13 +263,14 @@ namespace Client.GUIController
                 MessageBox.Show("Unexpected error");
                 Debug.WriteLine(">>>>" + ex.Message);
             }
-        }
+        }*/
         private void buttonSaveRent_click(object sender, EventArgs e)
         {
             try
             {
-                if (listRents.Count < 1) { return; }
-                _clientController.addRentsSSS(listRents);
+                Iznajmljivanje iz = new Iznajmljivanje();
+                // OVDE POPUNI IZNAJMLJIVANJE IZ FORME
+                _clientController.AddRent(iz);
             }
             catch (ServerCommunicationException ex)
             {

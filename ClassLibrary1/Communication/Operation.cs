@@ -20,7 +20,6 @@ namespace Common.Communication
         AddUsers,
         AddRent,
         GetListRents,
-        ReleaseRent,
-        SlozeniKey1DodajListuIznajmljivanja
+        ReleaseRent
     }
 }
