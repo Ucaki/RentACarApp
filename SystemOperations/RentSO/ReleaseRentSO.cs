@@ -18,16 +18,21 @@ namespace SystemOperations.RentSO
             {
                 int count = 0;
                 Iznajmljivanje rent = (Iznajmljivanje)entity;
-                count+=genericRepo.Update(rent,createdConnection, transaction);
-                foreach (StavkaIznajmljivanja item in rent.ListaStavki) {
+                genericRepo.Update(rent,createdConnection, transaction);
+                foreach (StavkaIznajmljivanja item in rent.ListaStavki) { 
                     Automobil a = item.Automobil;
-                    a.Kilometraza = item.ZavrsnaKM ?? a.Kilometraza;
+                    if (item.StatusStavke == StatusIznajmljivanja.zavrseno)
+                    {
+                        
+                        a.Kilometraza = item.ZavrsnaKM ?? a.Kilometraza;
+                        a.Status = StatusAutomobila.dostupan;
+                    }
                     count += genericRepo.Update(a, createdConnection, transaction);
                     count += genericRepo.Update(item, createdConnection, transaction);
                 }
                 Result = count;
             }
-            catch (Exception )
+            catch (Exception ex)
             {
                 throw;
             }

@@ -40,7 +40,7 @@ namespace Common.Domain
         [Browsable(false)]
         public string IdCondition => $"AutomobilID={AutomobilID}";
         [Browsable(false)]
-        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Kilometraza}, {Godiste}, {Klasa.KlasaID}, '{Status}'";
+        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Godiste}, {Kilometraza}, {Klasa.KlasaID}, '{Status}'";
         [Browsable(false)]
         public string SelectValues => "*";
         [Browsable(false)]

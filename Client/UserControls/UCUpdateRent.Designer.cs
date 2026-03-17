@@ -45,14 +45,13 @@ namespace Client.UserControls
             this.dgvRentsForUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvRentsForUser.Location = new System.Drawing.Point(18, 50);
             this.dgvRentsForUser.Name = "dgvRentsForUser";
-            this.dgvRentsForUser.ReadOnly = true;
-            this.dgvRentsForUser.Size = new System.Drawing.Size(600, 224);
+            this.dgvRentsForUser.Size = new System.Drawing.Size(693, 224);
             this.dgvRentsForUser.TabIndex = 0;
             // 
             // btnShowRent
             // 
             this.btnShowRent.FlatAppearance.BorderColor = System.Drawing.Color.LightBlue;
-            this.btnShowRent.Location = new System.Drawing.Point(254, 313);
+            this.btnShowRent.Location = new System.Drawing.Point(307, 322);
             this.btnShowRent.Name = "btnShowRent";
             this.btnShowRent.Size = new System.Drawing.Size(137, 49);
             this.btnShowRent.TabIndex = 1;
@@ -61,7 +60,7 @@ namespace Client.UserControls
             // 
             // btnReleaseRentItems
             // 
-            this.btnReleaseRentItems.Location = new System.Drawing.Point(111, 313);
+            this.btnReleaseRentItems.Location = new System.Drawing.Point(307, 322);
             this.btnReleaseRentItems.Name = "btnReleaseRentItems";
             this.btnReleaseRentItems.Size = new System.Drawing.Size(137, 49);
             this.btnReleaseRentItems.TabIndex = 2;
@@ -88,7 +87,7 @@ namespace Client.UserControls
             this.Controls.Add(this.btnShowRent);
             this.Controls.Add(this.dgvRentsForUser);
             this.Name = "UCUpdateRent";
-            this.Size = new System.Drawing.Size(634, 412);
+            this.Size = new System.Drawing.Size(759, 412);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRentsForUser)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

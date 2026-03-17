@@ -14,6 +14,7 @@ namespace Common.Domain
     {
         [Browsable(false)]
         public int IznajmljivanjeID { get; set; }
+        [Browsable(false)]
         public int RBr { get; set; }
         public DateTime DatumOd { get; set; }
         public DateTime DatumDo { get; set; }
@@ -23,20 +24,20 @@ namespace Common.Domain
         public int UkupnaCenaStavke { get; set; }
         public StatusIznajmljivanja StatusStavke { get; set; }
         public Automobil Automobil { get; set; }
-
+        [Browsable(false)]
         public string TableName =>"StavkaIznajmljivanja";
-
+        [Browsable(false)]
         public string IDName => "IznajmljivanjeID";
-
-        public string IdCondition => $"IznajmljivanjeID={IznajmljivanjeID}";
-
+        [Browsable(false)]
+        public string IdCondition => $"IznajmljivanjeID={IznajmljivanjeID} and RBr={RBr}";
+        [Browsable(false)]
         public string InsertValues => $"{IznajmljivanjeID},{RBr},'{DatumOd:yyyy-MM-dd}', '{DatumDo:yyyy-MM-dd}', {PocetnaKM},{(ZavrsnaKM.HasValue ? ZavrsnaKM.Value.ToString() : "NULL")},{CenaPoDanu},{UkupnaCenaStavke.ToString("F2", CultureInfo.InvariantCulture)},'{StatusStavke}', {Automobil.AutomobilID}";
-
+        [Browsable(false)]
         public string SelectValues => "*";
-
-        public string UpdateValues => $"status = '{StatusStavke}', datumDo = '{DatumDo:yyyy-MM-dd}', ZavrsnaKM={(ZavrsnaKM.HasValue ? ZavrsnaKM.Value.ToString() : "NULL")}";
-
-        public string JoinCondition => "";
+        [Browsable(false)]
+        public string UpdateValues => $"StatusStavke = '{StatusStavke}', datumDo = '{DatumDo:yyyy-MM-dd}', ZavrsnaKM={(ZavrsnaKM.HasValue ? ZavrsnaKM.Value.ToString() : "NULL")}";
+        [Browsable(false)]
+        public string JoinCondition => "join automobil on (automobil.automobilID = stavkaiznajmljivanja.automobilID)";
 
         public IEntity GetReaderResult(IDataReader reader)
         {
@@ -55,7 +56,18 @@ namespace Common.Domain
                 Automobil = new Automobil()
                 {
                     AutomobilID = (int)reader["AutomobilID"],
+                    RegistarskiBroj = Convert.ToString(reader["RegistarskiBroj"]),
+                    Marka = Convert.ToString(reader["Marka"]),
+                    Model = Convert.ToString(reader["Model"]),
+                    Godiste = (int)reader["Godiste"],
+                    Kilometraza = (int)reader["Kilometraza"],
+                    Status = (StatusAutomobila)Enum.Parse(typeof(StatusAutomobila), reader["Status"].ToString()),
                     Klasa = new KlasaAutomobila()
+                    {
+                        KlasaID = (int)reader["KlasaID"],
+                        Naziv = (string)reader["Naziv"],
+                        OsnovnaCenaPoDanu = (int)reader["OsnovnaCenaPoDanu"]
+                    }
                 },
             };
         }
@@ -80,7 +92,17 @@ namespace Common.Domain
                        Automobil = new Automobil()
                        {
                            AutomobilID = (int)reader["AutomobilID"],
+                           RegistarskiBroj = Convert.ToString(reader["RegistarskiBroj"]),
+                           Marka = Convert.ToString(reader["Marka"]),
+                           Model = Convert.ToString(reader["Model"]),
+                           Godiste = (int)reader["Godiste"],
+                           Kilometraza = (int)reader["Kilometraza"],
+                           Status = (StatusAutomobila)Enum.Parse(typeof(StatusAutomobila), reader["Status"].ToString()),
                            Klasa = new KlasaAutomobila()
+                           {
+                               KlasaID = (int)reader["KlasaID"],
+                               
+                           }
                        }
                    });
             }

@@ -77,7 +77,7 @@ namespace Repository.Implementation
             using (var cmd = CreateDbCommand($"update {entity.TableName} set {entity.UpdateValues} where {entity.IdCondition}", createdConnection, transaction))
             {
                 int affectedRows = cmd.ExecuteNonQuery();
-                if (affectedRows != 1) throw new Exception("Greška pri ažuriranju baze");
+                if (affectedRows < 1) throw new Exception("Greška pri ažuriranju baze");
                 return affectedRows;
             }
         }

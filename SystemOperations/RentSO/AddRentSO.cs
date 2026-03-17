@@ -20,11 +20,11 @@ namespace SystemOperations.RentSO
                 genericRepo.Add(rent, createdConnection, transaction);
                 for (int i = 1; i <= rent.ListaStavki.Count; i++)
                 {
-                    Automobil auto = rent.ListaStavki[i].Automobil;
+                    Automobil auto = rent.ListaStavki[i-1].Automobil;
                     auto.Status = StatusAutomobila.nedostupan;
                     genericRepo.Update(auto, createdConnection, transaction);
 
-                    StavkaIznajmljivanja si = rent.ListaStavki[i];
+                    StavkaIznajmljivanja si = rent.ListaStavki[i-1];
                     si.IznajmljivanjeID = rent.IznajmljivanjeID;
                     si.RBr = i;
                     genericRepo.Add(si, createdConnection, transaction);
@@ -33,7 +33,7 @@ namespace SystemOperations.RentSO
                 
                 Result = rent;
             }
-            catch (Exception ) 
+            catch (Exception ex) 
             {
                 throw new Exception("Sistem ne moze da zapamti novo iznajmljivanje!");
             }

@@ -38,7 +38,7 @@ namespace Common.Domain
         public string SelectValues => "*";
        
         [Browsable(false)]
-        public string UpdateValues => $"status = '{StatusIznajmljivanja}'"; 
+        public string UpdateValues => $"StatusIznajmljivanja = '{StatusIznajmljivanja}'"; 
 
         [Browsable(false)]
         public string JoinCondition => "";

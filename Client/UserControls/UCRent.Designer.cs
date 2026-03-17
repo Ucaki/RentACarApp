@@ -191,10 +191,10 @@ namespace Client.UserControls
             this.dgvStavke.AllowUserToAddRows = false;
             this.dgvStavke.AllowUserToDeleteRows = false;
             this.dgvStavke.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvStavke.Location = new System.Drawing.Point(24, 406);
+            this.dgvStavke.Location = new System.Drawing.Point(14, 412);
             this.dgvStavke.Name = "dgvStavke";
             this.dgvStavke.ReadOnly = true;
-            this.dgvStavke.Size = new System.Drawing.Size(597, 150);
+            this.dgvStavke.Size = new System.Drawing.Size(730, 150);
             this.dgvStavke.TabIndex = 27;
             // 
             // btnDodajStavku
@@ -248,7 +248,7 @@ namespace Client.UserControls
             this.Controls.Add(this.dgvUser);
             this.Controls.Add(this.label1);
             this.Name = "UCRent";
-            this.Size = new System.Drawing.Size(658, 665);
+            this.Size = new System.Drawing.Size(757, 665);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUser)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStavke)).EndInit();
             this.ResumeLayout(false);

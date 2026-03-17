@@ -130,7 +130,7 @@ namespace Server
                     case OperationType.FilterCars:
                         List<Automobil> listCars = _controller.GetAllOrFillteredListCars(_serializer.ReadType<Automobil>(req.Argument));
                         res.Result = listCars;
-                        if (res.Result != null)
+                        if (res.Result != null && listCars.Count!=0)
                         {
                             res.IsSuccessful = true;
                         }

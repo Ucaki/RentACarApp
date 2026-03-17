@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SystemOperations.RentSO
 {
-    public class GetListRentItems : BaseSO
+    public class GetListRentItemsSO : BaseSO
     {
-        public GetListRentItems(IRepository<IEntity> generic, IConnectionFactory factory) : base(generic, factory)
+        public GetListRentItemsSO(IRepository<IEntity> generic, IConnectionFactory factory) : base(generic, factory)
         {
         }
 
@@ -22,7 +22,8 @@ namespace SystemOperations.RentSO
             StavkaIznajmljivanja item = new StavkaIznajmljivanja() {
                 IznajmljivanjeID = rent.IznajmljivanjeID
             };
-            Result = genericRepo.GetAll(rent, connection, transaction).Cast<StavkaIznajmljivanja>().ToList();
+            
+            Result = genericRepo.GetAll(item, connection, transaction, $"IznajmljivanjeID={item.IznajmljivanjeID}").Cast<StavkaIznajmljivanja>().ToList();
         }
     }
 }

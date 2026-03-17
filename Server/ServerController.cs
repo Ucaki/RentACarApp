@@ -120,7 +120,7 @@ namespace Server
 
         internal List<StavkaIznajmljivanja> GetListRentItems(Iznajmljivanje iznajmljivanje)
         {
-            BaseSO so = new GetListRentItems(_repository, _factory);
+            BaseSO so = new GetListRentItemsSO(_repository, _factory);
             so.ExecuteTemplate(iznajmljivanje);
             return (List<StavkaIznajmljivanja>)so.Result;
         }
