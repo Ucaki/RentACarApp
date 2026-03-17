@@ -18,9 +18,5 @@ namespace Common.Domain
         string JoinCondition { get; }
         IEntity GetReaderResult(IDataReader reader);
         List<IEntity> GetReaderResults(IDataReader reader);
-        /*
-        Add protection from sql injection with
-        string 
-         */
     }
 }

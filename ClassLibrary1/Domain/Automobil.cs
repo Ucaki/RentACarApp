@@ -1,5 +1,6 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -17,30 +18,37 @@ namespace Common.Domain
     [Serializable]
     public class Automobil : IEntity
     {
+        [Browsable(false)]
         public int AutomobilID { get; set; }
-        public string RegistarskiBroj { get; set; }
+        public string RegistarskiBroj  { get; set; }
         public string Marka { get; set; }
         public string Model { get; set; }
         public int Godiste { get; set; }
+        public int Kilometraza { get; set; }
+       // [Browsable(false)]
         public KlasaAutomobila Klasa { get; set; }
+       // public string KlasaNaziv => Klasa?.Naziv;
         public StatusAutomobila Status { get; set; }
 
         /// <summary>
         //Implementacija interfejsa
         /// </summary>
+        [Browsable(false)]
         public string TableName => "Automobil";
-
+        [Browsable(false)]
         public string IDName => "AutomobilID";
-
+        [Browsable(false)]
         public string IdCondition => $"AutomobilID={AutomobilID}";
-
-        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Godiste}, {Klasa.KlasaID}, '{Status}'";
-
+        [Browsable(false)]
+        public string InsertValues => $"'{RegistarskiBroj}', '{Marka}', '{Model}', {Godiste}, {Kilometraza}, {Klasa.KlasaID}, '{Status}'";
+        [Browsable(false)]
         public string SelectValues => "*";
-
-        public string UpdateValues => $"RegistarskiBroj = '{RegistarskiBroj}', Marka = '{Marka}', Model = '{Model}', Godiste = {Godiste}, KlasaID = {Klasa.KlasaID}, Status = '{Status}'";
-
-        public string JoinCondition => "";
+        [Browsable(false)]
+        public string UpdateValues => $"RegistarskiBroj = '{RegistarskiBroj}', Marka = '{Marka}', Model = '{Model}', Godiste = {Godiste}, Kilometraza={Kilometraza}, KlasaID = {Klasa.KlasaID}, Status = '{Status}'";
+        [Browsable(false)]
+        public string FilterQuerry { get; set; }
+        [Browsable(false)]
+        public string JoinCondition => "join KlasaVozila on (Automobil.KlasaID=KlasaVozila.KlasaID)";
 
         public IEntity GetReaderResult(IDataReader reader)
         {
@@ -54,7 +62,13 @@ namespace Common.Domain
                 Marka = Convert.ToString(reader["Marka"]),
                 Model = Convert.ToString(reader["Model"]),
                 Godiste = (int)reader["Godiste"],
-                Klasa = new KlasaAutomobila() { KlasaID = (int)reader["KlasaID"] }
+                Kilometraza=(int)reader["Kilometraza"],
+                Status = (StatusAutomobila)Enum.Parse(typeof(StatusAutomobila), reader["Status"].ToString()),
+            Klasa = new KlasaAutomobila() {
+                    KlasaID = (int)reader["KlasaID"],
+                    Naziv = (string)reader["Naziv"],
+                    OsnovnaCenaPoDanu = (int)reader["OsnovnaCenaPoDanu"]
+                }
             };
             
 
@@ -74,7 +88,13 @@ namespace Common.Domain
                         Marka = Convert.ToString(reader["Marka"]),
                         Model = Convert.ToString(reader["Model"]),
                         Godiste = (int)reader["Godiste"],
-                        Klasa = new KlasaAutomobila() { KlasaID = (int)reader["KlasaID"] }
+                        Kilometraza = (int)reader["Kilometraza"],
+                        Status = (StatusAutomobila)Enum.Parse(typeof(StatusAutomobila), reader["Status"].ToString()),
+                        Klasa = new KlasaAutomobila() { 
+                            KlasaID = (int)reader["KlasaID"] ,
+                            Naziv = (string)reader["Naziv"],
+                            OsnovnaCenaPoDanu = (int)reader["OsnovnaCenaPoDanu"]
+                        }
                     });
 
 
@@ -86,13 +106,15 @@ namespace Common.Domain
             if (!(obj is Automobil)) return false;
             Automobil other = (Automobil)obj;
             return AutomobilID == other.AutomobilID && RegistarskiBroj == other.RegistarskiBroj && Marka == other.Marka && Model == other.Model
-                && Godiste == other.Godiste && Klasa.KlasaID == other.Klasa.KlasaID && Status == other.Status;
-            //if (this == obj) return true;
-            //if (!(obj is Automobil)) return false;
-            //Automobil other = (Automobil)obj;
-            //if (other.AutomobilID <= 0 || AutomobilID <= 0) return false;
-            //return AutomobilID.Equals(other.AutomobilID);
-
+                && Godiste == other.Godiste && Kilometraza==other.Kilometraza && (Klasa?.KlasaID?? 0) == (other.Klasa?.KlasaID?? 0) && Status == other.Status;
+        }
+        public override int GetHashCode()
+        {
+            return RegistarskiBroj?.GetHashCode() ?? 0;
+        }
+        public override string ToString()
+        {
+            return Marka + " " + Model;
         }
     }
 }

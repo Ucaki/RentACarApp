@@ -30,7 +30,9 @@ namespace Server
         {
             try
             {
+                _running = true;
                 _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+               // _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 _socket.Bind(new IPEndPoint(IPAddress.Parse(ConfigurationManager.AppSettings["ip"]), int.Parse(ConfigurationManager.AppSettings["port"])));
                 _socket.Listen(100);
 
@@ -77,23 +79,34 @@ namespace Server
             LoggedInClientsServer?.Invoke(sender, EventArgs.Empty);
         }
         public void handle_LoggedOutClient(object sender, EventArgs e) {
-            lock (_clientListLockObj)
-            {
-                _clientsList.Remove((ClientHandler)sender);
-            }
+            //lock (_clientListLockObj)
+            //{
+            //    _clientsList.Remove((ClientHandler)sender);
+            //}
             LoggedOutClientsServer?.Invoke(sender, EventArgs.Empty);
         }
         internal void Stop()
         {
             _running = false;
             _socket?.Close();
-            lock (_clientListLockObj) {
-                foreach (ClientHandler ch in _clientsList) {
-                    ch.Stop();
-                }
+            _socket?.Dispose();
+            _socket = null;
+            List<ClientHandler> clients;
+            lock (_clientListLockObj)
+            {
+                clients = new List<ClientHandler>(_clientsList);
+            }
+            
+            foreach (ClientHandler ch in clients) {
+                ch.Stop();
+            }
+
+            lock (_clientListLockObj)
+            {
                 _clientsList.Clear();
             }
-                
         }
+                
+        
     }
 }

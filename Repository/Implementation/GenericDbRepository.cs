@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ namespace Repository.Implementation
             this.factory = factory;
         }
         //public string GetConnectionString => _connectionString;
-
+         
         
         private IDbCommand CreateDbCommand(string query, IDbConnection createdConnection, IDbTransaction transaction)
         {
@@ -36,10 +37,10 @@ namespace Repository.Implementation
             using (var cmd = CreateDbCommand($"INSERT INTO {entity.TableName} OUTPUT inserted.{entity.IDName} VALUES(" +
                 $"{entity.InsertValues})", createdConnection, transaction))
             {
+                
                 object primaryKeyValue = cmd.ExecuteScalar();
                 entity.GetType().GetProperty(entity.IDName).SetValue(entity, (int)primaryKeyValue);
-                
-                Console.WriteLine($"Inserted row for table {entity.TableName}");
+
             }
         }
 
@@ -59,7 +60,7 @@ namespace Repository.Implementation
             using (IDataReader reader = cmd.ExecuteReader())
             {
                 return entity.GetReaderResult(reader);
-            }
+            } 
         }
 
         public List<IEntity> GetAll(IEntity entity, IDbConnection createdConnection, IDbTransaction transaction, string condition = "1=1")
@@ -71,38 +72,15 @@ namespace Repository.Implementation
             }
         }
 
-        public int Update(IEntity entity, string condition, IDbConnection createdConnection, IDbTransaction transaction)
+        public int Update(IEntity entity, IDbConnection createdConnection, IDbTransaction transaction)
         {
-            using (var cmd = CreateDbCommand($"update {entity.TableName} set {entity.UpdateValues} where {condition}", createdConnection, transaction))
+            using (var cmd = CreateDbCommand($"update {entity.TableName} set {entity.UpdateValues} where {entity.IdCondition}", createdConnection, transaction))
             {
                 int affectedRows = cmd.ExecuteNonQuery();
-                if (affectedRows != 1) throw new Exception("Greška pri ažuriranju baze");
+                if (affectedRows < 1) throw new Exception("Greška pri ažuriranju baze");
                 return affectedRows;
             }
         }
 
-        //public void OpenConnection()
-        //{
-        //    _connection.OpenConnection();
-        //}
-        //public void BeginTransaction()
-        //{
-        //    _connection.BeginTransaction();
-        //}
-
-        //public void CloseConnection()
-        //{
-        //    _connection.CloseConnection();
-        //}
-
-        //public void Commit()
-        //{
-        //    _connection.Commit();
-        //}
-
-        //public void RollBack()
-        //{
-        //    _connection.Rollback();
-        //}
     }
 }

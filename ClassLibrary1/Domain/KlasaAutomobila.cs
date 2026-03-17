@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Text.Json.Serialization;
 namespace Common.Domain
 {
     [Serializable]
@@ -18,19 +18,22 @@ namespace Common.Domain
         /// <summary>
         //Implementacija interfejsa
         /// </summary>
-        public string TableName => "KlasaAutomobila";
+        public string TableName => "KlasaVozila";
 
         public string IDName => "KlasaID";
         public string IdCondition => $"KlasaID = {KlasaID}";
 
-        public string InsertValues => throw new NotImplementedException();
+        [JsonIgnore]
+        public string InsertValues => "";
 
         public string SelectValues => "*";
 
-        public string UpdateValues => throw new NotImplementedException();
+        [JsonIgnore]
+        public string UpdateValues => "";
+        
+        public string JoinCondition => "";
 
-        public string JoinCondition => throw new NotImplementedException();
-
+        
         public IEntity GetReaderResult(IDataReader reader)
         {
             throw new NotImplementedException();

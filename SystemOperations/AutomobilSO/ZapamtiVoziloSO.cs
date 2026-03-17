@@ -18,7 +18,7 @@ namespace SystemOperations.AutomobilSO
             try
             {
                 Automobil auto = (Automobil)entity;
-                //validate here
+                
                 genericRepo.Add(auto, createdConnection, transaction);
                 Result = auto;
             }

@@ -1,5 +1,6 @@
 ﻿using Common.Communication;
 using Common.Domain;
+using Common.Exceptions;
 using Repository.Implementation;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,8 @@ namespace Server
         public event EventHandler LoggedOutClient;
         bool signal;
 
-        //public Aministrator _logedAdmin
+        public Radnik radnik;
+
         public ClientHandler(Socket client, ServerController controller)
         {
             _clientSocket = client;
@@ -32,7 +34,6 @@ namespace Server
             _serializer = new JsonNetworkSerializer(new NetworkStream(client));
             signal = true;
         }
-        //internal?
         internal void HandleRequest()
         {
             try
@@ -71,28 +72,208 @@ namespace Server
                 switch (req.Operation)
                 {
                     case OperationType.Login:
+                        Radnik r = _controller.Login(_serializer.ReadType<Radnik>(req.Argument));
+                        if (r != null)
+                        {
+                            if (!Session.currentlyLoggedWorkers.Contains(r))
+                            {
+                                radnik = r;
+                                res.Result = r;
+                                res.Message = "Uspešna prijava na sistem!";
+                                res.IsSuccessful = true;
+                                Session.currentlyLoggedWorkers.Add(r);
+                                LoggedInClient?.Invoke(this, EventArgs.Empty);
+
+                            }
+                            else
+                            {
+                                res.IsSuccessful = false;
+                                res.ErrorMessage = "Radnik sa ovim korisničkim imenom je već ulogovan";
+                            }
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Neuspešna prijava, radnik ne postoji u sistemu!";
+                        }
                         break;
+                    case OperationType.LogOut:
+                        Session.currentlyLoggedWorkers.Remove(radnik);
+                        LoggedOutClient.Invoke(this, EventArgs.Empty);
+                        res.IsSuccessful = true;
+                        res.Message = "uspesno ste se izlogovali (CH msg)";
+                        break;
+
+                    ////Cars part
                     case OperationType.AddNewCar:
-                        Automobil a=_controller.AddAutomobil((Automobil) req.Argument);
+                        Automobil a = _controller.AddAutomobil(_serializer.ReadType<Automobil>(req.Argument));
                         if (a != null)
                         {
                             res.Result = a;
                             res.IsSuccessful = true;
                             res.Message = "Sistem created new car object.";
                         }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Vozilo nije sačuvano";
+                        }
+                        break;
+                    case OperationType.GetCarClass:
+                        List<KlasaAutomobila> list = _controller.GetAllCarClass(new KlasaAutomobila());
+                        res.Result = list;
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        break;
+                    case OperationType.FilterCars:
+                        List<Automobil> listCars = _controller.GetAllOrFillteredListCars(_serializer.ReadType<Automobil>(req.Argument));
+                        res.Result = listCars;
+                        if (res.Result != null && listCars.Count!=0)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "ne postoji automobil sa datom regitracijom.";
+                        }
+                       
+                        break;
+                    case OperationType.UpdateCar:
+                        res.Result = _controller.UpdateCar(_serializer.ReadType<Automobil>(req.Argument));
+                        if ((int)res.Result == 1)
+                            res.IsSuccessful = true;
+                        else { 
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Vozilo nije obrisano!";
+                        }
+                        break;
+                    case OperationType.DeleteCar:
+                        res.Result=_controller.DeleteCar(_serializer.ReadType<Automobil>(req.Argument));
+                        if ((int)res.Result == 1)
+                            res.IsSuccessful = true;
+                        else { 
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Vozilo nije izmenjeno!";
+                        }
+                        break;
+
+                    //Users
+                    case OperationType.GetAllUsers:
+                        res.Result = _controller.GetAllUsers(new Korisnik());
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
                         else {
                             res.IsSuccessful = false;
-                            res.ErrorMessage = "Sistem cant create new car object";
+                            res.ErrorMessage = "Ne postoje korisnici u bazi!";
+                        }
+                        break;
+
+                    case OperationType.GetFilteredUsers:
+                        res.Result = _controller.GetFilteredUsers(_serializer.ReadType<Korisnik>(req.Argument));
+                        List<Korisnik> korisnici = (List<Korisnik>)res.Result;
+
+                        if (korisnici.Count>0)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Korisnici koji odgovaraju zadatoj vrednosti nisu pronadjeni!";
+                        }
+                        break;
+                    case OperationType.GetAllPlaces:
+                        res.Result = _controller.GetAllPlaces(new Mesto());
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        break;
+                    case OperationType.AddUsers:
+                        Korisnik kor = _controller.AddUser(_serializer.ReadType<Korisnik>(req.Argument));
+                        if (kor != null)
+                        {
+                            res.Result = kor;
+                            res.IsSuccessful = true;
+                            res.Message = "Sistem je zapamtio novog korisnika!";
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Sistem ne može da sačuva novog korisnika!";
+                        }
+                        break;
+                        
+
+                    //rent
+                    case OperationType.AddRent:
+                        Iznajmljivanje rent = _controller.AddRent(_serializer.ReadType<Iznajmljivanje>(req.Argument));
+                        if (rent != null)
+                        {
+                            res.Result = rent;
+                            res.IsSuccessful = true;
+                            res.Message = "Sistem zapamtio novo iznajmljivanje.";
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Sistem ne moze da zapamti novo iznajmljivanje";
+                        }
+                        break;
+                    case OperationType.GetListRents:
+                        res.Result = _controller.GetListRents(_serializer.ReadType<Iznajmljivanje>(req.Argument));
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Ne postoje iznajmljivanja za korisnika!";
+                        }
+                        break;
+                    case OperationType.GetListRentItems:
+                        res.Result = _controller.GetListRentItems(_serializer.ReadType<Iznajmljivanje>(req.Argument));
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Sistem ne moze da vrati stavke iznajmljivanja za zadato iznajmljivanje.";
+                        }
+                        break;
+                    case OperationType.ReleaseRent:
+                        res.Result = _controller.ReleaseRent(_serializer.ReadType<Iznajmljivanje>(req.Argument));
+                        if ((int)res.Result > 0)
+                            res.IsSuccessful = true;
+                        
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Sistem ne moze da razduzi iznajmljivanje!";
                         }
                         break;
                     default:
                         break;
                 }
             }
+            catch (ValidationException ve)
+            {
+                res.IsSuccessful = false;
+                res.ErrorMessage = ve.Message;
+            }
             catch (Exception ex)
             {
                 res.IsSuccessful = false;
                 res.ErrorMessage = ex.Message;
+                Debug.WriteLine(">>>>>>>" + ex.Message);
             }
             return res;
         }
@@ -107,7 +288,8 @@ namespace Server
                     _clientSocket.Shutdown(SocketShutdown.Both);
                     _clientSocket.Close();
                     _clientSocket = null;
-                    LoggedOutClient.Invoke(this, EventArgs.Empty);
+                    Session.currentlyLoggedWorkers.Remove(radnik);
+                    LoggedOutClient?.Invoke(this, EventArgs.Empty);
                 }
             }
         }

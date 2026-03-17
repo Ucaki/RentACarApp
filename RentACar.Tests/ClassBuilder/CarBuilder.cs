@@ -12,10 +12,14 @@ namespace RentACar.Tests.ClassBuilder
         private Automobil _car;
         public CarBuilder() { 
             _car = new Automobil() 
-           { RegistarskiBroj = "BG000ts", Marka = "bmw", Model = "x13", Godiste = 2023, Klasa = new KlasaAutomobila() { KlasaID = 2 }, Status = StatusAutomobila.dostupan };
+           { RegistarskiBroj = "BG000ts", Marka = "bmw", Model = "x13", Kilometraza=20000, Godiste = 2023, Klasa = new KlasaAutomobila() { KlasaID = 2 }, Status = StatusAutomobila.dostupan };
         }
         public CarBuilder WithRegistarski(string registration) {
             _car.RegistarskiBroj = registration;
+            return this;
+        }
+        public CarBuilder WithKilometraza(int kilometraza) {
+            _car.Kilometraza = kilometraza;
             return this;
         }
         public CarBuilder WithBrand(string brand)

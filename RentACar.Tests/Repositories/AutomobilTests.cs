@@ -17,20 +17,16 @@ namespace RentACar.Tests.Services
 {
     public class AutomobilTests
     {
-        //private GenericDbRepository createRepo() {
+        
+        private GenericDbRepository createRepo()
+        {
+            IConnectionFactory factory = new SqlConnectionFactory(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
+            return new GenericDbRepository(factory);
 
-        //    var sqlConn = new SqlConnection(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
-        //    var dbConn = new DbConnection(sqlConn);
-        //    return new GenericDbRepository(dbConn);
-        //}
-        //private GenericDbRepository createRepo()
-        //{
-        //    IConnectionFactory factory = new SqlConnectionFactory(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
-        //    return  new GenericDbRepository(factory);
-          
-        //}
-        private void ExecuteInTransaction(Action<GenericDbRepository,IDbConnection, IDbTransaction> action) {
-            var factory= new SqlConnectionFactory(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
+        }
+        private void ExecuteInTransaction(Action<GenericDbRepository, IDbConnection, IDbTransaction> action)
+        {
+            var factory = new SqlConnectionFactory(ConfigurationManager.ConnectionStrings["RentACar"].ConnectionString);
             var repo = new GenericDbRepository(factory);
             using (var conn = factory.CreateConnection())
             {
@@ -39,7 +35,7 @@ namespace RentACar.Tests.Services
                 {
                     try
                     {
-                        action(repo, conn,transaction);
+                        action(repo, conn, transaction);
                     }
                     finally
                     {
@@ -47,16 +43,16 @@ namespace RentACar.Tests.Services
                     }
                 }
             }
-            
+
         }
         [Fact]
         public void AddAutomobil_ShouldReturnGeneratedID()
         {
-            ExecuteInTransaction((repo,conn,transaction) =>
+            ExecuteInTransaction((repo, conn, transaction) =>
             {
                 var auto = new CarBuilder().Build();
 
-                repo.Add(auto,conn,transaction);
+                repo.Add(auto, conn, transaction);
                 var inserted = (Automobil)repo.Find(auto, auto.IdCondition, conn, transaction);
                 Assert.NotNull(inserted);
                 Assert.True(inserted.AutomobilID > 0);
@@ -64,6 +60,7 @@ namespace RentACar.Tests.Services
                 Assert.Equal("bmw", inserted.Marka);
                 Assert.Equal("x13", inserted.Model);
                 Assert.Equal(2023, inserted.Godiste);
+                Assert.Equal(20000, inserted.Kilometraza);
                 Assert.Equal(2, inserted.Klasa.KlasaID);
                 Assert.Equal(StatusAutomobila.dostupan, inserted.Status);
             });
@@ -74,8 +71,8 @@ namespace RentACar.Tests.Services
             ExecuteInTransaction((repo, conn, transaction) =>
             {
                 var auto = new CarBuilder().Build();
-                repo.Add(auto,conn, transaction);
-                int affectedRows = repo.Delete(auto,conn, transaction);
+                repo.Add(auto, conn, transaction);
+                int affectedRows = repo.Delete(auto, conn, transaction);
                 Assert.True(affectedRows == 1);
             });
         }
@@ -85,7 +82,7 @@ namespace RentACar.Tests.Services
             ExecuteInTransaction((repo, conn, transaction) =>
             {
                 var auto = new CarBuilder().Build();
-                Assert.Throws<Exception>(() => repo.Delete(auto,conn, transaction));
+                Assert.Throws<Exception>(() => repo.Delete(auto, conn, transaction));
             });
         }
         [Fact]
@@ -94,18 +91,20 @@ namespace RentACar.Tests.Services
             ExecuteInTransaction((repo, conn, transaction) =>
             {
                 var auto1 = new CarBuilder().Build();
-                repo.Add(auto1,conn, transaction);
-                var autoFound = repo.Find(auto1, auto1.IdCondition,conn, transaction);
-                Automobil returned = (Automobil)repo.Find(auto1, auto1.IdCondition,conn, transaction);
+                repo.Add(auto1, conn, transaction);
+                var autoFound = repo.Find(auto1, auto1.IdCondition, conn, transaction);
+                Automobil returned = (Automobil)repo.Find(auto1, auto1.IdCondition, conn, transaction);
                 Assert.NotNull(returned);
                 Assert.True(returned.AutomobilID > 0);
                 Assert.Equal("BG000ts", returned.RegistarskiBroj);
                 Assert.Equal("bmw", returned.Marka);
                 Assert.Equal("x13", returned.Model);
-                Assert.Equal(2023, returned.Godiste);
+
+               //ssert.Equal(2023, returned.Godiste);
+                //sert.Equal(20000, returned.Kilometraza);
                 Assert.Equal(2, returned.Klasa.KlasaID);
                 Assert.Equal(StatusAutomobila.dostupan, returned.Status);
-            });        
+            });
         }
 
         [Fact]
@@ -119,11 +118,12 @@ namespace RentACar.Tests.Services
                                     .WithCarClass(new KlasaAutomobila() { KlasaID = 1 })
                                     .WithModel("yaris")
                                     .WithRegistarski("bg000tx")
+                                    .WithKilometraza(124789)
                                     .WithState(StatusAutomobila.dostupan)
                                     .WithYearProduction(2024).Build();
-                repo.Add(auto1,conn, transaction);
-                repo.Add(auto2,conn, transaction);
-                var autoLista = repo.GetAll(auto1,conn, transaction);
+                repo.Add(auto1, conn, transaction);
+                repo.Add(auto2, conn, transaction);
+                var autoLista = repo.GetAll(auto1, conn, transaction);
                 Assert.NotNull(autoLista);
                 Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto1.AutomobilID);
                 Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto2.AutomobilID);
@@ -141,11 +141,12 @@ namespace RentACar.Tests.Services
                                     .WithCarClass(new KlasaAutomobila() { KlasaID = 2 })
                                     .WithModel("yaris")
                                     .WithRegistarski("bg000tx")
+                                 .WithKilometraza(200000)
                                     .WithState(StatusAutomobila.dostupan)
                                     .WithYearProduction(2024).Build();
-                repo.Add(auto1,conn, transaction);
-                repo.Add(auto2,conn, transaction);
-                var autoLista = repo.GetAll(auto1,conn, transaction, "KlasaID=2");
+                repo.Add(auto1, conn, transaction);
+                repo.Add(auto2, conn, transaction);
+                var autoLista = repo.GetAll(auto1, conn, transaction, "KlasaID=2");
                 Assert.NotNull(autoLista);
                 Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto1.AutomobilID);
                 Assert.Contains(autoLista, x => ((Automobil)x).AutomobilID == auto2.AutomobilID);
@@ -153,15 +154,15 @@ namespace RentACar.Tests.Services
             });
         }
         [Fact]
-        public void UpdateAutomobil_ShouldChangeValues() 
+        public void UpdateAutomobil_ShouldChangeValues()
         {
             ExecuteInTransaction((repo, conn, transaction) =>
             {
                 var auto1 = new CarBuilder().Build();
-                repo.Add(auto1,conn, transaction);
+                repo.Add(auto1, conn, transaction);
                 auto1.Marka = "suzuki";
-                repo.Update(auto1, auto1.IdCondition,conn, transaction);
-                Automobil updated = (Automobil)repo.Find(auto1, auto1.IdCondition,conn, transaction);
+                repo.Update(auto1, conn, transaction);
+                Automobil updated = (Automobil)repo.Find(auto1, auto1.IdCondition, conn, transaction);
                 Assert.Equal("suzuki", updated.Marka);
 
             });

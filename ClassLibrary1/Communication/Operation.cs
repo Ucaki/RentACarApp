@@ -8,6 +8,19 @@ namespace Common.Communication
 {
     public enum OperationType { 
         Login,
-        AddNewCar
+        AddNewCar,
+        GetCarClass,
+        LogOut,
+        FilterCars,
+        DeleteCar,
+        UpdateCar,
+        GetAllUsers,
+        GetFilteredUsers,
+        GetAllPlaces,
+        AddUsers,
+        AddRent,
+        GetListRents,
+        ReleaseRent,
+        GetListRentItems
     }
 }
