@@ -165,24 +165,24 @@ namespace Client.Controller
             return _communication.SendRequest<List<Iznajmljivanje>>(req);
         }
 
-        internal void ReleaseRent(Iznajmljivanje iznajmljivanjeZaRazduzivanje)
+        internal void ReleaseRent(Iznajmljivanje rent)
         {
             Request req = new Request
             {
                 Operation = OperationType.ReleaseRent,
-                Argument = iznajmljivanjeZaRazduzivanje
+                Argument = rent
             };
             _communication.SendRequest(req);
         }
 
-        internal int addRentsSSS(BindingList<Iznajmljivanje> listRents)
+        internal List<StavkaIznajmljivanja> getListRentsItems(Iznajmljivanje rent)
         {
             Request req = new Request
             {
-                Operation = OperationType.SlozeniKey1DodajListuIznajmljivanja,
-                Argument = listRents
+                Operation = OperationType.GetListRentItems,
+                Argument = rent
             };
-            return _communication.SendRequest(req);
+            return _communication.SendRequest<List<StavkaIznajmljivanja>>(req);
         }
     }
 }

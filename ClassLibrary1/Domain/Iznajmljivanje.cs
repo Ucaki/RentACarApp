@@ -21,7 +21,7 @@ namespace Common.Domain
         public DateTime DatumKreiranja { get; set; }
         public Korisnik Korisnik { get; set; }
         public Radnik Radnik { get; set; }
-        public List<StavkaIznajmljivanja> listaStavki { get; set; }
+        public List<StavkaIznajmljivanja> ListaStavki { get; set; }
 
         [Browsable(false)]
         public string TableName => "Iznajmljivanje";

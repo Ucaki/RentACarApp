@@ -20,6 +20,7 @@ namespace Common.Communication
         AddUsers,
         AddRent,
         GetListRents,
-        ReleaseRent
+        ReleaseRent,
+        GetListRentItems
     }
 }

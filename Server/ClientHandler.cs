@@ -134,6 +134,11 @@ namespace Server
                         {
                             res.IsSuccessful = true;
                         }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "ne postoji automobil sa datom regitracijom.";
+                        }
                        
                         break;
                     case OperationType.UpdateCar:
@@ -232,10 +237,23 @@ namespace Server
                             res.ErrorMessage = "Ne postoje iznajmljivanja za korisnika!";
                         }
                         break;
+                    case OperationType.GetListRentItems:
+                        res.Result = _controller.GetListRentItems(_serializer.ReadType<Iznajmljivanje>(req.Argument));
+                        if (res.Result != null)
+                        {
+                            res.IsSuccessful = true;
+                        }
+                        else
+                        {
+                            res.IsSuccessful = false;
+                            res.ErrorMessage = "Sistem ne moze da vrati stavke iznajmljivanja za zadato iznajmljivanje.";
+                        }
+                        break;
                     case OperationType.ReleaseRent:
                         res.Result = _controller.ReleaseRent(_serializer.ReadType<Iznajmljivanje>(req.Argument));
-                        if ((int)res.Result == 1)
+                        if ((int)res.Result > 0)
                             res.IsSuccessful = true;
+                        
                         else
                         {
                             res.IsSuccessful = false;

@@ -119,12 +119,6 @@
     <Compile Include="UserControls\UCShowCustomer.Designer.cs">
       <DependentUpon>UCShowCustomer.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\UCAddRent.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\UCAddRent.Designer.cs">
-      <DependentUpon>UCAddRent.cs</DependentUpon>
-    </Compile>
     <Compile Include="UserControls\UCUpdateRent.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -164,9 +158,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCShowCustomer.resx">
       <DependentUpon>UCShowCustomer.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\UCAddRent.resx">
-      <DependentUpon>UCAddRent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UserControls\UCUpdateRent.resx">
       <DependentUpon>UCUpdateRent.cs</DependentUpon>

@@ -16,20 +16,20 @@ namespace SystemOperations.RentSO
         {
             try
             {
+                int count = 0;
                 Iznajmljivanje rent = (Iznajmljivanje)entity;
-                rent.Status = StatusIznajmljivanja.zavrseno;
-
-                Automobil auto = rent.Automobil;
-                auto.Status = StatusAutomobila.dostupan;
-                auto.Kilometraza = rent.ZavrsnaKM ?? 0;
-                
-                genericRepo.Update(rent, createdConnection, transaction);
-                Result = genericRepo.Update(auto, createdConnection, transaction);
-                //Result = rent;
+                count+=genericRepo.Update(rent,createdConnection, transaction);
+                foreach (StavkaIznajmljivanja item in rent.ListaStavki) {
+                    Automobil a = item.Automobil;
+                    a.Kilometraza = item.ZavrsnaKM ?? a.Kilometraza;
+                    count += genericRepo.Update(a, createdConnection, transaction);
+                    count += genericRepo.Update(item, createdConnection, transaction);
+                }
+                Result = count;
             }
             catch (Exception )
             {
-                throw new Exception("Sistem ne moze da razduzi");
+                throw;
             }
         }
     }

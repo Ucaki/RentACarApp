@@ -32,8 +32,8 @@ namespace Client.UserControls
         private void InitializeComponent()
         {
             this.dgvRentsForUser = new System.Windows.Forms.DataGridView();
-            this.btnUpdateRent = new System.Windows.Forms.Button();
-            this.txtKm = new System.Windows.Forms.TextBox();
+            this.btnShowRent = new System.Windows.Forms.Button();
+            this.btnReleaseRentItems = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRentsForUser)).BeginInit();
             this.SuspendLayout();
@@ -43,44 +43,49 @@ namespace Client.UserControls
             this.dgvRentsForUser.AllowUserToAddRows = false;
             this.dgvRentsForUser.AllowUserToDeleteRows = false;
             this.dgvRentsForUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvRentsForUser.Location = new System.Drawing.Point(14, 21);
+            this.dgvRentsForUser.Location = new System.Drawing.Point(18, 50);
             this.dgvRentsForUser.Name = "dgvRentsForUser";
             this.dgvRentsForUser.ReadOnly = true;
-            this.dgvRentsForUser.Size = new System.Drawing.Size(600, 252);
+            this.dgvRentsForUser.Size = new System.Drawing.Size(600, 224);
             this.dgvRentsForUser.TabIndex = 0;
             // 
-            // btnUpdateRent
+            // btnShowRent
             // 
-            this.btnUpdateRent.Location = new System.Drawing.Point(389, 313);
-            this.btnUpdateRent.Name = "btnUpdateRent";
-            this.btnUpdateRent.Size = new System.Drawing.Size(137, 49);
-            this.btnUpdateRent.TabIndex = 1;
-            this.btnUpdateRent.Text = "Razduži";
-            this.btnUpdateRent.UseVisualStyleBackColor = true;
+            this.btnShowRent.FlatAppearance.BorderColor = System.Drawing.Color.LightBlue;
+            this.btnShowRent.Location = new System.Drawing.Point(254, 313);
+            this.btnShowRent.Name = "btnShowRent";
+            this.btnShowRent.Size = new System.Drawing.Size(137, 49);
+            this.btnShowRent.TabIndex = 1;
+            this.btnShowRent.Text = "Izaberi iznajmljivanje";
+            this.btnShowRent.UseVisualStyleBackColor = true;
             // 
-            // txtKm
+            // btnReleaseRentItems
             // 
-            this.txtKm.Location = new System.Drawing.Point(141, 325);
-            this.txtKm.Name = "txtKm";
-            this.txtKm.Size = new System.Drawing.Size(100, 20);
-            this.txtKm.TabIndex = 2;
+            this.btnReleaseRentItems.Location = new System.Drawing.Point(111, 313);
+            this.btnReleaseRentItems.Name = "btnReleaseRentItems";
+            this.btnReleaseRentItems.Size = new System.Drawing.Size(137, 49);
+            this.btnReleaseRentItems.TabIndex = 2;
+            this.btnReleaseRentItems.Text = "Razduži";
+            this.btnReleaseRentItems.UseVisualStyleBackColor = true;
+            this.btnReleaseRentItems.Visible = false;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 328);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(166, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(102, 13);
+            this.label1.Size = new System.Drawing.Size(278, 21);
             this.label1.TabIndex = 3;
-            this.label1.Text = "Zavrsna kilometraza";
+            this.label1.Text = "Izmenite stavke koje želite da razdužite";
             // 
             // UCUpdateRent
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txtKm);
-            this.Controls.Add(this.btnUpdateRent);
+            this.Controls.Add(this.btnReleaseRentItems);
+            this.Controls.Add(this.btnShowRent);
             this.Controls.Add(this.dgvRentsForUser);
             this.Name = "UCUpdateRent";
             this.Size = new System.Drawing.Size(634, 412);
@@ -93,12 +98,12 @@ namespace Client.UserControls
         #endregion
 
         private System.Windows.Forms.DataGridView dgvRentsForUser;
-        private System.Windows.Forms.Button btnUpdateRent;
-        private TextBox txtKm;
+        private System.Windows.Forms.Button btnShowRent;
+        private Button btnReleaseRentItems;
         private Label label1;
 
         public DataGridView DgvRentsForUser { get => dgvRentsForUser; set => dgvRentsForUser = value; }
-        public Button BtnUpdateRent { get => btnUpdateRent; set => btnUpdateRent = value; }
-        public TextBox TxtKm { get => txtKm; set => txtKm = value; }
+        public Button BtnShowRent { get => btnShowRent; set => btnShowRent = value; }
+        public Button BtnReleaseRentItems { get => btnReleaseRentItems; set => btnReleaseRentItems = value; }
     }
 }

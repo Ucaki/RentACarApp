@@ -118,6 +118,11 @@ namespace Server
             return (int)so.Result;
         }
 
-      
+        internal List<StavkaIznajmljivanja> GetListRentItems(Iznajmljivanje iznajmljivanje)
+        {
+            BaseSO so = new GetListRentItems(_repository, _factory);
+            so.ExecuteTemplate(iznajmljivanje);
+            return (List<StavkaIznajmljivanja>)so.Result;
+        }
     }
 }

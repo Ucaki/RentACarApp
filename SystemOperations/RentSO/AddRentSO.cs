@@ -17,11 +17,20 @@ namespace SystemOperations.RentSO
             try
             {
                 Iznajmljivanje rent = (Iznajmljivanje)entity;
-                Automobil auto = rent.Automobil;
-                auto.Status = StatusAutomobila.nedostupan;
-                
                 genericRepo.Add(rent, createdConnection, transaction);
-                genericRepo.Update(auto, createdConnection, transaction);
+                for (int i = 1; i <= rent.ListaStavki.Count; i++)
+                {
+                    Automobil auto = rent.ListaStavki[i].Automobil;
+                    auto.Status = StatusAutomobila.nedostupan;
+                    genericRepo.Update(auto, createdConnection, transaction);
+
+                    StavkaIznajmljivanja si = rent.ListaStavki[i];
+                    si.IznajmljivanjeID = rent.IznajmljivanjeID;
+                    si.RBr = i;
+                    genericRepo.Add(si, createdConnection, transaction);
+
+                }
+                
                 Result = rent;
             }
             catch (Exception ) 

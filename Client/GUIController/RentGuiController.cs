@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -22,15 +23,17 @@ namespace Client.GUIController
         Automobil automobil;
         Radnik radnik;
         UCRent _ucRent;
-        UCAddRent _ucAddRent;
         UCUpdateRent _ucUpdateRent;
-        BindingList<Automobil> listCars;
+
         BindingList<Korisnik> listUsers;
-        BindingList<Iznajmljivanje> listRents;
+        BindingList<StavkaIznajmljivanja> listStavkaIznajmljivanja;
         public Action<UserControl> OnPanelChangeRequested { get; internal set; }
+
+        Iznajmljivanje rent;
         public RentGuiController(ClientController clientController)
         {
             _clientController = clientController;
+            listStavkaIznajmljivanja = new BindingList<StavkaIznajmljivanja>();
         }
 
 
@@ -38,30 +41,26 @@ namespace Client.GUIController
         {
             radnik = r;
             _ucRent = new UCRent();
-
-            List<KlasaAutomobila> classes = _clientController.GetClassCarForCmb();
-            classes.Insert(0, new KlasaAutomobila { KlasaID = -1, Naziv = "All" });
-            _ucRent.CmbClassCar.DataSource = classes;
-
-
+            //get users list and filter
             listUsers = new BindingList<Korisnik>(_clientController.GetAllUsers());
             _ucRent.DgvUser.DataSource = listUsers;
             _ucRent.TxtName.TextChanged += TxtName_TextChanged;
 
-
-            listCars = new BindingList<Automobil>(_clientController.FilterCars(new Automobil { FilterQuerry = "1=1", Klasa = new KlasaAutomobila() }));
-            _ucRent.DgvCar.DataSource = listCars;
-            _ucRent.CmbClassCar.SelectedIndexChanged += CmbClassCar_SelectedIndexChanged;
-
+            //dodaj iznajmljivanje u bazu
             _ucRent.BtnAddRent.Click += BtnAddRent_click;
+            //prikazi iznajmljivanja korisnika
             _ucRent.BtnShowUserRents.Click += BtnShowUserRents_click;
-
+            _ucRent.BtnDodajStavku.Click += BtnDodajStavku_click;
+            _ucRent.BtnObrisiStavku.Click += BtnObrisiStavku_click;
+            _ucRent.TxtPopust.TextChanged += txtPopust_TextChanged;
+            listStavkaIznajmljivanja.ListChanged += BindingList_ListChanged;
 
             OnPanelChangeRequested?.Invoke(_ucRent);
         }
         //dgvUsers + filter
         private void TxtName_TextChanged(object sender, EventArgs e)
         {
+            
             try
             {
                 List<Korisnik> l = new List<Korisnik>();
@@ -103,106 +102,13 @@ namespace Client.GUIController
                 Debug.WriteLine(">>>>" + ex.Message);
             }
         }
-
-        //dgvCars + filter
-        private void CmbClassCar_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                var selectedClass = (KlasaAutomobila)_ucRent.CmbClassCar.SelectedItem;
-                List<Automobil> updatedList;
-                if (selectedClass.KlasaID == -1)
-                {
-                    updatedList = _clientController.FilterCars(new Automobil { FilterQuerry = "1=1", Klasa = new KlasaAutomobila() });
-                }
-                else
-                {
-                    updatedList = _clientController.FilterCars(new Automobil { FilterQuerry = "KlasaVozila.KlasaID=" + selectedClass.KlasaID, Klasa = new KlasaAutomobila() });
-                }
-                listCars.Clear();
-                foreach (var car in updatedList)
-                {
-                    listCars.Add(car);
-                }
-
-            }
-            catch (SystemOperationException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (ServerCommunicationException ex)
-            {
-                MessageBox.Show(ex.Message);
-                _clientController.CloseConnection();
-                Form main = Application.OpenForms["FrmMain"];
-                main.DialogResult = DialogResult.Retry;
-
-            }
-        }
-
         private void BtnAddRent_click(object sender, EventArgs e)
         {
-            _ucAddRent = new UCAddRent();
-            
-            korisnik = (Korisnik)_ucRent.DgvUser.CurrentRow?.DataBoundItem as Korisnik;
-            if (korisnik == null)
-            {
-                MessageBox.Show("Nema izabranih korisnika!");
-                return;
-            }
-            automobil = (Automobil)_ucRent.DgvCar.CurrentRow?.DataBoundItem as Automobil;
-            if (automobil == null)
-            {
-                MessageBox.Show("Nema izabranih korisnika!");
-                return;
-            }
-            if (korisnik == null || automobil == null)
-            {
-                MessageBox.Show("Niste odabrali");
-                return;
-            }
-            _ucAddRent.TxtUser.Text = korisnik.Ime + ", " + korisnik.Prezime + ", " + korisnik.Email;
-            _ucAddRent.TxtCar.Text = automobil.Marka + ", " + automobil.Model + ", " + automobil.RegistarskiBroj;
-            _ucAddRent.TxtKm.Text = automobil.Kilometraza.ToString();
-
-            //   decimal dis = 0;
-            //if (!decimal.TryParse(_ucAddRent.TxtDiscount.Text, out dis))
-            //{
-            //    MessageBox.Show("Popust mora biti broj!");
-            //    return ;
-            //}
-
-            //if (dis < 0 || dis > 100)
-            //{
-            //    MessageBox.Show("Popust mora biti između 0 i 100%");
-            //    return ;
-            //}
-            _ucAddRent.TxtDiscount.TextChanged += txtPopust_TextChanged;
-            _ucAddRent.DateTimePicker.ValueChanged += dateTimePickerDo_ValueChanged;
-            _ucAddRent.BtnSaveRent.Click += buttonSaveRent_click;
-           // _ucAddRent.BtnDodajIznajmljivanjeUListu.Click += buttonDodajULustu_click;
-            OnPanelChangeRequested?.Invoke(_ucAddRent);
-        }
-
-
-/*
-        private void buttonDodajULustu_click(object sender, EventArgs e) {
-
             try
             {
-                calculator();
-                Iznajmljivanje rent = new Iznajmljivanje();
-                rent.Status = StatusIznajmljivanja.aktivno;
-                rent.DatumOd = DateTime.Now;
-                if (_ucAddRent.DateTimePicker.Value < DateTime.Now)
-                {
-                    MessageBox.Show("Neispravcan datum");
-                    return;
-                }
-                rent.DatumDo = _ucAddRent.DateTimePicker.Value;
-                rent.PocetnaKM = automobil.Kilometraza;
+                Iznajmljivanje iz = new Iznajmljivanje();
                 decimal dis = 0;
-                if (!decimal.TryParse(_ucAddRent.TxtDiscount.Text, out dis))
+                if (!decimal.TryParse(_ucRent.TxtPopust.Text, out dis))
                 {
                     MessageBox.Show("Popust mora biti broj!");
                     return;
@@ -213,64 +119,17 @@ namespace Client.GUIController
                     MessageBox.Show("Popust mora biti između 0 i 100%");
                     return;
                 }
-                calculator();
-                rent.Popust = (int)dis;
-                decimal brojDecimal;
-                if (decimal.TryParse(_ucAddRent.TxtUgovorenaCena.Text, out brojDecimal))
-                {
-                    rent.UgovorenaCena = brojDecimal;
+                iz.ListaStavki = new List<StavkaIznajmljivanja>(listStavkaIznajmljivanja);
+                iz.Popust = (int)dis;
+                int sum = 0;
+                foreach (StavkaIznajmljivanja item in listStavkaIznajmljivanja) {
+                    sum+=item.UkupnaCenaStavke;
                 }
-                //decimal brojDecimal;
-                //if (decimal.TryParse(_ucAddRent.TxtUgovorenaCena.Text, out brojDecimal))
-                //{ MessageBox.Show("Test"); }
-                //rent.UgovorenaCena = brojDecimal;
-                rent.Korisnik = korisnik;
-                automobil.FilterQuerry = $"AutomobilID = {automobil.AutomobilID}";
-                automobil = _clientController.FilterCars(automobil)[0];
-                if (automobil.Status == StatusAutomobila.dostupan)
-                {
-                    rent.Automobil = automobil;
-                }
-                else
-                {
-                    MessageBox.Show("Sistem ne moze da zapamti novo iznajmljivanje!");
-                    return;
-                }
-                rent.Radnik = radnik;
-                //
-                ////
-                /////
-                /////rent = _clientController.AddRent(rent);
-                // MessageBox.Show("Sistem zapamtio novo iznajmljivanje");
+                iz.UkupnaCena = sum * dis;
+                iz.DatumKreiranja = DateTime.Now;
+                iz.Korisnik = korisnik;
+                iz.Radnik = radnik;
 
-                listRents.Add(rent);
-                _ucAddRent.DgvListRents.DataSource = listRents;
-                OnPanelChangeRequested?.Invoke(_ucRent);
-            }
-            catch (ServerCommunicationException ex)
-            {
-                MessageBox.Show(ex.Message);
-                _clientController.CloseConnection();
-                Form main = Application.OpenForms["FrmMain"];
-                main.DialogResult = DialogResult.Retry;
-
-            }
-            catch (SystemOperationException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Unexpected error");
-                Debug.WriteLine(">>>>" + ex.Message);
-            }
-        }*/
-        private void buttonSaveRent_click(object sender, EventArgs e)
-        {
-            try
-            {
-                Iznajmljivanje iz = new Iznajmljivanje();
-                // OVDE POPUNI IZNAJMLJIVANJE IZ FORME
                 _clientController.AddRent(iz);
             }
             catch (ServerCommunicationException ex)
@@ -290,9 +149,68 @@ namespace Client.GUIController
                 MessageBox.Show("Unexpected error");
                 Debug.WriteLine(">>>>" + ex.Message);
             }
+            
         }
 
-        private void dateTimePickerDo_ValueChanged(object sender, EventArgs e)
+        private void BtnDodajStavku_click(object sender, EventArgs e)
+        {
+            StavkaIznajmljivanja si = new StavkaIznajmljivanja();
+            si.DatumOd = DateTime.Now;
+            if (_ucRent.DateTimePicker.Value.Date <= DateTime.Now.Date)
+            {
+                MessageBox.Show("Neispravan datum");
+                return;
+            }
+            si.DatumDo = _ucRent.DateTimePicker.Value;
+            si.PocetnaKM = automobil.Kilometraza;
+            si.CenaPoDanu = automobil.Klasa.OsnovnaCenaPoDanu;
+            si.UkupnaCenaStavke = si.CenaPoDanu * (si.DatumDo - DateTime.Now.Date).Days;
+            si.StatusStavke = StatusIznajmljivanja.aktivno;
+            korisnik = (Korisnik)_ucRent.DgvUser.CurrentRow?.DataBoundItem as Korisnik;
+            if (korisnik == null)
+            {
+                MessageBox.Show("Nema izabranih korisnika!");
+                return;
+            }
+            automobil.RegistarskiBroj = _ucRent.TxtRegistration.Text;
+            automobil.FilterQuerry = $"RegistarskiBroj={automobil.RegistarskiBroj}";
+            try
+            {
+                automobil = _clientController.FilterCars(automobil)[0];
+            }
+            catch (SystemOperationException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            si.Automobil = automobil;
+            //si.Automobil=
+            //si.Automobil = automobil;
+            listStavkaIznajmljivanja.Add(si);
+            _ucRent.DateTimePicker.Enabled = false;
+            _ucRent.DgvUser.Enabled = false;
+        }
+        private void BtnObrisiStavku_click(object sender, EventArgs e)
+        {
+            StavkaIznajmljivanja si = (StavkaIznajmljivanja)_ucRent.DgvStavke.CurrentRow?.DataBoundItem;
+            if (si == null)
+            {
+                MessageBox.Show("Nema stavki za brisanje!");
+                return;
+            }
+            listStavkaIznajmljivanja.Remove(si);
+            if (listStavkaIznajmljivanja.Count == 0)
+            {
+                _ucRent.DateTimePicker.Enabled = true;
+                _ucRent.DgvUser.Enabled = true;
+            }
+        }
+
+
+        private void BindingList_ListChanged(object sender, ListChangedEventArgs e)
         {
             calculator();
         }
@@ -302,15 +220,17 @@ namespace Client.GUIController
         }
         private void calculator()
         {
-            int days = (_ucAddRent.DateTimePicker.Value - DateTime.Now.Date).Days;
-            //decimal popust = 0;
-            //decimal.TryParse(_ucAddRent.TxtDiscount.Text, out popust);
             decimal popust = 0;
-            decimal.TryParse(_ucAddRent.TxtDiscount.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out popust);
-            decimal cena = automobil.Klasa.OsnovnaCenaPoDanu * days;
+            decimal.TryParse(_ucRent.TxtPopust.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out popust);
+            decimal cena = 0;
+            if (listStavkaIznajmljivanja.Count == 0) {
+                _ucRent.TxtUkupnaCena.Text = cena.ToString();
+            }
+            foreach (StavkaIznajmljivanja siz in listStavkaIznajmljivanja) {
+                cena += siz.UkupnaCenaStavke;
+            }
             cena -= (popust / 100) * cena;
-            _ucAddRent.TxtUgovorenaCena.Text = cena.ToString();
-
+            _ucRent.TxtUkupnaCena.Text = cena.ToString();
         }
 
 
@@ -319,6 +239,9 @@ namespace Client.GUIController
         private void BtnShowUserRents_click(object sender, EventArgs e)
         {
             _ucUpdateRent = new UCUpdateRent();
+            _ucUpdateRent.BtnShowRent.Visible = true;
+            _ucUpdateRent.BtnReleaseRentItems.Visible = false;
+
             korisnik = _ucRent.DgvUser.CurrentRow?.DataBoundItem as Korisnik;
 
             if (korisnik == null)
@@ -326,63 +249,69 @@ namespace Client.GUIController
                 MessageBox.Show("Iznajmljivanja koja odgovaraju zadatoj vrednosti nisu pronadjena!");
                 return;
             }
-            Iznajmljivanje i = new Iznajmljivanje() { Korisnik = korisnik, Radnik = new Radnik(), Automobil = new Automobil() { Klasa = new KlasaAutomobila() } };
-            listRents = new BindingList<Iznajmljivanje>(_clientController.getListRents(i));
-            if (listRents.Count == 0) {
+            Iznajmljivanje i = new Iznajmljivanje() { Korisnik = korisnik, Radnik = new Radnik(), ListaStavki=new List<StavkaIznajmljivanja>() };
+            BindingList<Iznajmljivanje> listRents = new BindingList<Iznajmljivanje>(_clientController.getListRents(i));
+            if (listRents.Count == 0)
+            {
                 MessageBox.Show("Iznajmljivanja koja odgovaraju zadatoj vrednosti nisu pronadjena!");
                 return;
             }
-            foreach (Iznajmljivanje izn in listRents)
-            {
-                izn.Korisnik = korisnik;
-                izn.Radnik = radnik;
-                izn.Automobil.FilterQuerry = "automobilID=" + izn.Automobil.AutomobilID;
-                izn.Automobil = _clientController.FilterCars(izn.Automobil)[0];
-            }
+            
             _ucUpdateRent.DgvRentsForUser.DataSource = listRents;
-            _ucUpdateRent.BtnUpdateRent.Click += BtnUpdateRent_click;
+            _ucUpdateRent.BtnShowRent.Click += BtnShowRentItems_click;
+            
+           _ucUpdateRent.BtnReleaseRentItems.Click += BtnUpdateRent_click;
             OnPanelChangeRequested?.Invoke(_ucUpdateRent);
         }
+        private void BtnShowRentItems_click(object sender, EventArgs e) {
+            rent = _ucUpdateRent.DgvRentsForUser.CurrentRow?.DataBoundItem as Iznajmljivanje;
+            if (rent == null) {
+                MessageBox.Show("Sistem ne moze da prikaze stavke iznajmljivanja ili niste odabrali iznajmljivanje!");
+                return;
+            }
 
+            BindingList<StavkaIznajmljivanja> listItems = new BindingList<StavkaIznajmljivanja>(_clientController.getListRentsItems(rent));
+            rent.ListaStavki = new List<StavkaIznajmljivanja>(listItems);
+            _ucUpdateRent.DgvRentsForUser.DataSource = listItems;
+            _ucUpdateRent.DgvRentsForUser.AllowUserToAddRows = false;
+            _ucUpdateRent.DgvRentsForUser.AllowUserToDeleteRows = false;
+            _ucUpdateRent.DgvRentsForUser.ReadOnly = true;
+            foreach (DataGridViewRow row in _ucUpdateRent.DgvRentsForUser.Rows) {
+                var item = (StavkaIznajmljivanja)row.DataBoundItem;
+                if (item.StatusStavke == StatusIznajmljivanja.aktivno) {
+                    row.Cells[_ucUpdateRent.DgvRentsForUser.Columns["ZavrsnaKM"].Index].ReadOnly = false;
+                }
+                else
+                    row.DefaultCellStyle.BackColor = Color.LightGray;
+            }
+            _ucUpdateRent.BtnShowRent.Enabled = false;
+            _ucUpdateRent.BtnReleaseRentItems.Enabled = true;
+        }
         private void BtnUpdateRent_click(object sender, EventArgs e)
         {
+            _ucUpdateRent.DgvRentsForUser.EndEdit();
             try
             {
-                Iznajmljivanje iznajmljivanjeZaRazduzivanje = _ucUpdateRent.DgvRentsForUser.CurrentRow?.DataBoundItem as Iznajmljivanje;
-               
+                rent.StatusIznajmljivanja = StatusIznajmljivanja.zavrseno;
+                foreach (StavkaIznajmljivanja item in rent.ListaStavki) {
 
-                if (iznajmljivanjeZaRazduzivanje == null)
-                {
-                    MessageBox.Show("Sistem ne moze da razduzi iznajmljivanje!");
-                    return;
-                }
-                if (iznajmljivanjeZaRazduzivanje.Status == StatusIznajmljivanja.zavrseno) {
-                    MessageBox.Show("Sistem ne moze da razduzi iznajmljivanje!");
-                    return;
-                }
-                int km;
-                if (string.IsNullOrEmpty(_ucUpdateRent.TxtKm.Text)) {
-                    MessageBox.Show("Niste uneli zavrsnu kilometrazu");
-                    return;
-                }
-                int broj;
+                    if(item.StatusStavke==StatusIznajmljivanja.aktivno)
+                        rent.StatusIznajmljivanja = StatusIznajmljivanja.aktivno;
 
-                if (!int.TryParse(_ucUpdateRent.TxtKm.Text, out broj))
-                {
-                    MessageBox.Show("Unesite ispravan broj!");
-                    return;
+                    if (item.ZavrsnaKM != null && item.ZavrsnaKM < item.PocetnaKM) {
+                        MessageBox.Show("Morate uneti zavrsnu kilometrazu koja je veca od početne!");
+                        return;
+                    }
+                    
+                    if (item.ZavrsnaKM != null && item.StatusStavke != StatusIznajmljivanja.zavrseno)
+                    {
+                        item.DatumDo = DateTime.Now;
+                        item.StatusStavke = StatusIznajmljivanja.zavrseno;
+                    }
                 }
-                else if (broj < iznajmljivanjeZaRazduzivanje.Automobil.Kilometraza) 
-                {
-                    MessageBox.Show("Mora da bude veca km nego pocetna");
-                    return;
-                }
-                iznajmljivanjeZaRazduzivanje.ZavrsnaKM = broj;
-                iznajmljivanjeZaRazduzivanje.DatumDo = DateTime.Now.Date;
-                
-                _clientController.ReleaseRent(iznajmljivanjeZaRazduzivanje);
-                MessageBox.Show("Iznajmljivanje je uspesno razduzeno!");
-                listRents.Clear();
+
+                _clientController.ReleaseRent(rent);
+                MessageBox.Show("Stavke iznajmljivanja su uspesno razduzene!");
             }
             catch (ServerCommunicationException ex)
             {
@@ -402,5 +331,88 @@ namespace Client.GUIController
                 Debug.WriteLine(">>>>" + ex.Message);
             }
         }
+
+
+        /*
+               private void buttonDodajULustu_click(object sender, EventArgs e) {
+
+                   try
+                   {
+                       calculator();
+                       Iznajmljivanje rent = new Iznajmljivanje();
+                       rent.Status = StatusIznajmljivanja.aktivno;
+                       rent.DatumOd = DateTime.Now;
+                       if (_ucAddRent.DateTimePicker.Value < DateTime.Now)
+                       {
+                           MessageBox.Show("Neispravcan datum");
+                           return;
+                       }
+                       rent.DatumDo = _ucAddRent.DateTimePicker.Value;
+                       rent.PocetnaKM = automobil.Kilometraza;
+                       decimal dis = 0;
+                       if (!decimal.TryParse(_ucAddRent.TxtDiscount.Text, out dis))
+                       {
+                           MessageBox.Show("Popust mora biti broj!");
+                           return;
+                       }
+
+                       if (dis < 0 || dis > 100)
+                       {
+                           MessageBox.Show("Popust mora biti između 0 i 100%");
+                           return;
+                       }
+                       calculator();
+                       rent.Popust = (int)dis;
+                       decimal brojDecimal;
+                       if (decimal.TryParse(_ucAddRent.TxtUgovorenaCena.Text, out brojDecimal))
+                       {
+                           rent.UgovorenaCena = brojDecimal;
+                       }
+                       //decimal brojDecimal;
+                       //if (decimal.TryParse(_ucAddRent.TxtUgovorenaCena.Text, out brojDecimal))
+                       //{ MessageBox.Show("Test"); }
+                       //rent.UgovorenaCena = brojDecimal;
+                       rent.Korisnik = korisnik;
+                       automobil.FilterQuerry = $"AutomobilID = {automobil.AutomobilID}";
+                       automobil = _clientController.FilterCars(automobil)[0];
+                       if (automobil.Status == StatusAutomobila.dostupan)
+                       {
+                           rent.Automobil = automobil;
+                       }
+                       else
+                       {
+                           MessageBox.Show("Sistem ne moze da zapamti novo iznajmljivanje!");
+                           return;
+                       }
+                       rent.Radnik = radnik;
+                       //
+                       ////
+                       /////
+                       /////rent = _clientController.AddRent(rent);
+                       // MessageBox.Show("Sistem zapamtio novo iznajmljivanje");
+
+                       listRents.Add(rent);
+                       _ucAddRent.DgvListRents.DataSource = listRents;
+                       OnPanelChangeRequested?.Invoke(_ucRent);
+                   }
+                   catch (ServerCommunicationException ex)
+                   {
+                       MessageBox.Show(ex.Message);
+                       _clientController.CloseConnection();
+                       Form main = Application.OpenForms["FrmMain"];
+                       main.DialogResult = DialogResult.Retry;
+
+                   }
+                   catch (SystemOperationException ex)
+                   {
+                       MessageBox.Show(ex.Message);
+                   }
+                   catch (Exception ex)
+                   {
+                       MessageBox.Show("Unexpected error");
+                       Debug.WriteLine(">>>>" + ex.Message);
+                   }
+               }*/
     }
 }
+//530053 sifra za micin laptop

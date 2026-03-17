@@ -28,7 +28,7 @@ namespace Common.Domain
 
         public string IDName => "IznajmljivanjeID";
 
-        public string IdCondition => $"RBr={RBr}";
+        public string IdCondition => $"IznajmljivanjeID={IznajmljivanjeID}";
 
         public string InsertValues => $"{IznajmljivanjeID},{RBr},'{DatumOd:yyyy-MM-dd}', '{DatumDo:yyyy-MM-dd}', {PocetnaKM},{(ZavrsnaKM.HasValue ? ZavrsnaKM.Value.ToString() : "NULL")},{CenaPoDanu},{UkupnaCenaStavke.ToString("F2", CultureInfo.InvariantCulture)},'{StatusStavke}', {Automobil.AutomobilID}";
 
