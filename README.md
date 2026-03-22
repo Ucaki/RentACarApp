@@ -101,16 +101,20 @@ The system is divided into multiple layers:
 **Technologies**
 
 
-C# (.NET 4.7.2 Framework)
-WinForms
-SQL Server
-TCP Sockets
-JSON Serialization
+- C# (.NET 4.7.2 Framework)
+- WinForms
+- SQL Server
+- TCP Sockets
+- JSON Serialization
 
 
 **Future Improvements**
 
 
--Implement automated testing for services
--Async socket handling
--REST API version
+- Implement automated testing for services
+- Async socket handling
+- REST API version
+
+**Author**
+
+Uroš Andjelković
