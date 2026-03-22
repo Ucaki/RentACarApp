@@ -2,14 +2,18 @@ Rent a car (client-server application)
         
   **Overview**:
 
+
 -This project is a client-server desktop application for managing a rent-a-car system. It supports operations such as managing vehicles, users, and rentals.
 
 -The application is built with a layered architecture and demonstrates clean separation of concerns, transaction management, and socket-based communication.
 
 
+
   **Architecture**:
 
+
 The system is divided into multiple layers:
+
 
 1.  **Client Layer (WinForms)**
 
@@ -19,6 +23,7 @@ The system is divided into multiple layers:
 
 - ClientController coordinates communication
 
+
 2.  **Communication Layer**
 
 - TCP socket communication
@@ -27,11 +32,13 @@ The system is divided into multiple layers:
 
 - Request/Response pattern
 
+
 3.  **Server Layer**
 
 - ClientHandler handles each connected client
 
 - ServerController coordinates business logic
+
 
 4.  **Business Logic Layer**
 
@@ -41,13 +48,17 @@ The system is divided into multiple layers:
 
 - Concrete SO classes execute specific operations
 
+
 5.  **Data Access Layer**
 
 - GenericDbRepository for CRUD operations
 - IEntity interface for mapping entities to database
 - SQL Server database
 
-  **Features**
+
+
+**Features**
+
   
 - Custom TCP socket communication
 - JSON-based message exchange
@@ -58,12 +69,17 @@ The system is divided into multiple layers:
 - Automatic transaction handling (commit/rollback)
 - Connection pooling via SQL Server
 
-  **Database Configuration**
+
+**Database Configuration**
+
 
 -Connection string is defined in server App.config:
 <connectionStrings> <add name="RentACar" connectionString="Server=localdb;Database=RentACar;Trusted_Connection=True;" providerName="System.Data.SqlClient" /> </connectionStrings>
 
+
+
 **How it works:**
+
 1) Client sends a Request via TCP socket
 2) Server receives request in ClientHandler
 3) ServerController selects appropriate System Operation
@@ -71,7 +87,9 @@ The system is divided into multiple layers:
 5) GenericDbRepository executes SQL queries
 6) Server returns Response back to client
 
+
 **Design decisions**
+
 
 - No Singleton pattern used
 - All dependencies created in Program.cs (Composition Root)
@@ -79,15 +97,20 @@ The system is divided into multiple layers:
 - Concurrency handled via threads and database connection pooling
 - Concurent testing, mock can be used becouse of DI + no singleton
 
+
 **Technologies**
+
+
 C# (.NET 4.7.2 Framework)
 WinForms
 SQL Server
 TCP Sockets
 JSON Serialization
 
+
 **Future Improvements**
 
-Implement automated testing for services
-Async socket handling
-REST API version
+
+-Implement automated testing for services
+-Async socket handling
+-REST API version
